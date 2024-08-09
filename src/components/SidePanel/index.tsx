@@ -1,14 +1,17 @@
 import React from 'react';
 
 // Polotno and third party imports
-import { SidePanelWrap } from 'polotno';
-import type { StoreType } from 'polotno/model/store';
-import { SidePanel as PolotnoSidePanel, DEFAULT_SECTIONS } from 'polotno/side-panel';
+import {SidePanelWrap} from 'polotno';
+import type {StoreType} from 'polotno/model/store';
+import {
+  SidePanel as PolotnoSidePanel,
+  DEFAULT_SECTIONS,
+} from 'polotno/side-panel';
 
 // Custom Sections / Components
 import customTemplateSection from './Templates/customTemplateSection';
 import customFieldSection from './CustomFields/customFieldSection';
-
+import customAddOns from './CustomAddOns';
 
 interface Props {
   store: StoreType;
@@ -23,11 +26,11 @@ interface Props {
 
 const SidePanel: React.FC<Props> = (props) => {
   const sections =
-    props.currentTemplateType === "Real Penned Letter"
-      ? DEFAULT_SECTIONS.filter((section) => section.name === "")
+    props.currentTemplateType === 'Real Penned Letter'
+      ? DEFAULT_SECTIONS.filter((section) => section.name === '')
       : DEFAULT_SECTIONS.filter(
-        (section) => !["photos", "size", "templates"].includes(section.name)
-      );
+          (section) => !['photos', 'size', 'templates'].includes(section.name)
+        );
 
   return (
     <SidePanelWrap>
@@ -61,6 +64,16 @@ const SidePanel: React.FC<Props> = (props) => {
               />
             ),
           },
+          ...(props.currentTemplateType !== 'Real Penned Letter'
+            ? [
+                {
+                  ...customAddOns,
+                  Panel: (panelProps: any) => (
+                    <customAddOns.Panel {...panelProps} />
+                  ),
+                },
+              ]
+            : []),
         ]}
         defaultSection="text"
       />
