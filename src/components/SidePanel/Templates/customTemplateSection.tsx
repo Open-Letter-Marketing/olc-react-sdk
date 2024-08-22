@@ -723,7 +723,7 @@ const customTemplateSection: SideSection = {
                 primaryColorRGBA={primaryColorRGBA}
               />
             </div>
-            {loader ? (
+            {loader ? ( 
               <div className="noTemplateText">
                 <Typography>{MESSAGES.TEMPLATE.LOADING_TEMPLATE}</Typography>
               </div>
@@ -824,7 +824,7 @@ const customTemplateSection: SideSection = {
                 )}
               </>
             ) : null}
-          </div>
+          </Dialog>
         </>
       );
     }
