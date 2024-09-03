@@ -95,6 +95,12 @@ const TemplateBuilder = ({
       </Provider>
     </>
   );
+
+  return {
+    destroy() {
+      root.unmount();
+    }
+  }
 };
 
 // Example to run the project locally for development. Comment out these lines when building the application
