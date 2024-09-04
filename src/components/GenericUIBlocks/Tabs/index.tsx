@@ -6,9 +6,9 @@ const Tabs = ({ value, onChange, tabs, className, tabClassName, indicatorClassNa
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useLayoutEffect(() => {
-    if (tabRefs.current[value]) {
-      const tabWidth = tabRefs.current[value]?.offsetWidth;
-      const tabLeft = tabRefs.current[value]?.offsetLeft;
+    if (tabRefs.current[value.id]) {
+      const tabWidth = tabRefs.current[value.id]?.offsetWidth;
+      const tabLeft = tabRefs.current[value.id]?.offsetLeft;
 
       setIndicatorStyle({
         width: `50px`, // Fixed width
@@ -24,8 +24,8 @@ const Tabs = ({ value, onChange, tabs, className, tabClassName, indicatorClassNa
           <div
             key={index}
             ref={(el) => (tabRefs.current[index] = el)}
-            className={`tab ${tabClassName} ${value === index ? 'activeTab' : ''}`}
-            onClick={() => onChange(index)}
+            className={`tab ${tabClassName} ${value.id === tab.id ? 'activeTab' : ''}`}
+            onClick={() => onChange(tab)}
           >
             {tab.label}
           </div>

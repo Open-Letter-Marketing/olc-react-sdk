@@ -5,6 +5,7 @@ interface Size {
 
 interface Product {
     id: string;
+    title: string;
     productType: string;
     size: Size[];
     windowed?: boolean; // optional property
@@ -14,16 +15,18 @@ interface Product {
 export const Products: Product[] = [
     {
         id: "9",
+        title: "Bi-Fold Self-Mailers",
         productType: "Bi-Fold Self-Mailers",
         size: [
             {
                 id: "9",
                 size: "6x18"
             }
-        ]
+        ],
     },
     {
         id: "5",
+        title: "Personal Letters",
         productType: "Personal Letters",
         size: [
             {
@@ -34,6 +37,7 @@ export const Products: Product[] = [
     },
     {
         id: "13",
+        title: "Postcards",
         productType: "Postcards",
         size: [
             {
@@ -52,6 +56,7 @@ export const Products: Product[] = [
     },
     {
         id: "16",
+        title: "Real Penned Letter",
         productType: "Real Penned Letter",
         size: [
             {
@@ -62,6 +67,7 @@ export const Products: Product[] = [
     },
     {
         id: "11",
+        title: "Tri-Fold Self-Mailers",
         productType: "Tri-Fold Self-Mailers",
         size: [
             {
@@ -72,6 +78,7 @@ export const Products: Product[] = [
     },
     {
         id: "2",
+        title: "Professional Letters - Windowed Envelope",
         productType: "Professional Letters",
         size: [
             {
@@ -83,6 +90,7 @@ export const Products: Product[] = [
     },
     {
         id: "4",
+        title: "Professional Letters - Non-windowed Envelope",
         productType: "Professional Letters",
         size: [
             {
