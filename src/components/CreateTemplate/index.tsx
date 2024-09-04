@@ -184,7 +184,6 @@ const handleGalleryClose = () => {
 }
   return (
     <>
-    <TemplatesGallery open={openGallery} onClose={handleGalleryClose}/>
       <Typography className="hideTemplateBuilder">
         {MESSAGES.TEMPLATE_MESSAGE_ON_SMALL_SCREEN}
       </Typography>
@@ -196,16 +195,6 @@ const handleGalleryClose = () => {
                 <Typography style={templateHeadingStyles}>
                   {MESSAGES.TEMPLATE.CREATE.TITLE}
                 </Typography>
-                <Button
-              style={{
-                ...footerButtonStyles,
-                border: '0.5px solid var(--border-color)',
-                maxWidth: "fit-content"
-              }}
-              onClick={() =>  setOpenGallery(true)}
-            >
-              Open Gallery
-            </Button>
                 <div className="templateInputWrapper">
                   <Input
                     type="text"

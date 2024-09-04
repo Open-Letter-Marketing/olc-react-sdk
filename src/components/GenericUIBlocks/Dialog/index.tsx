@@ -90,15 +90,15 @@ const Dialog: React.FC<DialogProps> = ({
 
   useEffect(() => {
     if (open) {
-      document.addEventListener('mousedown', handleClickOutside);
+      // document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleKeyDown);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      // document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      // document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [open]);
