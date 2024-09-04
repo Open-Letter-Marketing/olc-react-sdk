@@ -213,6 +213,14 @@
     font-weight: 400 !important;
     color: #000 !important;
   }
+  svg{
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    top: 2px;
+    right: 3px;
+    cursor: pointer;
+  }
 }
 
 .gallery-input-layout {

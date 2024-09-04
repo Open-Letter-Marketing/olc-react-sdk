@@ -1,7 +1,9 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {ChangeEvent, FC, useState} from 'react';
 
 // components
 import Typography from '../Typography';
+import Button from '../Button';
+import CustomTooltip from '../CustomTooltip';
 
 // icon
 import Search from '../../../assets/images/input/search';
@@ -15,11 +17,10 @@ import DOCX from '../../../assets/images/templates/docx';
 import JPG from '../../../assets/images/templates/jpg';
 import JPEG from '../../../assets/images/templates/jpeg';
 import VideoInfo from '../../../assets/images/templates/video-info';
+import Cross from '../../../assets/images/modal-icons/cross';
 
 // styles
 import './styles.scss';
-import GeneralTooltip from '../GeneralTooltip';
-import Button from '../Button';
 
 const errorStyles = {
   color: 'var(--error-color)',
@@ -74,6 +75,7 @@ const Input: FC<InputProps> = ({
   videoTooltip = false,
 }) => {
   const InputVariant = variant || 'input';
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
   const URLTooltip = (
     <div className="videoUrlTooltip">
@@ -81,27 +83,44 @@ const Input: FC<InputProps> = ({
         You can use Loom to create this video. Create your free Loom account
         now.
       </p>
-      <Button style={loomButtonStyles}>Open Loom</Button>
+      <Button
+        style={loomButtonStyles}
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log('button clicked');
+        }}
+      >
+        Open Loom
+      </Button>
+      <Cross onClick={()=>setShowTooltip(false)}/>
     </div>
   );
 
+  const handleClose = () =>{
+    setShowTooltip(false);
+  }
+
   return (
     <>
-      <GeneralTooltip
-        anchorSelect=".url"
-        place="top-start"
-        title={URLTooltip}
-        openEvent={['click']}
-      />
       <div
         className={`input-layout ${gellerySearch && 'gallery-input-layout'}`}
       >
         <label className="basic-label">{label ? label : ''} </label>
         {videoTooltip && (
           <>
-            <span className="urlTooltip  url">
+            <span className="urlTooltip" 
+            onClick={()=>setShowTooltip(true)} 
+            // onMouseOver={()=>setShowTooltip(true)}
+            // onMouseLeave={(prev) => setShowTooltip(!prev)}
+            >
               <VideoInfo />
             </span>
+            <CustomTooltip
+              children={URLTooltip}
+              open={showTooltip}
+              handleClose={handleClose}
+              place="bottom"
+              />
           </>
         )}
         {!isFileUploader ? (
@@ -143,7 +162,7 @@ const Input: FC<InputProps> = ({
                 <div className="upload-icon">
                   <Add />
                 </div>
-                <label for="fileInput" className="upload-text">
+                <label htmlFor="fileInput" className="upload-text">
                   Upload a File
                 </label>{' '}
                 or drag and drop

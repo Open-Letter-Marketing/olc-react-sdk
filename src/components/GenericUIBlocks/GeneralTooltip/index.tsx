@@ -12,11 +12,12 @@ interface GeneralTooltipProps {
   place: 'top' | 'right' | 'bottom' | 'left' | 'top-start';
   title: any;
   openEvent: any;
+  isOpen: boolean;
 }
 
-const GeneralTooltip: React.FC<GeneralTooltipProps> = ({ anchorSelect, place, title, openEvent }) => {
+const GeneralTooltip: React.FC<GeneralTooltipProps> = ({ anchorSelect, place, title, openEvent,isOpen }) => {
   return (
-    <Tooltip className="basic-tooltip" anchorSelect={anchorSelect} place={place} openOnClick={openEvent}>
+    <Tooltip className="basic-tooltip" anchorSelect={anchorSelect} place={place} openOnClick={openEvent}isOpen={isOpen}>
       {title}
     </Tooltip>
   );
