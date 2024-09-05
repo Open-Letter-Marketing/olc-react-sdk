@@ -33,6 +33,7 @@ import {
   getFileAsBlob,
 } from '../../../utils/template-builder';
 import {MESSAGES} from '../../../utils/message';
+import { removeSThroughZeroOne } from '../../../utils/helper';
 
 // Components
 import Typography from '../../GenericUIBlocks/Typography';
@@ -646,7 +647,7 @@ const customTemplateSection: SideSection = {
                     />
                   </div>
                 )}
-              <Typography>{pagination.total} templates</Typography>
+              <Typography>{removeSThroughZeroOne(`${pagination.total} templates`)}</Typography>
             </div>
             <div className="templatesContent" style={{justifyContent: loader ? "center" : "flex-start"}}>
               {!loader && !searchApplied && (

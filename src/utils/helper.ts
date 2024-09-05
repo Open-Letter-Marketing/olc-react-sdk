@@ -34,3 +34,13 @@ export const setAuthUserPassword = (password: string) => {
 export const setIsSandbox = (sandbox: boolean) => {
   isSandbox = sandbox;
 };
+
+export const removeSThroughZeroOne = (input: string) => {
+  // Check if the string contains '0' or '1'
+  if (/0|1/.test(input)) {
+    // Remove 's' from the end of the string
+    return input.endsWith('s') ? input.slice(0, -1) : input;
+  }
+  // Return the original string if '0' or '1' are not present
+  return input;
+}
