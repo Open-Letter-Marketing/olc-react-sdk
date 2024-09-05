@@ -650,7 +650,7 @@ const customTemplateSection: SideSection = {
               <Typography>{removeSThroughZeroOne(`${pagination.total} templates`)}</Typography>
             </div>
             <div className="templatesContent" style={{justifyContent: loader ? "center" : "flex-start"}}>
-              {!loader && !searchApplied && (
+              {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '1' && (
                 <div>
                   <div
                     className="defaultDesign"
@@ -676,6 +676,7 @@ const customTemplateSection: SideSection = {
                 loading={loader}
                 platformName={platformName}
                 currentTemplateType={currentTemplateType}
+                product={product}
               />
             </div>
           </Dialog>

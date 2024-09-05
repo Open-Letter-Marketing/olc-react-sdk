@@ -36,11 +36,13 @@ export const setIsSandbox = (sandbox: boolean) => {
 };
 
 export const removeSThroughZeroOne = (input: string) => {
-  // Check if the string contains '0' or '1'
-  if (/0|1/.test(input)) {
-    // Remove 's' from the end of the string
+  // Check if the string contains exactly one '0' or one '1'
+  const hasSingleZero = (input.match(/0/g) || []).length === 1;
+  const hasSingleOne = (input.match(/1/g) || []).length === 1;
+
+  if (hasSingleZero || hasSingleOne) {
     return input.endsWith('s') ? input.slice(0, -1) : input;
   }
-  // Return the original string if '0' or '1' are not present
+  
   return input;
 }

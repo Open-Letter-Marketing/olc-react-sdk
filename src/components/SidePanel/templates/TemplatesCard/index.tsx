@@ -14,9 +14,11 @@ import './styles.scss'
 
 const TemplatesCard = (props: any) => {
 
-  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType } = props;
+  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType, product } = props;
 
   const [isFilpedIds, setIsFlipedIds] = useState<string[]>([]);
+
+  const singleSideProducts = [2, 4, 5, 16];
 
   // handler for Flip
   const handleFlip = (templateId: string) => {
@@ -45,8 +47,6 @@ const TemplatesCard = (props: any) => {
     return result;
   };
 
-  // const tempHeight = "407";
-
   return (
     <>
       {loading ? (
@@ -69,7 +69,7 @@ const TemplatesCard = (props: any) => {
                 loading="lazy"
               />
               <Button className="tempButton" onClick={() => handleLoadTemplateModel(template)}>Edit Template</Button>
-              <div className="flipWrapper">
+              {!singleSideProducts.includes(Number(product?.id)) && <div className="flipWrapper">
                 <Dot
                   onClick={() => handleFlip(template?.id)}
                   style={colorSetter(template?.id, "Front")}
@@ -79,13 +79,13 @@ const TemplatesCard = (props: any) => {
                   style={colorSetter(template?.id, "Back")}
                 />
                 <ArrowDown onClick={() => handleLoadTemplateModel(template)} />
-              </div>
+              </div>}
             </div>
             <Typography className="templateName">{template?.title}</Typography>
             <Typography className="templateID">
               Template ID: {template?.id}
             </Typography>
-          </div>
+          </div >
         );
       }) : currentTemplateType?.id === '1' ?
         <div className="noTemplateText">

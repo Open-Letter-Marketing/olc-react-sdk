@@ -178,10 +178,6 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
       }
     }, [envelopeType]);
 
-    const [openGallery, setOpenGallery] = useState(false)
-const handleGalleryClose = () => {
-  setOpenGallery(false);
-}
   return (
     <>
       <Typography className="hideTemplateBuilder">
