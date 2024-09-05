@@ -14,7 +14,7 @@ import './styles.scss'
 
 const TemplatesCard = (props: any) => {
 
-  const { templates, loading, handleLoadTemplateModel, platformName } = props;
+  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType } = props;
 
   const [isFilpedIds, setIsFlipedIds] = useState<string[]>([]);
 
@@ -87,13 +87,25 @@ const TemplatesCard = (props: any) => {
             </Typography>
           </div>
         );
-      }) : <div className="noTemplateText">
-        <Typography>
-          {platformName
-            ? `No ${platformName} Templates to show`
-            : MESSAGES.TEMPLATE.NO_OLC_TEMPLATES}
-        </Typography>
-      </div>}
+      }) : currentTemplateType?.id === '1' ?
+        <div className="noTemplateText">
+          <Typography>
+            {MESSAGES.TEMPLATE.NO_MY_TEMPLATES}
+          </Typography>
+        </div>
+        : currentTemplateType?.id === '2' ?
+          <div className="noTemplateText">
+            <Typography>
+              {MESSAGES.TEMPLATE.NO_TEAM_TEMPLATES}
+            </Typography>
+          </div>
+          : <div className="noTemplateText">
+            <Typography>
+              {platformName
+                ? `No ${platformName} Templates to show`
+                : MESSAGES.TEMPLATE.NO_OLC_TEMPLATES}
+            </Typography>
+          </div>}
     </>
   );
 };

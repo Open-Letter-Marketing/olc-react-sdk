@@ -112,6 +112,7 @@ type CustomTemplateSectionProps = {
   active: boolean;
   platformName?: string | null;
   defaultCategory?: string[];
+  selectedSection?: string;
   onClick: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: Payload) => Promise<any>;
@@ -131,12 +132,12 @@ const customTemplateSection: SideSection = {
       store,
       platformName,
       defaultCategory,
+      selectedSection,
       onGetOneTemplate,
       onGetTemplates,
     }: CustomTemplateSectionProps) => {
       const dispatch: AppDispatch = useDispatch();
 
-      const [activeTab, setActiveTab] = useState(0);
       const [openGalleryModal, setOpenGalleryModal] = useState(false);
       const [templateTypes, setTemplateTypes] = useState<
         [TemplateType] | null
@@ -315,18 +316,17 @@ const customTemplateSection: SideSection = {
       };
 
       const closeGalleryModal = () => {
-        let sideBar = document.getElementsByClassName('go1786107568');
+        let sideBar = document.getElementsByClassName('polotno-panel-container');
         const firstSideBar = sideBar[0];
         if (firstSideBar) {
           //@ts-ignore
           firstSideBar.style.display = 'block';
         }
         setOpenGalleryModal(false);
-        store.openSidePanel('text');
+        store.openSidePanel(selectedSection || 'text');
       };
 
       const handleTabChange = (tab: any) => {
-        setActiveTab(tab);
         setCurrentTemplateType(tab);
       };
 
@@ -338,7 +338,6 @@ const customTemplateSection: SideSection = {
       };
 
       const removeSearchInput = () => {
-        setSearchApplied(false);
         setSearch('');
       };
 
@@ -485,7 +484,7 @@ const customTemplateSection: SideSection = {
       };
 
       const handleScroll = () => {
-        const div = document.querySelector('.polotno-panel-container');
+        const div = document.querySelector('.templatesContent');
         if (div) {
           const isAtBottom =
             div.scrollTop + div.clientHeight >= div.scrollHeight;
@@ -535,8 +534,10 @@ const customTemplateSection: SideSection = {
         if (onGetTemplates) {
           //@ts-ignore
           setTemplateTypes([...defaultTemplateTypes, newTemplateType]);
+          setCurrentTemplateType(defaultTemplateTypes[0]);
         } else {
           setTemplateTypes([newTemplateType]);
+          setCurrentTemplateType(newTemplateType);
         }
         getAllCategories();
         return () => {
@@ -545,34 +546,23 @@ const customTemplateSection: SideSection = {
       }, []);
 
       useEffect(() => {
-        if (templateTypes) {
-          const type = templateTypes.find((type) => type.id === '3');
-          setCurrentTemplateType(type);
-        }
-      }, [templateTypes]);
-
-      useEffect(() => {
-        if (
-          currentTemplateType?.id === '3' &&
-          defaultCategory &&
-          defaultCategory?.length >= 1
-        ) {
-          return;
-        } else if (currentTemplateType) {
+      if (currentTemplateType && Object.keys(currentTemplateType).length) {
           getTemplatesByTab();
         }
       }, [currentTemplateType]);
 
       useEffect(() => {
-        if (currentTemplateType?.id === '3' &&
+        if (currentTemplateType && Object.keys(currentTemplateType).length && currentTemplateType?.id === '3' &&
           templateCategories?.length >= 1) {
           getTemplatesByTab();
         }
       }, [selectedCategory]);
 
       useEffect(() => {
+        const div = document.querySelector('.templatesContent');
+
         if (store.openedSidePanel === 'Templates') {
-          let sideBar = document.getElementsByClassName('go1786107568');
+          let sideBar = document.getElementsByClassName('polotno-panel-container');
           const firstSideBar = sideBar[0];
           if (firstSideBar) {
             //@ts-ignore
@@ -580,10 +570,6 @@ const customTemplateSection: SideSection = {
           }
           setOpenGalleryModal(true);
         }
-      }, [store.openedSidePanel]);
-
-      useEffect(() => {
-        const div = document.querySelector('.polotno-panel-container');
 
         if (div) {
           div.removeEventListener('scroll', handleScroll);
@@ -606,7 +592,7 @@ const customTemplateSection: SideSection = {
             <div className="topBar">
               <div>
                 <Tabs
-                  value={activeTab}
+                  value={currentTemplateType || {}}
                   onChange={handleTabChange}
                   tabs={templateTypes || []}
                   className="myCustomTabs"
@@ -679,6 +665,7 @@ const customTemplateSection: SideSection = {
                 handleLoadTemplateModel={handleLoadTemplateModel}
                 loading={loader}
                 platformName={platformName}
+                currentTemplateType={currentTemplateType}
               />
             </div>
           </Dialog>
