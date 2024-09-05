@@ -50,7 +50,7 @@ const TemplatesCard = (props: any) => {
   return (
     <>
       {loading ? (
-        <div className="noTemplateText">
+        <div className="noTemplateGallery">
           <Typography>{MESSAGES.TEMPLATE.LOADING_TEMPLATE}</Typography>
         </div>
       ) : templates.length ? templates.map((template: any, index: string) => {
@@ -88,18 +88,18 @@ const TemplatesCard = (props: any) => {
           </div >
         );
       }) : currentTemplateType?.id === '1' ?
-        <div className="noTemplateText">
+        <div className="noTemplateGallery">
           <Typography>
             {MESSAGES.TEMPLATE.NO_MY_TEMPLATES}
           </Typography>
         </div>
         : currentTemplateType?.id === '2' ?
-          <div className="noTemplateText">
+          <div className="noTemplateGallery">
             <Typography>
               {MESSAGES.TEMPLATE.NO_TEAM_TEMPLATES}
             </Typography>
           </div>
-          : <div className="noTemplateText">
+          : <div className="noTemplateGallery">
             <Typography>
               {platformName
                 ? `No ${platformName} Templates to show`

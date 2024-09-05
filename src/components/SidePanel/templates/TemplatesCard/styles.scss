@@ -71,3 +71,17 @@
     }
   }
   
+
+  .noTemplateGallery{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    p {
+      color: var(--text-color);
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
