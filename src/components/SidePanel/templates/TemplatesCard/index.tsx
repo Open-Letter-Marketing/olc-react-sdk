@@ -31,9 +31,9 @@ const TemplatesCard = (props: any) => {
   };
   
   // handler for setting color
-  const colorSetter = (templateId: any) => {
-    const result = !isFilpedIds.includes(templateId)
-      ? { fill: "#FFFFFF" } : { fill: "#878585" };
+  const colorSetter = (templateId: any, side: string) => {
+    const result = !isFilpedIds.includes(templateId) && side === "Front"
+      ? { fill: "#FFFFFF" } : isFilpedIds.includes(templateId) && side === "Back" ? { fill: "#FFFFFF" } : { fill: "#878585" };
     return result;
   };
 
@@ -45,7 +45,7 @@ const TemplatesCard = (props: any) => {
     return result;
   };
 
-  const tempHeight = "407";
+  // const tempHeight = "407";
 
   return (
     <>
@@ -63,7 +63,7 @@ const TemplatesCard = (props: any) => {
                     ? template.backThumbnailUrl
                     : template.thumbnailUrl
                 }
-                height={tempHeight + "px"}
+                // height={tempHeight + "px"}
                 alt="template"
                 style={transformSetter(template?.id)}
                 loading="lazy"
@@ -72,11 +72,11 @@ const TemplatesCard = (props: any) => {
               <div className="flipWrapper">
                 <Dot
                   onClick={() => handleFlip(template?.id)}
-                  style={colorSetter(template?.id)}
+                  style={colorSetter(template?.id, "Front")}
                 />
                 <Dot
                   onClick={() => handleFlip(template?.id)}
-                  style={colorSetter(template?.id)}
+                  style={colorSetter(template?.id, "Back")}
                 />
                 <ArrowDown onClick={() => handleLoadTemplateModel(template)} />
               </div>

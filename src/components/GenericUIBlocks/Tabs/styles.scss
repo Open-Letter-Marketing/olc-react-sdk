@@ -4,6 +4,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  transition: left 0.3s ease-in-out;
 
   .tabsContainer {
     display: flex;
@@ -18,10 +19,13 @@
       flex: 1;
       width: 100%;
       min-width: fit-content;
+    transition: left 0.3s ease-in-out;
+
 
       &.activeTab {
         font-weight: bold;
         color: var(--primary-color);
+        border-bottom: 1px solid var(--primary-color); /* The indicator */
       }
     }
   }
@@ -32,5 +36,6 @@
     height: 3px;
     background-color: var(--primary-color);
     transition: left 0.3s ease-in-out;
+    transform: translateX(100%);
   }
 }

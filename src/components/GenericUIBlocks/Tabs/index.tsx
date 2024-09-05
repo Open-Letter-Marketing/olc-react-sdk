@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './styles.scss'; // Create a CSS file for your custom styles
 
 const Tabs = ({ value, onChange, tabs, className, tabClassName, indicatorClassName }: any) => {
@@ -17,6 +17,13 @@ const Tabs = ({ value, onChange, tabs, className, tabClassName, indicatorClassNa
     }
   }, [value, tabs.length]);
 
+  useEffect(() => {
+    if (tabs.length > 0 && !value) {
+      onChange(tabs[0]); // Automatically select the first tab
+    }
+  }, [tabs, value, onChange]);
+
+
   return (
     <div className={`tabsWrapper ${className}`}>
       <div className="tabsContainer">
@@ -28,13 +35,15 @@ const Tabs = ({ value, onChange, tabs, className, tabClassName, indicatorClassNa
             onClick={() => onChange(tab)}
           >
             {tab.label}
+            {/* {value.id === tab.id && 
+            <div
+              className={`tabsIndicator ${indicatorClassName}`}
+              style={{...indicatorStyle, width: "50px"}}
+            />
+            } */}
           </div>
         ))}
       </div>
-      <div
-        className={`tabsIndicator ${indicatorClassName}`}
-        style={indicatorStyle}
-      />
     </div>
   );
 };

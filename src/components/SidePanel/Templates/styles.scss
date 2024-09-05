@@ -84,6 +84,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
     p {
       color: var(--text-color);
       font-size: 18px;
@@ -121,6 +122,8 @@
     font-weight: 400;
     font-size: 14px;
     margin: 0;
+    width: 100%;
+    text-align: end;
   }
 }
 
@@ -132,10 +135,11 @@
   flex-wrap: wrap;
   padding: 15px 35px 0;
   gap: 25px;
-  height: 650px;
+  height: calc(100vh - 310px);
   overflow-y: scroll;
   margin-top: 10px;
   padding-bottom: 15px;
+  width: 100%;
   &::-webkit-scrollbar {
     width: 5px;
   }

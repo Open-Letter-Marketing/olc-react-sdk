@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 // Polotno and third party libraries
-import { observer } from 'mobx-react-lite';
-import { SectionTab } from 'polotno/side-panel';
-import type { StoreType } from 'polotno/model/store';
-import type { TemplatesSection } from 'polotno/side-panel';
+import {observer} from 'mobx-react-lite';
+import {SectionTab} from 'polotno/side-panel';
+import type {StoreType} from 'polotno/model/store';
+import type {TemplatesSection} from 'polotno/side-panel';
 
 // Actions
 import {
@@ -16,11 +16,11 @@ import {
   GET_ONE_TEMPLATE,
   TEMPLATE_LOADING,
 } from '../../../redux/actions/action-types';
-import { failure } from '../../../redux/actions/snackbarActions';
+import {failure} from '../../../redux/actions/snackbarActions';
 
 // Hooks
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../redux/store';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch, RootState} from '../../../redux/store';
 
 // Utils
 import {
@@ -32,7 +32,7 @@ import {
   drawRestrictedAreaOnPage,
   getFileAsBlob,
 } from '../../../utils/template-builder';
-import { MESSAGES } from '../../../utils/message';
+import {MESSAGES} from '../../../utils/message';
 
 // Components
 import Typography from '../../GenericUIBlocks/Typography';
@@ -121,7 +121,7 @@ type CustomTemplateSectionProps = {
 const customTemplateSection: SideSection = {
   name: 'Templates',
   Tab: observer(
-    (props: { store: StoreType; active: boolean; onClick: () => void }) => (
+    (props: {store: StoreType; active: boolean; onClick: () => void}) => (
       <SectionTab name="Templates" {...props}>
         <CustomTemplate fill="var(--text-color)" />
       </SectionTab>
@@ -161,7 +161,7 @@ const customTemplateSection: SideSection = {
         count: 0,
         currentPage: 0,
         perPage: 0,
-        total: 0
+        total: 0,
       });
 
       const paginationRef = useRef(pagination);
@@ -257,7 +257,7 @@ const customTemplateSection: SideSection = {
               count: templates.count,
               currentPage: templates.currentPage,
               perPage: templates.perPage,
-              total: templates.total
+              total: templates.total,
             });
           }
         } catch (error) {
@@ -281,10 +281,14 @@ const customTemplateSection: SideSection = {
               }));
 
             if (fetchedCategories.length > 0) {
-              const normalizedDefaultCategories = defaultCategory.map(category => category.trim().toLowerCase());
+              const normalizedDefaultCategories = defaultCategory.map(
+                (category) => category.trim().toLowerCase()
+              );
 
               if (normalizedDefaultCategories.length === 1) {
-                const findCategory = fetchedCategories.find((item: any) => item.label === normalizedDefaultCategories[0]);
+                const findCategory = fetchedCategories.find(
+                  (item: any) => item.label === normalizedDefaultCategories[0]
+                );
 
                 if (findCategory) {
                   setSelectedCategory(findCategory);
@@ -366,7 +370,7 @@ const customTemplateSection: SideSection = {
         if (onGetOneTemplate) {
           try {
             const template = await onGetOneTemplate(id);
-            dispatch({ type: TEMPLATE_LOADING, payload: true });
+            dispatch({type: TEMPLATE_LOADING, payload: true});
             if (template) {
               const workspaceElement = document.querySelector(
                 '.polotno-workspace-container'
@@ -393,7 +397,7 @@ const customTemplateSection: SideSection = {
               }
               store.loadJSON(jsonData);
               await store.waitLoading();
-              dispatch({ type: TEMPLATE_LOADING, payload: false });
+              dispatch({type: TEMPLATE_LOADING, payload: false});
               if (workspaceElement) {
                 workspaceElement.classList.add('hide-loader');
               }
@@ -414,7 +418,7 @@ const customTemplateSection: SideSection = {
       };
 
       const handleDialogChange = (model = '') => {
-        setIsShowDialog((prev) => ({ open: !prev.open, model: model }));
+        setIsShowDialog((prev) => ({open: !prev.open, model: model}));
       };
 
       const processPage = async (index: any, page: any) => {
@@ -425,12 +429,12 @@ const customTemplateSection: SideSection = {
           const text = index === 0 ? 'Front' : 'Back';
 
           if (pageNumber) {
-            pageNumber.set({ text });
+            pageNumber.set({text});
             resolve();
           } else {
             page.addElement({
               type: 'text',
-              custom: { name: 'page-number' },
+              custom: {name: 'page-number'},
               text,
               width: store.width,
               align: 'center',
@@ -500,7 +504,7 @@ const customTemplateSection: SideSection = {
       useEffect(() => {
         if (templateLoading !== null && templateLoading === false) {
           handleDialogChange('');
-          dispatch({ type: TEMPLATE_LOADING, payload: null });
+          dispatch({type: TEMPLATE_LOADING, payload: null});
         }
       }, [templateLoading]);
 
@@ -580,13 +584,18 @@ const customTemplateSection: SideSection = {
         };
       }, [templates]);
 
+
       return (
         <>
           <Dialog
             customStyles={cancelDialogStyles}
             open={openGalleryModal}
             handleClose={closeGalleryModal}
-            title={product?.title === 'Postcards' ? `${product?.title} - (${product?.selectedSize})` : product?.title}
+            title={
+              product?.title === 'Postcards'
+                ? `${product?.title} - (${product?.selectedSize})`
+                : product?.title
+            }
             isGallery={true}
           >
             <div className="topBar">
@@ -618,40 +627,40 @@ const customTemplateSection: SideSection = {
               </div>
             </div>
             <div className="selectBar">
-              {
-                currentTemplateType?.id === '3' &&
-                templateCategories?.length >= 1 &&
-                <div>
-                  <GeneralSelect
-                    placeholder="Select Category"
-                    options={templateCategories as any}
-                    setSelectedValue={setSelectedCategory as any}
-                    selectedValue={selectedCategory as any}
-                    builderSelect={true}
-                    gallerySelect={true}
-                    clearField={true}
-                    // @ts-ignore
-                    search={(() => { }) as any}
-                    updateErrors={() => { }}
-                    disableClearable={false}
-                    templateBuilder={true}
-                  />
-                </div>
-              }
-
+              {currentTemplateType?.id === '3' &&
+                templateCategories?.length >= 1 && (
+                  <div>
+                    <GeneralSelect
+                      placeholder="Select Category"
+                      options={templateCategories as any}
+                      setSelectedValue={setSelectedCategory as any}
+                      selectedValue={selectedCategory as any}
+                      builderSelect={true}
+                      gallerySelect={true}
+                      clearField={true}
+                      // @ts-ignore
+                      search={(() => {}) as any}
+                      updateErrors={() => {}}
+                      disableClearable={false}
+                      templateBuilder={true}
+                    />
+                  </div>
+                )}
               <Typography>{pagination.total} templates</Typography>
             </div>
-            <div className="templatesContent">
-              <div>
-                <div
-                  className="defaultDesign"
-                  onClick={() => handleDialogChange("design-own")}
-                >
-                  <DesignIcon />
+            <div className="templatesContent" style={{justifyContent: loader ? "center" : "flex-start"}}>
+              {!loader && !searchApplied && (
+                <div>
+                  <div
+                    className="defaultDesign"
+                    onClick={() => handleDialogChange('design-own')}
+                  >
+                    <DesignIcon />
+                    <Typography>Design Your Own</Typography>
+                  </div>
                   <Typography>Design Your Own</Typography>
                 </div>
-                <Typography>Design Your Own</Typography>
-              </div>
+              )}
               <TempCard
                 templates={
                   currentTemplateType?.id === '1'
@@ -669,7 +678,6 @@ const customTemplateSection: SideSection = {
               />
             </div>
           </Dialog>
-
 
           <div className="custom-template-section">
             {isShowDialog.open && isShowDialog.model === 'design-own' && (
