@@ -4,12 +4,13 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  transition: left 0.3s ease-in-out;
 
   .tabsContainer {
     display: flex;
     gap: 55px;
     width: 100%;
-
+    
     .tab {
       padding: 10px 0;
       cursor: pointer;
@@ -18,19 +19,24 @@
       flex: 1;
       width: 100%;
       min-width: fit-content;
+      transition: left 0.3s ease-in-out;
+      
+      @media (width <= 768px){
+        font-size: 15px;
+      }
 
       &.activeTab {
         font-weight: bold;
-        color: var(--primary-color);
+        color: rgba(var(--primary-color));
       }
     }
   }
 
   .tabsIndicator {
     position: absolute;
-    bottom: 0;
-    height: 3px;
-    background-color: var(--primary-color);
+    bottom: 3px;
+    height: 1.5px;
+    background-color: rgba(var(--primary-color));
     transition: left 0.3s ease-in-out;
   }
 }

@@ -52,7 +52,7 @@ import Divider from '../GenericUIBlocks/Divider';
 import './styles.scss';
 
 const templateHeadingStyles: React.CSSProperties = {
-  color: `var(--primary-color)`,
+  color: `rgba(var(--primary-color))`,
   fontSize: `24px`,
   fontStyle: `normal`,
   fontWeight: `600`,
@@ -178,10 +178,6 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
       }
     }, [envelopeType]);
 
-    const [openGallery, setOpenGallery] = useState(false)
-const handleGalleryClose = () => {
-  setOpenGallery(false);
-}
   return (
     <>
       <Typography className="hideTemplateBuilder">
@@ -393,7 +389,7 @@ const handleGalleryClose = () => {
               style={{
                 ...footerButtonStyles,
                 color: '#ffffff',
-                backgroundColor: 'var(--primary-color)',
+                backgroundColor: 'rgba(var(--primary-color))',
               }}
               onClick={handleNext}
             >

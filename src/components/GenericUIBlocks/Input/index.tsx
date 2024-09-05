@@ -77,7 +77,7 @@ const Input: FC<InputProps> = ({
               className="search-input-button"
               onClick={value?.length > 0 ? onClick : () => {}}
             >
-              <Search fill="var(--primary-color)" />
+              <Search fill="rgba(var(--primary-color))" />
             </div>
           </>
         )}

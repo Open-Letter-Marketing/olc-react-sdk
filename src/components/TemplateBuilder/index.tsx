@@ -72,6 +72,7 @@ interface TemplateBuilderProps {
 const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNavigate, platformName, defaultCategory, createTemplateRoute, olcTemplate, onGetOneTemplate, onGetCustomFields, onGetTemplates, onSubmit }) => {
   const [isStoreUpdated, setIsStoreUpdated] = useState(false);
   const [switchTabCount, setSwitchTabCount] = useState(1);
+  const [selectedSection, setSelectedSection] = useState('text');
 
   const { id } = useParams();
   const dispatch: AppDispatch = useDispatch();
@@ -105,11 +106,19 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
         setSwitchTabCount((prev) => prev + 1);
       }
     };
-    
+
+    const handleClick = (event: MouseEvent) => {
+      if (event.target instanceof Element && event.target.closest('.polotno-side-tabs-container') && store?.openedSidePanel !== 'Templates') {
+        setSelectedSection(store?.openedSidePanel)
+      }
+    };
+
+    document.addEventListener('click', handleClick);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener('click', handleClick);
     };
   }, []);
 
@@ -320,6 +329,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
                 onGetTemplates={onGetTemplates}
                 onGetOneTemplate={onGetOneTemplate}
                 onGetCustomFields={onGetCustomFields}
+                selectedSection={selectedSection}
               />
               <WorkspaceWrap>
                 {currentTemplateType !== 'Real Penned Letter' && (

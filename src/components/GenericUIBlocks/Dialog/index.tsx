@@ -30,7 +30,7 @@ interface DialogProps {
 
 const buttonStyles: CSSProperties = {
   color: '#fff',
-  backgroundColor: 'var(--primary-color)',
+  backgroundColor: 'rgba(var(--primary-color))',
   maxWidth: '100px',
   minHeight: '40px',
   border: '0.5px solid var(--border-color)',
@@ -38,8 +38,7 @@ const buttonStyles: CSSProperties = {
 };
 
 const heading: CSSProperties = {
-  fontSize: '22px',
-  color: 'var(--primary-color)',
+  color: 'rgba(var(--primary-color))',
   fontWeight: '600',
 };
 
@@ -103,6 +102,20 @@ const Dialog: React.FC<DialogProps> = ({
     };
   }, [open]);
 
+  useEffect(()=>{
+    const handleCopy = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'c' ) {
+        event.stopPropagation(); 
+      }
+    };
+
+    document.addEventListener('keydown', handleCopy, true);
+
+    return () => {
+      document.removeEventListener('keydown', handleCopy, true);
+    };
+  }, []); 
+
   return (
     <div
       id="myModal"
@@ -119,7 +132,7 @@ const Dialog: React.FC<DialogProps> = ({
           padding: isGallery ? '0px' : "2px 16px"
         }}>
           {icon && <div className="modal-icon">{icon}</div>}
-          <Typography variant="p" style={{...heading, fontSize: isGallery && "28px"}}>
+          <Typography variant="p" style={{...heading, fontSize: isGallery ? "26px" : "22px"}}>
             {title}
           </Typography>
           {subHeading && (

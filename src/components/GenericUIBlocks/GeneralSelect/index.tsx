@@ -34,7 +34,7 @@ interface GeneralSelectProps {
 const colourStyles: StylesConfig<Option, false> = {
   dropdownIndicator: (styles, {isFocused, selectProps}) => ({
     ...styles,
-    color: isFocused && selectProps.menuIsOpen ? 'var(--primary-color)' : 'grey',
+    color: isFocused && selectProps.menuIsOpen ? 'rgba(var(--primary-color))' : 'grey',
     transform:
       !isFocused && !selectProps.menuIsOpen ? 'rotate(0deg)' : 'rotate(180deg)',
   }),

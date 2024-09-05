@@ -136,7 +136,7 @@ const customFieldSection: SideSection = {
         <div className="dynamic-content__top">
           <div>
             <span className="title">Contact Fields</span>
-            <InfoIcon fill="var(--primary-color)" className="infoIcon" />
+            <InfoIcon fill="rgba(var(--primary-color))" className="infoIcon" />
             <GeneralTootip
               anchorSelect=".infoIcon"
               place="bottom"
@@ -172,7 +172,7 @@ const customFieldSection: SideSection = {
             <div className="dynamic-content__top">
               <div>
                 <span className="title">Custom Fields</span>
-                <InfoIcon fill="var(--primary-color)" className="custom" />
+                <InfoIcon fill="rgba(var(--primary-color))" className="custom" />
                 <GeneralTootip
                   anchorSelect=".custom"
                   place="bottom"

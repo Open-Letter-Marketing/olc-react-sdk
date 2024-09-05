@@ -146,13 +146,18 @@
     }
 
     .generic-select__menu {
+      box-shadow: 0 0 3px 1px hsla(0, 0%, 0%, 0.1),0 4px 11px hsla(0, 0%, 0%, 0.1) !important;
       .generic-select__menu-list {
+        padding: 12px !important;
         .generic-select__menu-notice{
           color: #000;
         }
         .generic-select__option {
           color: #000;
-          border-bottom: 0.5px solid #3030303f;
+          font-size: 14px !important;
+          font-weight: 300 !important;
+          border-bottom: 0.5px solid rgba(84, 84, 84, 0.3);
+          padding: 12px !important;
           &:last-child {
             border: none;
           }

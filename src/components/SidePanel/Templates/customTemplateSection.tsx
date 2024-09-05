@@ -33,6 +33,8 @@ import {
   getFileAsBlob,
 } from '../../../utils/template-builder';
 import { MESSAGES } from '../../../utils/message';
+import { removeSThroughOne } from '../../../utils/helper';
+import { getItem, removeItem, setItem } from '../../../utils/local-storage';
 
 // Components
 import Typography from '../../GenericUIBlocks/Typography';
@@ -69,6 +71,11 @@ const loadDialogStyles = {
 const cancelDialogStyles = {
   maxWidth: '1090px',
   minHeight: 'calc(100% - 100px)',
+};
+
+const galleryDialogStyles = {
+  maxWidth: '1090px',
+  minHeight: 'calc(100% - 50px)',
 };
 
 const templateTextStyles: React.CSSProperties = {
@@ -112,6 +119,7 @@ type CustomTemplateSectionProps = {
   active: boolean;
   platformName?: string | null;
   defaultCategory?: string[];
+  selectedSection?: string;
   onClick: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: Payload) => Promise<any>;
@@ -131,12 +139,12 @@ const customTemplateSection: SideSection = {
       store,
       platformName,
       defaultCategory,
+      selectedSection,
       onGetOneTemplate,
       onGetTemplates,
     }: CustomTemplateSectionProps) => {
       const dispatch: AppDispatch = useDispatch();
 
-      const [activeTab, setActiveTab] = useState(0);
       const [openGalleryModal, setOpenGalleryModal] = useState(false);
       const [templateTypes, setTemplateTypes] = useState<
         [TemplateType] | null
@@ -160,7 +168,7 @@ const customTemplateSection: SideSection = {
         count: 0,
         currentPage: 0,
         perPage: 0,
-        total: 0
+        total: 0,
       });
 
       const paginationRef = useRef(pagination);
@@ -256,7 +264,7 @@ const customTemplateSection: SideSection = {
               count: templates.count,
               currentPage: templates.currentPage,
               perPage: templates.perPage,
-              total: templates.total
+              total: templates.total,
             });
           }
         } catch (error) {
@@ -280,10 +288,14 @@ const customTemplateSection: SideSection = {
               }));
 
             if (fetchedCategories.length > 0) {
-              const normalizedDefaultCategories = defaultCategory.map(category => category.trim().toLowerCase());
+              const normalizedDefaultCategories = defaultCategory.map(
+                (category) => category.trim().toLowerCase()
+              );
 
               if (normalizedDefaultCategories.length === 1) {
-                const findCategory = fetchedCategories.find((item: any) => item.label === normalizedDefaultCategories[0]);
+                const findCategory = fetchedCategories.find(
+                  (item: any) => item.label === normalizedDefaultCategories[0]
+                );
 
                 if (findCategory) {
                   setSelectedCategory(findCategory);
@@ -315,19 +327,21 @@ const customTemplateSection: SideSection = {
       };
 
       const closeGalleryModal = () => {
-        let sideBar = document.getElementsByClassName('go1786107568');
+        let sideBar = document.getElementsByClassName('polotno-panel-container');
         const firstSideBar = sideBar[0];
         if (firstSideBar) {
           //@ts-ignore
           firstSideBar.style.display = 'block';
         }
         setOpenGalleryModal(false);
-        store.openSidePanel('text');
+        store.openSidePanel(selectedSection || 'text');
+        removeItem('currentTab');
+        document.body.classList.remove('no-scroll');
       };
 
       const handleTabChange = (tab: any) => {
-        setActiveTab(tab);
         setCurrentTemplateType(tab);
+        setItem('currentTab', JSON.stringify(tab));
       };
 
       const handleSearch = () => {
@@ -338,7 +352,6 @@ const customTemplateSection: SideSection = {
       };
 
       const removeSearchInput = () => {
-        setSearchApplied(false);
         setSearch('');
       };
 
@@ -485,10 +498,10 @@ const customTemplateSection: SideSection = {
       };
 
       const handleScroll = () => {
-        const div = document.querySelector('.polotno-panel-container');
+        const div = document.querySelector('.templatesContent');
         if (div) {
           const isAtBottom =
-            div.scrollTop + div.clientHeight >= div.scrollHeight;
+            div.scrollTop + div.clientHeight + 50 >= div.scrollHeight;
           const isNeedToLoadMore =
             paginationRef.current.currentPage * paginationRef.current.perPage <
             paginationRef.current.count;
@@ -535,8 +548,15 @@ const customTemplateSection: SideSection = {
         if (onGetTemplates) {
           //@ts-ignore
           setTemplateTypes([...defaultTemplateTypes, newTemplateType]);
+          const lastSelectedTab = getItem('currentTab');
+          if (lastSelectedTab) {
+            setCurrentTemplateType(JSON.parse(lastSelectedTab));
+          } else {
+            setCurrentTemplateType(defaultTemplateTypes[0]);
+          }
         } else {
           setTemplateTypes([newTemplateType]);
+          setCurrentTemplateType(newTemplateType);
         }
         getAllCategories();
         return () => {
@@ -545,45 +565,31 @@ const customTemplateSection: SideSection = {
       }, []);
 
       useEffect(() => {
-        if (templateTypes) {
-          const type = templateTypes.find((type) => type.id === '3');
-          setCurrentTemplateType(type);
-        }
-      }, [templateTypes]);
-
-      useEffect(() => {
-        if (
-          currentTemplateType?.id === '3' &&
-          defaultCategory &&
-          defaultCategory?.length >= 1
-        ) {
-          return;
-        } else if (currentTemplateType) {
+        if (currentTemplateType && Object.keys(currentTemplateType).length) {
           getTemplatesByTab();
         }
       }, [currentTemplateType]);
 
       useEffect(() => {
-        if (currentTemplateType?.id === '3' &&
+        if (currentTemplateType && Object.keys(currentTemplateType).length && currentTemplateType?.id === '3' &&
           templateCategories?.length >= 1) {
           getTemplatesByTab();
         }
       }, [selectedCategory]);
 
       useEffect(() => {
+        const div = document.querySelector('.templatesContent');
+
         if (store.openedSidePanel === 'Templates') {
-          let sideBar = document.getElementsByClassName('go1786107568');
+          let sideBar = document.getElementsByClassName('polotno-panel-container');
           const firstSideBar = sideBar[0];
           if (firstSideBar) {
             //@ts-ignore
             firstSideBar.style.display = 'contents';
           }
           setOpenGalleryModal(true);
+        document.body.classList.add('no-scroll');
         }
-      }, [store.openedSidePanel]);
-
-      useEffect(() => {
-        const div = document.querySelector('.polotno-panel-container');
 
         if (div) {
           div.removeEventListener('scroll', handleScroll);
@@ -597,16 +603,20 @@ const customTemplateSection: SideSection = {
       return (
         <>
           <Dialog
-            customStyles={cancelDialogStyles}
+            customStyles={galleryDialogStyles}
             open={openGalleryModal}
             handleClose={closeGalleryModal}
-            title={product?.title === 'Postcards' ? `${product?.title} - (${product?.selectedSize})` : product?.title}
+            title={
+              product?.productType === 'Postcards'
+                ? `${product?.productType} (${product?.selectedSize})`
+                : product?.title
+            }
             isGallery={true}
           >
             <div className="topBar">
               <div>
                 <Tabs
-                  value={activeTab}
+                  value={currentTemplateType || {}}
                   onChange={handleTabChange}
                   tabs={templateTypes || []}
                   className="myCustomTabs"
@@ -622,7 +632,7 @@ const customTemplateSection: SideSection = {
                   // @ts-ignore
                   onKeyDown={searchKeyDown}
                   onChange={(e: any) => setSearch(e.target.value.trimStart())}
-                  placeholder="Search by template name"
+                  placeholder="Search templates by name or ID"
                   onClick={handleSearch}
                   searchApplied={searchApplied}
                   removeSearchInput={removeSearchInput}
@@ -632,40 +642,48 @@ const customTemplateSection: SideSection = {
               </div>
             </div>
             <div className="selectBar">
-              {
-                currentTemplateType?.id === '3' &&
-                templateCategories?.length >= 1 &&
-                <div>
-                  <GeneralSelect
-                    placeholder="Select Category"
-                    options={templateCategories as any}
-                    setSelectedValue={setSelectedCategory as any}
-                    selectedValue={selectedCategory as any}
-                    builderSelect={true}
-                    gallerySelect={true}
-                    clearField={true}
-                    // @ts-ignore
-                    search={(() => { }) as any}
-                    updateErrors={() => { }}
-                    disableClearable={false}
-                    templateBuilder={true}
-                  />
-                </div>
-              }
-
-              <Typography>{pagination.total} templates</Typography>
+              {currentTemplateType?.id === '3' &&
+                templateCategories?.length >= 1 && (
+                  <div>
+                    <GeneralSelect
+                      placeholder="Select Category"
+                      options={templateCategories as any}
+                      setSelectedValue={setSelectedCategory as any}
+                      selectedValue={selectedCategory as any}
+                      builderSelect={true}
+                      gallerySelect={true}
+                      clearField={true}
+                      // @ts-ignore
+                      search={(() => { }) as any}
+                      updateErrors={() => { }}
+                      disableClearable={false}
+                      templateBuilder={true}
+                    />
+                  </div>
+                )}
+              <Typography>{removeSThroughOne(`${pagination.total} templates`)}</Typography>
             </div>
-            <div className="templatesContent">
-              <div>
-                <div
-                  className="defaultDesign"
-                  onClick={() => handleDialogChange("design-own")}
-                >
-                  <DesignIcon />
-                  <Typography>Design Your Own</Typography>
+            <div className={`templatesContent ${currentTemplateType?.id === '3' && "heightOLC"}`} style={{
+              justifyContent: loader ? "center" : "flex-start",
+              alignItems: searchApplied ? "center" : "flex-start"
+              }}>
+              {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '1' && (
+                <div>
+                  <div
+                    className={`defaultDesign 
+                      ${product?.id === '13' && 
+                        product?.size.find((product:any) => product?.size === "4x6") ? "postcard-4x6" 
+                      : product?.id === '15' && product?.size.find((product:any) => product?.size === "6x11") ? "postcard-6x11"
+                      : product?.id === '14' && product?.size.find((product:any) => product?.size === "6x9") ? "postcard-6x9"
+                       : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
+                    onClick={() => handleDialogChange('design-own')}
+                  >
+                    <DesignIcon fill="rgba(var(--primary-color))"/>
+                    <Typography>Design Your Own</Typography>
+                  </div>
+                  <Typography className='ownHeading'>Design Your Own</Typography>
                 </div>
-                <Typography>Design Your Own</Typography>
-              </div>
+              )}
               <TempCard
                 templates={
                   currentTemplateType?.id === '1'
@@ -679,10 +697,12 @@ const customTemplateSection: SideSection = {
                 handleLoadTemplateModel={handleLoadTemplateModel}
                 loading={loader}
                 platformName={platformName}
+                currentTemplateType={currentTemplateType}
+                product={product}
+                searchApplied={searchApplied}
               />
             </div>
           </Dialog>
-
 
           <div className="custom-template-section">
             {isShowDialog.open && isShowDialog.model === 'design-own' && (

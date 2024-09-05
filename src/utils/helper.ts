@@ -34,3 +34,14 @@ export const setAuthUserPassword = (password: string) => {
 export const setIsSandbox = (sandbox: boolean) => {
   isSandbox = sandbox;
 };
+
+export const removeSThroughOne = (input: string) => {
+  // Check if the string contains exactly one '0' or one '1'
+  const containsExactlyOneOne = /^.*\b1\b(?!\d).*$/g.test(input) && !input.match(/1\d/);
+
+  if (containsExactlyOneOne) {
+    return input.endsWith('s') ? input.slice(0, -1) : input;
+  }
+
+  return input;
+}
