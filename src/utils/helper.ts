@@ -37,12 +37,12 @@ export const setIsSandbox = (sandbox: boolean) => {
 
 export const removeSThroughZeroOne = (input: string) => {
   // Check if the string contains exactly one '0' or one '1'
-  const hasSingleZero = (input.match(/0/g) || []).length === 1;
-  const hasSingleOne = (input.match(/1/g) || []).length === 1;
+  const containsExactlyOneZero = /^.*\b0\b(?!\d).*$/g.test(input) && !input.match(/0\d/);
+  const containsExactlyOneOne = /^.*\b1\b(?!\d).*$/g.test(input) && !input.match(/1\d/);
 
-  if (hasSingleZero || hasSingleOne) {
+  if (containsExactlyOneZero || containsExactlyOneOne) {
     return input.endsWith('s') ? input.slice(0, -1) : input;
   }
-  
+
   return input;
 }
