@@ -6,23 +6,25 @@ const Tabs = ({ value, onChange, tabs, className, tabClassName, indicatorClassNa
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useLayoutEffect(() => {
-    if (tabRefs.current[value.id]) {
-      const tabWidth = tabRefs.current[value.id]?.offsetWidth;
-      const tabLeft = tabRefs.current[value.id]?.offsetLeft;
+    const activeIndex = tabs.findIndex((tab: any) => tab.id === value.id);
 
+    if (tabRefs.current[activeIndex]) {
+      const tabWidth = tabRefs.current[activeIndex]?.offsetWidth || 0;
+      const tabLeft = tabRefs.current[activeIndex]?.offsetLeft || 0;
+
+      const indicatorLeft = tabLeft + tabWidth / 2 - 25;
       setIndicatorStyle({
-        width: `50px`, // Fixed width
-        left: `${tabLeft + tabWidth / 2 - 25}px`, // Centering the 50px indicator under the tab
+        width: '50px',
+        left: `${indicatorLeft}px`,
       });
     }
   }, [value, tabs.length]);
 
   useEffect(() => {
-    if (tabs.length > 0 && !value) {
-      onChange(tabs[0]); // Automatically select the first tab
+    if (tabs.length > 0 && !value.id) {
+      onChange(tabs[0]); 
     }
   }, [tabs, value, onChange]);
-
 
   return (
     <div className={`tabsWrapper ${className}`}>
@@ -35,15 +37,13 @@ const Tabs = ({ value, onChange, tabs, className, tabClassName, indicatorClassNa
             onClick={() => onChange(tab)}
           >
             {tab.label}
-            {/* {value.id === tab.id && 
-            <div
-              className={`tabsIndicator ${indicatorClassName}`}
-              style={{...indicatorStyle, width: "50px"}}
-            />
-            } */}
           </div>
         ))}
       </div>
+        <div
+          className={`tabsIndicator ${indicatorClassName}`}
+          style={indicatorStyle}
+        />
     </div>
   );
 };

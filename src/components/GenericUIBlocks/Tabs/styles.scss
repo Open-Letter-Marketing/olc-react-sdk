@@ -10,6 +10,7 @@
     display: flex;
     gap: 55px;
     width: 100%;
+    overflow-x: scroll;
 
     .tab {
       padding: 10px 0;
@@ -25,17 +26,15 @@
       &.activeTab {
         font-weight: bold;
         color: var(--primary-color);
-        border-bottom: 1px solid var(--primary-color); /* The indicator */
       }
     }
   }
 
   .tabsIndicator {
     position: absolute;
-    bottom: 0;
-    height: 3px;
+    bottom: 3px;
+    height: 1.5px;
     background-color: var(--primary-color);
     transition: left 0.3s ease-in-out;
-    transform: translateX(100%);
   }
 }

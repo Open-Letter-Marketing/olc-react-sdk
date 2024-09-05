@@ -73,6 +73,11 @@ const cancelDialogStyles = {
   minHeight: 'calc(100% - 100px)',
 };
 
+const galleryDialogStyles = {
+  maxWidth: '1090px',
+  minHeight: 'calc(100% - 50px)',
+};
+
 const templateTextStyles: React.CSSProperties = {
   color: `#000`,
   fontSize: `12px`,
@@ -596,7 +601,7 @@ const customTemplateSection: SideSection = {
       return (
         <>
           <Dialog
-            customStyles={cancelDialogStyles}
+            customStyles={galleryDialogStyles}
             open={openGalleryModal}
             handleClose={closeGalleryModal}
             title={
@@ -656,17 +661,25 @@ const customTemplateSection: SideSection = {
                 )}
               <Typography>{removeSThroughOne(`${pagination.total} templates`)}</Typography>
             </div>
-            <div className="templatesContent" style={{ justifyContent: loader ? "center" : "flex-start" }}>
+            <div className={`templatesContent ${currentTemplateType?.id === '3' && "heightOLC"}`} style={{
+              justifyContent: loader ? "center" : "flex-start",
+              }}>
               {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '1' && (
                 <div>
                   <div
-                    className="defaultDesign"
+                    className={`defaultDesign 
+                      ${product?.id === '13' ? (
+                        product.size.filter((product:any) => product.size === "4x6") ? "postcard-4x6"
+                      : product.size.filter((product:any) => product.size === "6x11") ? "postcard-6x11"
+                      : product.size.filter((product:any) => product.size === "6x9") ? "postcard-6x9"
+                      : 'postcard'
+                      ) : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                     onClick={() => handleDialogChange('design-own')}
                   >
-                    <DesignIcon />
+                    <DesignIcon fill="var(--primary-color)"/>
                     <Typography>Design Your Own</Typography>
                   </div>
-                  <Typography>Design Your Own</Typography>
+                  <Typography className='ownHeading'>Design Your Own</Typography>
                 </div>
               )}
               <TempCard
