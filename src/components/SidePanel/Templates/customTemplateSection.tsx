@@ -663,6 +663,7 @@ const customTemplateSection: SideSection = {
             </div>
             <div className={`templatesContent ${currentTemplateType?.id === '3' && "heightOLC"}`} style={{
               justifyContent: loader ? "center" : "flex-start",
+              alignItems: searchApplied ? "center" : "flex-start"
               }}>
               {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '1' && (
                 <div>
