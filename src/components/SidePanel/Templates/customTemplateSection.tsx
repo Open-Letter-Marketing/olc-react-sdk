@@ -1,10 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Polotno and third party libraries
-import {observer} from 'mobx-react-lite';
-import {SectionTab} from 'polotno/side-panel';
-import type {StoreType} from 'polotno/model/store';
-import type {TemplatesSection} from 'polotno/side-panel';
+import { observer } from 'mobx-react-lite';
+import { SectionTab } from 'polotno/side-panel';
+import type { StoreType } from 'polotno/model/store';
+import type { TemplatesSection } from 'polotno/side-panel';
 
 // Actions
 import {
@@ -16,11 +16,11 @@ import {
   GET_ONE_TEMPLATE,
   TEMPLATE_LOADING,
 } from '../../../redux/actions/action-types';
-import {failure} from '../../../redux/actions/snackbarActions';
+import { failure } from '../../../redux/actions/snackbarActions';
 
 // Hooks
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../redux/store';
 
 // Utils
 import {
@@ -32,8 +32,9 @@ import {
   drawRestrictedAreaOnPage,
   getFileAsBlob,
 } from '../../../utils/template-builder';
-import {MESSAGES} from '../../../utils/message';
-import { removeSThroughZeroOne } from '../../../utils/helper';
+import { MESSAGES } from '../../../utils/message';
+import { removeSThroughOne } from '../../../utils/helper';
+import { getItem, removeItem, setItem } from '../../../utils/local-storage';
 
 // Components
 import Typography from '../../GenericUIBlocks/Typography';
@@ -122,7 +123,7 @@ type CustomTemplateSectionProps = {
 const customTemplateSection: SideSection = {
   name: 'Templates',
   Tab: observer(
-    (props: {store: StoreType; active: boolean; onClick: () => void}) => (
+    (props: { store: StoreType; active: boolean; onClick: () => void }) => (
       <SectionTab name="Templates" {...props}>
         <CustomTemplate fill="var(--text-color)" />
       </SectionTab>
@@ -329,10 +330,12 @@ const customTemplateSection: SideSection = {
         }
         setOpenGalleryModal(false);
         store.openSidePanel(selectedSection || 'text');
+        removeItem('currentTab');
       };
 
       const handleTabChange = (tab: any) => {
         setCurrentTemplateType(tab);
+        setItem('currentTab', JSON.stringify(tab));
       };
 
       const handleSearch = () => {
@@ -371,7 +374,7 @@ const customTemplateSection: SideSection = {
         if (onGetOneTemplate) {
           try {
             const template = await onGetOneTemplate(id);
-            dispatch({type: TEMPLATE_LOADING, payload: true});
+            dispatch({ type: TEMPLATE_LOADING, payload: true });
             if (template) {
               const workspaceElement = document.querySelector(
                 '.polotno-workspace-container'
@@ -398,7 +401,7 @@ const customTemplateSection: SideSection = {
               }
               store.loadJSON(jsonData);
               await store.waitLoading();
-              dispatch({type: TEMPLATE_LOADING, payload: false});
+              dispatch({ type: TEMPLATE_LOADING, payload: false });
               if (workspaceElement) {
                 workspaceElement.classList.add('hide-loader');
               }
@@ -419,7 +422,7 @@ const customTemplateSection: SideSection = {
       };
 
       const handleDialogChange = (model = '') => {
-        setIsShowDialog((prev) => ({open: !prev.open, model: model}));
+        setIsShowDialog((prev) => ({ open: !prev.open, model: model }));
       };
 
       const processPage = async (index: any, page: any) => {
@@ -430,12 +433,12 @@ const customTemplateSection: SideSection = {
           const text = index === 0 ? 'Front' : 'Back';
 
           if (pageNumber) {
-            pageNumber.set({text});
+            pageNumber.set({ text });
             resolve();
           } else {
             page.addElement({
               type: 'text',
-              custom: {name: 'page-number'},
+              custom: { name: 'page-number' },
               text,
               width: store.width,
               align: 'center',
@@ -505,7 +508,7 @@ const customTemplateSection: SideSection = {
       useEffect(() => {
         if (templateLoading !== null && templateLoading === false) {
           handleDialogChange('');
-          dispatch({type: TEMPLATE_LOADING, payload: null});
+          dispatch({ type: TEMPLATE_LOADING, payload: null });
         }
       }, [templateLoading]);
 
@@ -539,7 +542,12 @@ const customTemplateSection: SideSection = {
         if (onGetTemplates) {
           //@ts-ignore
           setTemplateTypes([...defaultTemplateTypes, newTemplateType]);
-          setCurrentTemplateType(defaultTemplateTypes[0]);
+          const lastSelectedTab = getItem('currentTab');
+          if (lastSelectedTab) {
+            setCurrentTemplateType(JSON.parse(lastSelectedTab));
+          } else {
+            setCurrentTemplateType(defaultTemplateTypes[0]);
+          }
         } else {
           setTemplateTypes([newTemplateType]);
           setCurrentTemplateType(newTemplateType);
@@ -551,7 +559,7 @@ const customTemplateSection: SideSection = {
       }, []);
 
       useEffect(() => {
-      if (currentTemplateType && Object.keys(currentTemplateType).length) {
+        if (currentTemplateType && Object.keys(currentTemplateType).length) {
           getTemplatesByTab();
         }
       }, [currentTemplateType]);
@@ -585,7 +593,6 @@ const customTemplateSection: SideSection = {
         };
       }, [templates]);
 
-
       return (
         <>
           <Dialog
@@ -593,8 +600,8 @@ const customTemplateSection: SideSection = {
             open={openGalleryModal}
             handleClose={closeGalleryModal}
             title={
-              product?.title === 'Postcards'
-                ? `${product?.title} - (${product?.selectedSize})`
+              product?.productType === 'Postcards'
+                ? `${product?.productType} - (${product?.selectedSize})`
                 : product?.title
             }
             isGallery={true}
@@ -618,7 +625,7 @@ const customTemplateSection: SideSection = {
                   // @ts-ignore
                   onKeyDown={searchKeyDown}
                   onChange={(e: any) => setSearch(e.target.value.trimStart())}
-                  placeholder="Search by template name"
+                  placeholder="Search templates by name or ID"
                   onClick={handleSearch}
                   searchApplied={searchApplied}
                   removeSearchInput={removeSearchInput}
@@ -640,16 +647,16 @@ const customTemplateSection: SideSection = {
                       gallerySelect={true}
                       clearField={true}
                       // @ts-ignore
-                      search={(() => {}) as any}
-                      updateErrors={() => {}}
+                      search={(() => { }) as any}
+                      updateErrors={() => { }}
                       disableClearable={false}
                       templateBuilder={true}
                     />
                   </div>
                 )}
-              <Typography>{removeSThroughZeroOne(`${pagination.total} templates`)}</Typography>
+              <Typography>{removeSThroughOne(`${pagination.total} templates`)}</Typography>
             </div>
-            <div className="templatesContent" style={{justifyContent: loader ? "center" : "flex-start"}}>
+            <div className="templatesContent" style={{ justifyContent: loader ? "center" : "flex-start" }}>
               {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '1' && (
                 <div>
                   <div
@@ -677,6 +684,7 @@ const customTemplateSection: SideSection = {
                 platformName={platformName}
                 currentTemplateType={currentTemplateType}
                 product={product}
+                searchApplied={searchApplied}
               />
             </div>
           </Dialog>

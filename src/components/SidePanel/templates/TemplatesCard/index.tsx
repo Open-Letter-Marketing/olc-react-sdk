@@ -14,7 +14,7 @@ import './styles.scss'
 
 const TemplatesCard = (props: any) => {
 
-  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType, product } = props;
+  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType, product, searchApplied } = props;
 
   const [isFilpedIds, setIsFlipedIds] = useState<string[]>([]);
 
@@ -31,7 +31,7 @@ const TemplatesCard = (props: any) => {
     }
     setIsFlipedIds(updatedIds);
   };
-  
+
   // handler for setting color
   const colorSetter = (templateId: any, side: string) => {
     const result = !isFilpedIds.includes(templateId) && side === "Front"
@@ -53,59 +53,72 @@ const TemplatesCard = (props: any) => {
         <div className="noTemplateGallery">
           <Typography>{MESSAGES.TEMPLATE.LOADING_TEMPLATE}</Typography>
         </div>
-      ) : templates.length ? templates.map((template: any, index: string) => {
-        return (
-          <div className="templateCard" key={index} >
-            <div className="templateImage">
-              <img
-                src={
-                  isFilpedIds.includes(template?.id)
-                    ? template.backThumbnailUrl
-                    : template.thumbnailUrl
-                }
-                // height={tempHeight + "px"}
-                alt="template"
-                style={transformSetter(template?.id)}
-                loading="lazy"
-              />
-              <Button className="tempButton" onClick={() => handleLoadTemplateModel(template)}>Edit Template</Button>
-              {!singleSideProducts.includes(Number(product?.id)) && <div className="flipWrapper">
-                <Dot
-                  onClick={() => handleFlip(template?.id)}
-                  style={colorSetter(template?.id, "Front")}
+      ) : templates.length ? (
+        templates.map((template: any, index: string) => {
+          return (
+            <div className="templateCard" key={index}>
+              <div className="templateImage">
+                <img
+                  src={
+                    isFilpedIds.includes(template?.id)
+                      ? template.backThumbnailUrl
+                      : template.thumbnailUrl
+                  }
+                  // height={tempHeight + "px"}
+                  alt="template"
+                  style={transformSetter(template?.id)}
+                  loading="lazy"
                 />
-                <Dot
-                  onClick={() => handleFlip(template?.id)}
-                  style={colorSetter(template?.id, "Back")}
-                />
-                <ArrowDown onClick={() => handleLoadTemplateModel(template)} />
-              </div>}
+                <Button
+                  className="tempButton"
+                  onClick={() => handleLoadTemplateModel(template)}
+                >
+                  Edit Template
+                </Button>
+                {!singleSideProducts.includes(Number(product?.id)) && (
+                  <div className="flipWrapper">
+                    <Dot
+                      onClick={() => handleFlip(template?.id)}
+                      style={colorSetter(template?.id, 'Front')}
+                    />
+                    <Dot
+                      onClick={() => handleFlip(template?.id)}
+                      style={colorSetter(template?.id, 'Back')}
+                    />
+                    <ArrowDown
+                      onClick={() => handleLoadTemplateModel(template)}
+                    />
+                  </div>
+                )}
+              </div>
+              <Typography className="templateName">
+                {template?.title}
+              </Typography>
+              <Typography className="templateID">
+                Template ID: {template?.id}
+              </Typography>
             </div>
-            <Typography className="templateName">{template?.title}</Typography>
-            <Typography className="templateID">
-              Template ID: {template?.id}
-            </Typography>
-          </div >
-        );
-      }) : currentTemplateType?.id === '1' ?
+          );
+        })
+      ) : currentTemplateType?.id === '1' && searchApplied ? (
+        <div className="noTemplateGallery">
+          <Typography>{MESSAGES.TEMPLATE.NO_MY_TEMPLATES}</Typography>
+        </div>
+      ) : currentTemplateType?.id === '2' ? (
+        <div className="noTemplateGallery">
+          <Typography>{MESSAGES.TEMPLATE.NO_TEAM_TEMPLATES}</Typography>
+        </div>
+      ) : currentTemplateType?.id === '3' ? (
         <div className="noTemplateGallery">
           <Typography>
-            {MESSAGES.TEMPLATE.NO_MY_TEMPLATES}
+            {platformName
+              ? `No ${platformName} Templates to show`
+              : MESSAGES.TEMPLATE.NO_OLC_TEMPLATES}
           </Typography>
         </div>
-        : currentTemplateType?.id === '2' ?
-          <div className="noTemplateGallery">
-            <Typography>
-              {MESSAGES.TEMPLATE.NO_TEAM_TEMPLATES}
-            </Typography>
-          </div>
-          : <div className="noTemplateGallery">
-            <Typography>
-              {platformName
-                ? `No ${platformName} Templates to show`
-                : MESSAGES.TEMPLATE.NO_OLC_TEMPLATES}
-            </Typography>
-          </div>}
+      ) : (
+        <></>
+      )}
     </>
   );
 };

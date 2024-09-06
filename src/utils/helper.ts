@@ -35,12 +35,11 @@ export const setIsSandbox = (sandbox: boolean) => {
   isSandbox = sandbox;
 };
 
-export const removeSThroughZeroOne = (input: string) => {
+export const removeSThroughOne = (input: string) => {
   // Check if the string contains exactly one '0' or one '1'
-  const containsExactlyOneZero = /^.*\b0\b(?!\d).*$/g.test(input) && !input.match(/0\d/);
   const containsExactlyOneOne = /^.*\b1\b(?!\d).*$/g.test(input) && !input.match(/1\d/);
 
-  if (containsExactlyOneZero || containsExactlyOneOne) {
+  if (containsExactlyOneOne) {
     return input.endsWith('s') ? input.slice(0, -1) : input;
   }
 
