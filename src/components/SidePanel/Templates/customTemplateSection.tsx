@@ -336,6 +336,7 @@ const customTemplateSection: SideSection = {
         setOpenGalleryModal(false);
         store.openSidePanel(selectedSection || 'text');
         removeItem('currentTab');
+        document.body.classList.remove('no-scroll');
       };
 
       const handleTabChange = (tab: any) => {
@@ -587,6 +588,7 @@ const customTemplateSection: SideSection = {
             firstSideBar.style.display = 'contents';
           }
           setOpenGalleryModal(true);
+        document.body.classList.add('no-scroll');
         }
 
         if (div) {
