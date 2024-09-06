@@ -118,7 +118,7 @@ const Dialog: React.FC<DialogProps> = ({
           padding: isGallery ? '0px' : "2px 16px"
         }}>
           {icon && <div className="modal-icon">{icon}</div>}
-          <Typography variant="p" style={{...heading, fontSize: isGallery ? "28px" : "22px"}}>
+          <Typography variant="p" style={{...heading, fontSize: isGallery ? "26px" : "22px"}}>
             {title}
           </Typography>
           {subHeading && (

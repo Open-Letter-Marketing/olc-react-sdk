@@ -668,12 +668,11 @@ const customTemplateSection: SideSection = {
                 <div>
                   <div
                     className={`defaultDesign 
-                      ${product?.id === '13' ? (
-                        product.size.filter((product:any) => product.size === "4x6") ? "postcard-4x6"
-                      : product.size.filter((product:any) => product.size === "6x11") ? "postcard-6x11"
-                      : product.size.filter((product:any) => product.size === "6x9") ? "postcard-6x9"
-                      : 'postcard'
-                      ) : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
+                      ${product?.id === '13' && 
+                        product?.size.find((product:any) => product?.size === "4x6") ? "postcard-4x6" 
+                      : product?.id === '15' && product?.size.find((product:any) => product?.size === "6x11") ? "postcard-6x11"
+                      : product?.id === '14' && product?.size.find((product:any) => product?.size === "6x9") ? "postcard-6x9"
+                       : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                     onClick={() => handleDialogChange('design-own')}
                   >
                     <DesignIcon fill="var(--primary-color)"/>
