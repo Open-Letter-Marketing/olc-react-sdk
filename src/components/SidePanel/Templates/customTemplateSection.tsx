@@ -501,7 +501,7 @@ const customTemplateSection: SideSection = {
         const div = document.querySelector('.templatesContent');
         if (div) {
           const isAtBottom =
-            div.scrollTop + div.clientHeight >= div.scrollHeight;
+            div.scrollTop + div.clientHeight + 50 >= div.scrollHeight;
           const isNeedToLoadMore =
             paginationRef.current.currentPage * paginationRef.current.perPage <
             paginationRef.current.count;
