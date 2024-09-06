@@ -102,6 +102,20 @@ const Dialog: React.FC<DialogProps> = ({
     };
   }, [open]);
 
+  useEffect(()=>{
+    const handleCopy = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'c' ) {
+        event.stopPropagation(); 
+      }
+    };
+
+    document.addEventListener('keydown', handleCopy, true);
+
+    return () => {
+      document.removeEventListener('keydown', handleCopy, true);
+    };
+  }, []); 
+
   return (
     <div
       id="myModal"
