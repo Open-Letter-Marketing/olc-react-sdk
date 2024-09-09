@@ -1,4 +1,5 @@
-export const API_BASE_URL = 'https://api.openletterconnect.com/api/v1/sdk';
+export const PROD_API_BASE_URL = 'https://api.openletterconnect.com/api/v1/sdk';
+export const DEMO_API_BASE_URL = 'https://demoapi.openletterconnect.com/api/v1/sdk';
 
 export const DPI: number = 96;
 

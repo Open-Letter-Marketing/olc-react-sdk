@@ -14,7 +14,7 @@ import '@fontsource/inter/700.css';
 
 // utils
 import { CustomCSSProperties } from './utils/customStyles';
-import { setAuthUserName, setAuthUserPassword } from './utils/helper';
+import { setAuthUserName, setAuthUserPassword, setIsSandbox } from './utils/helper';
 
 interface TemplateBuilderProps {
   container: HTMLElement | null;
@@ -25,6 +25,8 @@ interface TemplateBuilderProps {
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
+  defaultCategory?: string[];
+  sandbox?: boolean;
   onReturnAndNavigate?: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -44,6 +46,8 @@ const TemplateBuilder = ({
   createTemplateRoute,
   templateBuilderRoute,
   olcTemplate,
+  defaultCategory,
+  sandbox,
   onReturnAndNavigate,
   onGetOneTemplate,
   onGetTemplates,
@@ -63,6 +67,9 @@ const TemplateBuilder = ({
   if (!basicAuthPassword) {
     throw new Error('basicAuthPassword not found');
   }
+  if (sandbox) {
+    setIsSandbox(sandbox);
+  }
   setAuthUserName(basicAuthUsername);
   setAuthUserPassword(basicAuthPassword);
   const root = ReactDOM.createRoot(container);
@@ -75,6 +82,7 @@ const TemplateBuilder = ({
             styles={styles}
             olcTemplate={olcTemplate}
             platformName={platformName}
+            defaultCategory={defaultCategory}
             createTemplateRoute={createTemplateRoute}
             templateBuilderRoute={templateBuilderRoute}
             onReturnAndNavigate={onReturnAndNavigate}
@@ -87,6 +95,12 @@ const TemplateBuilder = ({
       </Provider>
     </>
   );
+
+  return {
+    destroy() {
+      root.unmount();
+    }
+  }
 };
 
 // Example to run the project locally for development. Comment out these lines when building the application
@@ -99,6 +113,7 @@ if (rootElement) {
     secretKey: import.meta.env.VITE_APP_PLOTNO_API_KEY,
     basicAuthUsername: import.meta.env.VITE_APP_BASIC_AUTH_USERNAME,
     basicAuthPassword: import.meta.env.VITE_APP_BASIC_AUTH_PASSWORD,
+    sandbox: true,
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
     // onGetTemplates: getAllTemplatesByTab,
