@@ -1,18 +1,31 @@
-# OLC React SDK
+# Integration Guide
 
-The `OLC React SDK` SDK allows developers to integrate a customizable template builder into their applications. This SDK provides a range of options to manage templates, handle authentication, and customize the look and feel of the template builder.
+## OLC React SDK Integration Guide
 
-## Installation
+### Introduction
 
-To install the SDK, use npm:
+The OLC React SDK allows developers to integrate a customizable template builder into their applications. This guide provides step-by-step instructions to help you install, configure, and use the SDK.
 
-```bash
+### 1. Installation
+
+Start by installing the OLC React SDK via [NPM](https://www.npmjs.com/package/@openlettermarketing/olc-react-sdk).
+
+```Shell
 npm install @openlettermarketing/olc-react-sdk
+```
 
+### 2. Importing and Initializing the SDK
+
+After installation, import the SDK into your React application and configure the required properties to initialize the `TemplateBuilder` component.
+
+### Complete coverage usage:.
+The following example shows the demo of all props minimalist usage, For the real case integration, see [integration example](#6-real-case-of-usage).
+
+```Javascript
 import TemplateBuilder from '@openlettermarketing/olc-react-sdk';
 
-const templateBuilderProps: TemplateBuilderProps = {
-  container: document.getElementById('template-builder-container'),
+const templateBuilderProps = {
+  container: document.querySelector('div#element-id'),
   secretKey: 'your-secret-key',
   basicAuthUsername: 'your-username',
   basicAuthPassword: 'your-password',
@@ -20,20 +33,20 @@ const templateBuilderProps: TemplateBuilderProps = {
   createTemplateRoute: '/create-template',
   templateBuilderRoute: '/edit-template',
   olcTemplate: yourTemplateObject,
-  onReturnAndNavigate: () => {
-    // Define what happens when the user returns and navigates.
+  onReturnAndNavigate () {
+    // TODO: Define what happens when the user returns and navigates.
   },
-  onGetOneTemplate: async (payload) => {
-    // Fetch a specific template.
+  async onGetOneTemplate (payload) => {
+    // TODO: Fetch a specific template.
   },
-  onGetTemplates: async (payload) => {
-    // Fetch all templates.
+  async onGetTemplates (payload) => {
+    // TODO: Fetch all templates.
   },
-  onGetCustomFields: async () => {
-    // Fetch custom fields for the templates.
+  async onGetCustomFields () => {
+    // TODO: Fetch custom fields for the templates.
   },
-  onSubmit: async (payload) => {
-    // Handle the submission of a template.
+  async onSubmit (payload) => {
+    // TODO: Handle the submission of a template.
   },
   styles: {
     root: {
@@ -45,83 +58,65 @@ const templateBuilderProps: TemplateBuilderProps = {
 TemplateBuilder(templateBuilderProps);
 ```
 
-## TemplateBuilderProps Interface
-This interface defines the structure for the properties that you can pass to the TemplateBuilder SDK.
+### 3. Configuration through Props
+The SDK uses several properties to manage its behavior. Below is a breakdown of key props:
 
-## Properties
+| Prop name              | Type             | Description                                                                                                    | Required | Example / Usage                                            |
+|------------------------|:-----------------|----------------------------------------------------------------------------------------------------------------|----------|:-----------------------------------------------------------|
+| `container`            | _HTMLDivElement_ | An HTML DOM element to render the template builder component.                                                  | &#10003; | `document.querySelector('div#template-builder-container')` |
+| `secretKey`            | _string_         | That key is used to communicate _Polotno_ Editor (Builder) with API requests.                                  | &#10003; | `'your-secret-key'`                                        |
+| `basicAuthUsername`    | _string_         | _Username_ for basic authentication.                                                                           | &#10003; | `'your-username'`                                          |
+| `basicAuthPassword`    | _string_         | _Password_ for basic authentication.                                                                           | &#10003; | `'your-password'`                                          |
+| `platformName`         | _string_         | The name of your platform.                                                                                     | &#10539; | `'My App'`                                                 |
+| `createTemplateRoute`  | _string_         | The route/path for creating new templates. _(begins with slash `/`)_                                           | &#10539; | `'/create-template'`                                       |
+| `templateBuilderRoute` | _string_         | The route/path for editing existing templates. _(begins with slash `/`)_                                       | &#10539; | `'/edit-template'`                                         |
+| `olcTemplate`          | _object_         | The template object to be edited or used as a base.                                                            | &#10539; | `{ ... }`                                                  |
+| `onReturnAndNavigate`  | _function_       | An event which triggers when a user navigates away.                                                            | &#10539; | `onReturnAndNavigate () { ... }`                           |
+| `onGetOneTemplate`     | _function_       | An event which triggers when fetching a specific template.                                                     | &#10539; | `onGetOneTemplate ( payload ) { ... }`                     |
+| `onGetTemplates`       | _function_       | An event which triggers when fetching all templates.                                                           | &#10539; | `onGetTemplates ( payload ) { ... }`                       |
+| `onGetCustomFields`    | _function_       | An event which triggers when fetching custom fields for templates.                                             | &#10539; | `onGetCustomFields () { ... }`                             |
+| `onSubmit`             | _function_       | An event which triggers upon template submission.                                                              | &#10539; | `onSubmit () { ... }`                                      |
+| `styles`               | _object_         | An object of [JSS](https://reactjs.org/docs/faq-styling.html) props for customize styling of template builder. | &#10539; | `{ root: { ... } }`                                        |
 
-#### container (HTMLElement | null):
-The container element where the template builder will be rendered. This must be an HTML element in your DOM.
+### 4. API Integration
+To integrate the SDK’s API, ensure that your backend securely communicates with the OLC _Backend_, returning the necessary data to the SDK frontend.
 
-#### secretKey (string):
-The secret key used for authenticating requests.
+### 5. Customization and Styling
+The SDK allows for extensive customization of the template builder’s appearance. Use the `styles` prop to apply custom CSS properties and match the look and feel of your application.
 
-#### basicAuthUsername (string):
-The username for basic authentication.
+### 6. Real-case of usage
+Below is an example of how to use the SDK within a React component:
 
-#### basicAuthPassword (string):
-The password for basic authentication.
+```Typescript
+import { useEffect } from 'react';
 
-#### platformName (string | null, optional):
-The name of the platform where the template builder is integrated.
+// SDKs
+import TemplateBuilder from '@openlettermarketing/olc-react-sdk';
 
-#### createTemplateRoute (string | null, optional):
-The route used for creating new templates.
-
-#### templateBuilderRoute (string | null, optional):
-The route used for editing existing templates.
-
-#### olcTemplate (Record<string, any>, optional):
-An object representing the template to be edited or used as a base.
-
-#### onReturnAndNavigate (() => void, optional):
-A callback function triggered when the user returns and navigates away from the template builder.
-
-#### onGetOneTemplate ((payload: any) => Promise<any>, optional):
-A function to fetch a specific template. It receives a payload and returns a promise.
-
-#### onGetTemplates ((payload: any) => Promise<any>, optional):
-A function to fetch all templates. It receives a payload and returns a promise.
-
-#### onGetCustomFields (() => Promise<any>, optional):
-A function to fetch custom fields associated with the templates.
-
-#### onSubmit ((payload: any) => Promise<any>, optional):
-A function triggered upon submitting a template. It receives a payload and returns a promise.
-
-#### styles (object, optional):
-An object for custom CSS properties to style the template builder's root element.
-
-## Example Usage
-```bash
-import { useEffect } from "react";
-
-import TemplateBuilder from "@openlettermarketing/olc-react-sdk";
+// styles
 import '@blueprintjs/core/lib/css/blueprint.css';
 
-function App() {
+const App = () => {
   useEffect(() => {
     TemplateBuilder({
-      container: document.getElementById('template-builder-container'),
+      container: document.querySelector('div#template-builder-container'),
       secretKey: 'your-secret-key',
       basicAuthUsername: 'your-username',
       basicAuthPassword: 'your-password',
-      onSubmit: async (payload) => {
+      async onSubmit (payload) {
         console.log('Template submitted:', payload);
-        // Add your submission logic here
+        // Implement your submission logic here
       },
     });
   }, []);
 
   return (
     <>
-      <div id="template-builder-container"></div>
+      {/** ... */}
+      <div id="template-builder-container" />
     </>
   );
 }
 
 export default App;
 ```
-
-## License
-This SDK is licensed under the MIT License
