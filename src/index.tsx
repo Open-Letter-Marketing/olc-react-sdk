@@ -96,6 +96,7 @@ const TemplateBuilder = ({
     </>
   );
 
+  //@ts-ignore
   return {
     destroy() {
       root.unmount();
@@ -104,7 +105,6 @@ const TemplateBuilder = ({
 };
 
 // Example to run the project locally for development. Comment out these lines when building the application
-
 const rootElement = document.getElementById('root');
 if (rootElement) {
   console.log("React SDK Loaded");
@@ -113,7 +113,7 @@ if (rootElement) {
     secretKey: import.meta.env.VITE_APP_PLOTNO_API_KEY,
     basicAuthUsername: import.meta.env.VITE_APP_BASIC_AUTH_USERNAME,
     basicAuthPassword: import.meta.env.VITE_APP_BASIC_AUTH_PASSWORD,
-    sandbox: true,
+    sandbox: false,
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
     // onGetTemplates: getAllTemplatesByTab,

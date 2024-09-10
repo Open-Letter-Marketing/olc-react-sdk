@@ -25,7 +25,7 @@ The following example shows the demo of all props minimalist usage, For the real
 import TemplateBuilder from '@openlettermarketing/olc-react-sdk';
 
 const templateBuilderProps = {
-  container: document.querySelector('div#element-id'),
+  container: document.getElementById('element-id'),
   secretKey: 'your-secret-key',
   basicAuthUsername: 'your-username',
   basicAuthPassword: 'your-password',
@@ -33,6 +33,7 @@ const templateBuilderProps = {
   createTemplateRoute: '/create-template',
   templateBuilderRoute: '/edit-template',
   olcTemplate: yourTemplateObject,
+  sandbox: true,
   onReturnAndNavigate () {
     // TODO: Define what happens when the user returns and navigates.
   },
@@ -63,7 +64,7 @@ The SDK uses several properties to manage its behavior. Below is a breakdown of 
 
 | Prop name              | Type             | Description                                                                                                    | Required | Example / Usage                                            |
 |------------------------|:-----------------|----------------------------------------------------------------------------------------------------------------|----------|:-----------------------------------------------------------|
-| `container`            | _HTMLDivElement_ | An HTML DOM element to render the template builder component.                                                  | &#10003; | `document.querySelector('div#template-builder-container')` |
+| `container`            | _HTMLDivElement_ | An HTML DOM element to render the template builder component.                                                  | &#10003; | `document.getElementById('template-builder-container')` |
 | `secretKey`            | _string_         | That key is used to communicate _Polotno_ Editor (Builder) with API requests.                                  | &#10003; | `'your-secret-key'`                                        |
 | `basicAuthUsername`    | _string_         | _Username_ for basic authentication.                                                                           | &#10003; | `'your-username'`                                          |
 | `basicAuthPassword`    | _string_         | _Password_ for basic authentication.                                                                           | &#10003; | `'your-password'`                                          |
@@ -71,6 +72,7 @@ The SDK uses several properties to manage its behavior. Below is a breakdown of 
 | `createTemplateRoute`  | _string_         | The route/path for creating new templates. _(begins with slash `/`)_                                           | &#10539; | `'/create-template'`                                       |
 | `templateBuilderRoute` | _string_         | The route/path for editing existing templates. _(begins with slash `/`)_                                       | &#10539; | `'/edit-template'`                                         |
 | `olcTemplate`          | _object_         | The template object to be edited or used as a base.                                                            | &#10539; | `{ ... }`                                                  |
+| `sandbox`          | _boolean_         | The sandbox setting can be either true or false. Set to true for demo purposes and false for production.                                                            | &#10539; | `true`                                                  |
 | `onReturnAndNavigate`  | _function_       | An event which triggers when a user navigates away.                                                            | &#10539; | `onReturnAndNavigate () { ... }`                           |
 | `onGetOneTemplate`     | _function_       | An event which triggers when fetching a specific template.                                                     | &#10539; | `onGetOneTemplate ( payload ) { ... }`                     |
 | `onGetTemplates`       | _function_       | An event which triggers when fetching all templates.                                                           | &#10539; | `onGetTemplates ( payload ) { ... }`                       |
@@ -99,10 +101,11 @@ import '@blueprintjs/core/lib/css/blueprint.css';
 const App = () => {
   useEffect(() => {
     TemplateBuilder({
-      container: document.querySelector('div#template-builder-container'),
+      container: document.getElementById('template-builder-container'),
       secretKey: 'your-secret-key',
       basicAuthUsername: 'your-username',
       basicAuthPassword: 'your-password',
+      sandbox: false,
       async onSubmit (payload) {
         console.log('Template submitted:', payload);
         // Implement your submission logic here
