@@ -10,8 +10,7 @@
     display: flex;
     gap: 55px;
     width: 100%;
-    overflow-x: scroll;
-
+    
     .tab {
       padding: 10px 0;
       cursor: pointer;
@@ -20,8 +19,11 @@
       flex: 1;
       width: 100%;
       min-width: fit-content;
-    transition: left 0.3s ease-in-out;
-
+      transition: left 0.3s ease-in-out;
+      
+      @media (width <= 768px){
+        font-size: 15px;
+      }
 
       &.activeTab {
         font-weight: bold;

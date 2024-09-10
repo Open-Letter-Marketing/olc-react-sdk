@@ -1,23 +1,43 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import './styles.scss'; // Create a CSS file for your custom styles
+import './styles.scss'; 
 
 const Tabs = ({ value, onChange, tabs, className, tabClassName, indicatorClassName }: any) => {
   const [indicatorStyle, setIndicatorStyle] = useState({});
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
 
-  useLayoutEffect(() => {
+  const calculateIndicatorPosition = () => {
     const activeIndex = tabs.findIndex((tab: any) => tab.id === value.id);
 
     if (tabRefs.current[activeIndex]) {
       const tabWidth = tabRefs.current[activeIndex]?.offsetWidth || 0;
       const tabLeft = tabRefs.current[activeIndex]?.offsetLeft || 0;
 
-      const indicatorLeft = tabLeft + tabWidth / 2 - 25;
-      setIndicatorStyle({
-        width: '50px',
-        left: `${indicatorLeft}px`,
-      });
+      let indicatorLeft;
+      if (window.innerWidth < 768) {
+        const indicatorWidth = tabWidth * 0.5;
+        indicatorLeft = tabLeft + (tabWidth - indicatorWidth) / 2;
+        setIndicatorStyle({
+          width: `${indicatorWidth}px`,
+          left: `${indicatorLeft}px`,
+        });
+      } else {
+        const indicatorWidth = 50; 
+        indicatorLeft = tabLeft + tabWidth / 2 - indicatorWidth / 2;
+        setIndicatorStyle({
+          width: `${indicatorWidth}px`,
+          left: `${indicatorLeft}px`,
+        });
+      }
     }
+  };
+
+  useLayoutEffect(() => {
+    calculateIndicatorPosition();
+    window.addEventListener('resize', calculateIndicatorPosition);
+
+    return () => {
+      window.removeEventListener('resize', calculateIndicatorPosition);
+    };
   }, [value, tabs.length]);
 
   useEffect(() => {

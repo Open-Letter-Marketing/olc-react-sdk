@@ -105,15 +105,18 @@
   align-items: center;
   flex-wrap: wrap;
   border-bottom: 0.5px solid #30303080;
-  padding: 0 35px;
+  padding: 0 35px 20px;
   width: 100%;
-  padding-bottom: 20px;
   position: relative;
   gap: 10px;
 
   @media (width <= 1125px){
     flex-direction: column-reverse;
     justify-content: center;
+  }
+
+  @media (width <= 768px){
+  padding: 0 15px 20px;
   }
 }
 .selectBar {

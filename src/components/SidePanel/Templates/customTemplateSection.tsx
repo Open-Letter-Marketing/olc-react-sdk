@@ -608,7 +608,7 @@ const customTemplateSection: SideSection = {
             handleClose={closeGalleryModal}
             title={
               product?.productType === 'Postcards'
-                ? `${product?.productType} - (${product?.selectedSize})`
+                ? `${product?.productType} (${product?.selectedSize})`
                 : product?.title
             }
             isGallery={true}
