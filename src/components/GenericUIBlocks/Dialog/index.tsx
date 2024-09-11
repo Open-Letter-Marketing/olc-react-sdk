@@ -25,6 +25,7 @@ interface DialogProps {
   cancelText?: string;
   submitText?: string;
   children?: ReactNode;
+  isGallery?: boolean;
 }
 
 const buttonStyles: CSSProperties = {
@@ -37,9 +38,9 @@ const buttonStyles: CSSProperties = {
 };
 
 const heading: CSSProperties = {
-  fontSize: '22px',
   color: 'var(--primary-color)',
   fontWeight: '600',
+  textAlign: 'center',
 };
 
 const subHeadingStyle: CSSProperties = {
@@ -69,6 +70,7 @@ const Dialog: React.FC<DialogProps> = ({
   cancelText = "",
   submitText = "",
   children = [],
+  isGallery=false
 }) => {
   const contentAdjust = submitText.length > 6 ? "fit-content" : "100px";
 
@@ -88,23 +90,37 @@ const Dialog: React.FC<DialogProps> = ({
 
   useEffect(() => {
     if (open) {
-      document.addEventListener('mousedown', handleClickOutside);
+      // document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleKeyDown);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      // document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      // document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [open]);
 
+  useEffect(()=>{
+    const handleCopy = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'c' ) {
+        event.stopPropagation(); 
+      }
+    };
+
+    document.addEventListener('keydown', handleCopy, true);
+
+    return () => {
+      document.removeEventListener('keydown', handleCopy, true);
+    };
+  }, []); 
+
   return (
     <div
       id="myModal"
-      className="modal"
+      className={`modal ${isGallery && 'galleryModal'}`}
       style={{display: open ? 'flex' : 'none'}}
     >
       <div className="modal-content" style={customStyles} ref={modalRef}>
@@ -113,9 +129,11 @@ const Dialog: React.FC<DialogProps> = ({
             <Cross />
           </span>
         </div>
-        <div className="modal-body">
+        <div className="modal-body" style={{
+          padding: isGallery ? '0px' : "2px 16px"
+        }}>
           {icon && <div className="modal-icon">{icon}</div>}
-          <Typography variant="p" style={heading}>
+          <Typography variant="p" style={{...heading, fontSize: isGallery ? "26px" : "22px"}}>
             {title}
           </Typography>
           {subHeading && (
@@ -134,6 +152,8 @@ const Dialog: React.FC<DialogProps> = ({
           {children}
         </div>
         <div className="modal-footer">
+          {!isGallery &&  
+          <>
           <Button
             onClick={onCancel}
             style={{
@@ -151,6 +171,8 @@ const Dialog: React.FC<DialogProps> = ({
           >
             {loading ? <CircularProgress style={progressStyles} /> : submitText}
           </Button>
+          </>
+          }
         </div>
       </div>
     </div>

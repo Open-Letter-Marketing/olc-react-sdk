@@ -2,7 +2,7 @@
   --font-family: 'Inter';
   --scrollbar-thumb-color: hsl(29, 100%, 88%);
   --scrollbar-track-color: grey;
-  --primary-color: #ed5c2f;
+  --primary-color: #ED5C2F;
   --secondary-color: #FFF8EE;
   --svg-color: #fdb515;
   --svg-color-not-active: #fdecd3;
@@ -40,9 +40,7 @@
     .bp5-navbar {
       z-index: auto !important;
       border-bottom: 1px solid rgba(17, 20, 24, 0.1019607843) !important;
-      @media (width <= 800px) {
-        z-index: 100 !important;
-      }
+      
       .bp5-card {
         color: var(--text-color);
         background-color: transparent;
@@ -89,5 +87,9 @@
         color: #000;
       }
     }
+  }
+
+  .no-scroll{
+    overflow: hidden;
   }
 }

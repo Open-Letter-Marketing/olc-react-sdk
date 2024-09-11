@@ -15,6 +15,7 @@ interface Props {
   currentTemplateType: string;
   platformName?: string | null;
   defaultCategory?: string[];
+  selectedSection?: string;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
@@ -30,18 +31,41 @@ const SidePanel: React.FC<Props> = (props) => {
 
   return (
     <SidePanelWrap>
-      <PolotnoSidePanel store={props.store}
+      <PolotnoSidePanel
+        store={props.store}
         sections={[
-          ...(props.currentTemplateType !== "Real Penned Letter"
-            ? [{ ...customTemplateSection, Panel: (panelProps: any) => <customTemplateSection.Panel {...panelProps} platformName={props.platformName} defaultCategory={props.defaultCategory} onGetTemplates={props.onGetTemplates} onGetOneTemplate={props.onGetOneTemplate}/> }]
+          ...(props.currentTemplateType !== 'Real Penned Letter'
+            ? [
+                {
+                  ...customTemplateSection,
+                  Panel: (panelProps: any) => (
+                    <customTemplateSection.Panel
+                      {...panelProps}
+                      platformName={props.platformName}
+                      defaultCategory={props.defaultCategory}
+                      onGetTemplates={props.onGetTemplates}
+                      onGetOneTemplate={props.onGetOneTemplate}
+                      selectedSection={props.selectedSection}
+                    />
+                  ),
+                },
+              ]
             : []),
           ...sections,
-          { ...customFieldSection, Panel: (panelProps: any) => <customFieldSection.Panel {...panelProps} onGetCustomFields={props.onGetCustomFields} /> },
+          {
+            ...customFieldSection,
+            Panel: (panelProps: any) => (
+              <customFieldSection.Panel
+                {...panelProps}
+                onGetCustomFields={props.onGetCustomFields}
+              />
+            ),
+          },
         ]}
-        defaultSection="text" />
+        defaultSection="text"
+      />
     </SidePanelWrap>
   );
 };
-
 
 export default SidePanel;

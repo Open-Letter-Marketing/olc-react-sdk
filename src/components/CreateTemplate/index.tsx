@@ -26,6 +26,7 @@ import Typography from '../GenericUIBlocks/Typography';
 import Button from '../GenericUIBlocks/Button';
 import GeneralSelect from '../GenericUIBlocks/GeneralSelect';
 import GenericSnackbar from '../GenericUIBlocks/GenericSnackbar';
+import TemplatesGallery from '../TemplatesGallery'
 
 // Images
 //@ts-ignore
