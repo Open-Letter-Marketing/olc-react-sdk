@@ -14,7 +14,7 @@ import './styles.scss'
 
 const TemplatesCard = (props: any) => {
 
-  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType, product, searchApplied } = props;
+  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType, product, searchApplied, primaryColorRGBA } = props;
 
   const [isFilpedIds, setIsFlipedIds] = useState<string[]>([]);
 
@@ -42,8 +42,10 @@ const TemplatesCard = (props: any) => {
   // handler for setting rotation
   const transformSetter = (templateId: any) => {
     const result = isFilpedIds.includes(templateId)
-      ? { transform: "rotateY(0deg)" }
-      : { transform: "rotateY(360deg)" };
+      ? { transform: "rotateY(0deg)",
+        boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`
+       }
+      : { transform: "rotateY(360deg)", boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}` };
     return result;
   };
 

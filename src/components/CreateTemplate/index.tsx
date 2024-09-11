@@ -52,7 +52,7 @@ import Divider from '../GenericUIBlocks/Divider';
 import './styles.scss';
 
 const templateHeadingStyles: React.CSSProperties = {
-  color: `rgba(var(--primary-color))`,
+  color: `var(--primary-color)`,
   fontSize: `24px`,
   fontStyle: `normal`,
   fontWeight: `600`,
@@ -389,7 +389,7 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
               style={{
                 ...footerButtonStyles,
                 color: '#ffffff',
-                backgroundColor: 'rgba(var(--primary-color))',
+                backgroundColor: 'var(--primary-color)',
               }}
               onClick={handleNext}
             >

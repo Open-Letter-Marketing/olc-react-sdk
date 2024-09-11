@@ -25,7 +25,7 @@ export const customStyles: Styles = {
     '--font-family': 'Inter',
     '--scrollbar-thumb-color': '#fb8500',
     '--scrollbar-track-color': 'grey',
-    '--primary-color': '128, 0, 128',
+    '--primary-color': '#fb8500',
     '--secondary-color': 'red',
     '--svg-color': '#ffb703',
     '--svg-color-not-active': 'purple',

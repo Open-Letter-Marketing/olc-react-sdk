@@ -600,6 +600,23 @@ const customTemplateSection: SideSection = {
         };
       }, [templates]);
 
+      const primaryColorExtract =  getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+
+      const hexToRgba = (hex:any, opacity:any) => {
+        // Remove the hash at the start if it's there
+        hex = hex.replace(/^#/, '');
+      
+        // Parse r, g, b values
+        let r = parseInt(hex.substring(0, 2), 16);
+        let g = parseInt(hex.substring(2, 4), 16);
+        let b = parseInt(hex.substring(4, 6), 16);
+      
+        // Return the RGBA string
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+      }
+      
+      const primaryColorRGBA = hexToRgba(primaryColorExtract, 0.5);
+      
       return (
         <>
           <Dialog
@@ -677,8 +694,11 @@ const customTemplateSection: SideSection = {
                       : product?.id === '14' && product?.size.find((product:any) => product?.size === "6x9") ? "postcard-6x9"
                        : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                     onClick={() => handleDialogChange('design-own')}
+                    style={{
+                      boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`
+                    }}
                   >
-                    <DesignIcon fill="rgba(var(--primary-color))"/>
+                    <DesignIcon fill="var(--primary-color)"/>
                     <Typography>Design Your Own</Typography>
                   </div>
                   <Typography className='ownHeading'>Design Your Own</Typography>
@@ -700,6 +720,7 @@ const customTemplateSection: SideSection = {
                 currentTemplateType={currentTemplateType}
                 product={product}
                 searchApplied={searchApplied}
+                primaryColorRGBA={primaryColorRGBA}
               />
             </div>
           </Dialog>

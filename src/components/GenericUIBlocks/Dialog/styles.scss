@@ -66,11 +66,11 @@
           g {
             mask: none;
             path {
-              fill: rgba(var(--primary-color));
+              fill: var(--primary-color);
             }
           }
           circle {
-            stroke: rgba(var(--primary-color));
+            stroke: var(--primary-color);
           }
         }
       }

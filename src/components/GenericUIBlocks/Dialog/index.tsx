@@ -30,7 +30,7 @@ interface DialogProps {
 
 const buttonStyles: CSSProperties = {
   color: '#fff',
-  backgroundColor: 'rgba(var(--primary-color))',
+  backgroundColor: 'var(--primary-color)',
   maxWidth: '100px',
   minHeight: '40px',
   border: '0.5px solid var(--border-color)',
@@ -38,8 +38,9 @@ const buttonStyles: CSSProperties = {
 };
 
 const heading: CSSProperties = {
-  color: 'rgba(var(--primary-color))',
+  color: 'var(--primary-color)',
   fontWeight: '600',
+  textAlign: 'center',
 };
 
 const subHeadingStyle: CSSProperties = {

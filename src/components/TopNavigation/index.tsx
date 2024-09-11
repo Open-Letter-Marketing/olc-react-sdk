@@ -62,7 +62,7 @@ const buttonStyles: React.CSSProperties = {
 const progressStyles: React.CSSProperties = {
   width: '20px',
   height: '20px',
-  border: '2px solid rgba(var(--primary-color))',
+  border: '2px solid var(--primary-color)',
 };
 
 interface TopNavigationProps {
@@ -333,8 +333,8 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
             <Button
               style={{
                 ...buttonStyles,
-                border: '0.5px solid rgba(var(--primary-color))',
-                color: 'rgba(var(--primary-color))',
+                border: '0.5px solid var(--primary-color)',
+                color: 'var(--primary-color)',
               }}
               onClick={() => handleBackPress()}
             >
@@ -344,7 +344,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
               style={{
                 ...buttonStyles,
                 border: 'none',
-                backgroundColor: 'rgba(var(--primary-color))',
+                backgroundColor: 'var(--primary-color)',
                 color: '#fff',
               }}
               onClick={() => handleChangeModel('save')}
