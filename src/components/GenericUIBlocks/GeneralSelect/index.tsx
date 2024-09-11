@@ -79,7 +79,7 @@ const GeneralSelect: React.FC<GeneralSelectProps> = ({
 }) => {
   return (
     <div className="select-layout" style={{
-      display: gallerySelect && "block"
+      display: gallerySelect ? "block" : 'flex'
     }}>
       <label>{label && label}</label>
       <Select
