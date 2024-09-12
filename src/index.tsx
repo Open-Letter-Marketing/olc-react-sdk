@@ -7,7 +7,6 @@ import App from './App';
 import './index.scss';
 
 // font families
-import '@fontsource/inter/300.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
@@ -100,12 +99,53 @@ const TemplateBuilder = ({
   //@ts-ignore
   return {
     destroy() {
+      console.log("react destroy");
       root.unmount();
     }
   }
 };
 
 // Example to run the project locally for development. Comment out these lines when building the application
+
+
+const getAllTemplatesByTab = async (payload) => {
+  try {
+    const response = await fetch('https://api.openletterconnect.com/api/v1/templates/by-tab', {
+      method: 'POST', // or 'GET', depending on your API
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJlbWFpbCI6InVzbWFuK2FkbWluQG9wZW5sZXR0ZXJjb25uZWN0LmNvbSIsImFwaUtleUlkIjoiNjIiLCJpYXQiOjE3MjEzOTQwMzMsImV4cCI6NDg3NzE1NDAzM30.Vb2vatO1UDtw6F8LfiuztLlNkMWPu1VIaRPNjLvg_Vs'      },
+      body: JSON.stringify(payload) // include payload if needed
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json(); // Parse the JSON response
+    return data.data;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+const getOneTemplate = async (id: number) => {
+  try {
+    const response = await fetch(`https://api.openletterconnect.com/api/v1/templates/${id}`, {
+      method: 'GET', // or 'GET', depending on your API
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJlbWFpbCI6InVzbWFuK2FkbWluQG9wZW5sZXR0ZXJjb25uZWN0LmNvbSIsImFwaUtleUlkIjoiNjIiLCJpYXQiOjE3MjEzOTQwMzMsImV4cCI6NDg3NzE1NDAzM30.Vb2vatO1UDtw6F8LfiuztLlNkMWPu1VIaRPNjLvg_Vs'
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json(); // Parse the JSON response
+    return data.data;
+  } catch (error) {
+    return error.response;
+  }
+}
+
 const rootElement = document.getElementById('root');
 if (rootElement) {
   console.log("React SDK Loaded");
@@ -117,7 +157,7 @@ if (rootElement) {
     sandbox: false,
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
-    // onGetTemplates: getAllTemplatesByTab,
+    onGetTemplates: getAllTemplatesByTab,
     // onSubmit: createTemplate,
     styles: {}
   });

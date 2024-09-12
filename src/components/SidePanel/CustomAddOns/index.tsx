@@ -76,13 +76,13 @@ const CustomAddOns: SideSection = {
           id: `gsv-image_${store.activePage.id}`,
           type: 'image',
           src: GOOGLE_STREET_VIEW_IMAGE_URL,
-          width: 350,
-          height: 200,
+          width: 287,
+          height: 188,
           contentEditable: false,
-
+          keepRatio: true,
           opacity: 1,
           custom: {
-            variable: value,
+            elementType: value,
           },
         });
       } else if (type === 'epo') {
