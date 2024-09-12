@@ -19,7 +19,7 @@ import ConfirmNavigateDialog from './ConfirmNavigateDialog';
 import EditTemplateNameModel from './EditTemplateNameModel';
 
 // Utils
-import { downloadPDF, extractFontFamilies, multiPageTemplates } from '../../utils/template-builder';
+import { downloadPDF, extractFontFamilies, multiPageTemplates, validateGSV } from '../../utils/template-builder';
 import { getItem, setItem } from '../../utils/local-storage';
 import { MESSAGES } from '../../utils/message';
 // @ts-ignore
@@ -230,6 +230,13 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         if (unAvailableFonts?.length) {
           dispatch(failure(`Please upload ${unAvailableFonts[0]} font in My Fonts section.`));
           return
+        }
+
+        const isGsvValid = validateGSV(jsonData.pages);
+
+        if (!isGsvValid) {
+          dispatch(failure(MESSAGES.TEMPLATE.GSV_RESTRICT_ONE_PER_PAGE));
+          return;
         }
 
         if (multiPageTemplates.includes(product.productType)) {

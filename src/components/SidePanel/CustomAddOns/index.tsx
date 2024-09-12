@@ -25,7 +25,6 @@ import {GOOGLE_STREET_VIEW_IMAGE_URL} from '../../../utils/constants';
 
 // Icons
 //@ts-ignore
-import AiOutlineAppstore from '@meronex/icons/ai/AiOutlineAppstoreAdd';
 import CustomAddOnIcon from '../../../assets/images/templates/custom-add-on-icon';
 import InfoIcon from '../../../assets/images/templates/info-icon';
 import GsvIcon from "../../../assets/images/templates/gsv-icon";
@@ -113,7 +112,7 @@ const CustomAddOns: SideSection = {
         <div
           className="addonBox"
           onClick={(event: any) =>
-            handleAddElementOnScreen(event, 'Google Street View', 'gsv')
+            handleAddElementOnScreen(event, 'GOOGLE_STREET_VIEW', 'gsv')
           }
         >
           <GsvIcon />

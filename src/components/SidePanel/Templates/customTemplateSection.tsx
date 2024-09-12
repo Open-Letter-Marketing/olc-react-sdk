@@ -123,7 +123,7 @@ type CustomTemplateSectionProps = {
   onGetTemplates?: (payload: Payload) => Promise<any>;
 };
 
-const customTemplateSection: SideSection = {
+const CustomTemplateSection: SideSection = {
   name: 'Templates',
   Tab: observer(
     (props: { store: StoreType; active: boolean; onClick: () => void }) => (
@@ -762,4 +762,4 @@ const customTemplateSection: SideSection = {
   ) as unknown as SideSection['Panel'],
 };
 
-export default customTemplateSection;
+export default CustomTemplateSection;
