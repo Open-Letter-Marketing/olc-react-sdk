@@ -7,7 +7,6 @@ import App from './App';
 import './index.scss';
 
 // font families
-import '@fontsource/inter/300.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
@@ -100,12 +99,14 @@ const TemplateBuilder = ({
   //@ts-ignore
   return {
     destroy() {
+      console.log("react destroy");
       root.unmount();
     }
   }
 };
 
 // Example to run the project locally for development. Comment out these lines when building the application
+
 const rootElement = document.getElementById('root');
 if (rootElement) {
   console.log("React SDK Loaded");

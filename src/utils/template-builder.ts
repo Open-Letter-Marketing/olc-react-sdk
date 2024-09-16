@@ -143,3 +143,17 @@ export const extractFontFamilies = (jsonData: any[]): string[] => {
   });
   return fontFamilies;
 };
+
+export const validateGSV = (pages: any) => {
+  const hasMultipleGSV = (children: any) =>
+    children.filter(
+      ({ custom }: any) => custom?.elementType === "GOOGLE_STREET_VIEW"
+    ).length > 1;
+
+  for (const page of pages) {
+    if (hasMultipleGSV(page.children)) {
+      return false;
+    }
+  }
+  return true;
+};

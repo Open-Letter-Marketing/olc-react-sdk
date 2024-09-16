@@ -11,7 +11,7 @@ import {
   clearAllTemplates,
   getAllTemplateCategories,
   getAllTemplatesByTab,
-} from '../../../../src/redux/actions/templateActions';
+} from '../../../redux/actions/templateActions';
 import {
   GET_ONE_TEMPLATE,
   TEMPLATE_LOADING,
@@ -46,9 +46,7 @@ import TempCard from '../Templates/TemplatesCard';
 
 // Icons
 // @ts-ignore
-import DesignIcon from '../../../assets/images/templates/template-default-design.tsx';
-// @ts-ignore
-import dummyTemplateIcon from '../../../assets/images/templates/dummy-template.svg';
+import DesignIcon from '../../../assets/images/templates/template-default-design';
 // @ts-ignore
 import CustomTemplate from '../../../assets/images/templates/custom-template';
 import ModalCross from '../../../assets/images/modal-icons/modal-cross';
@@ -125,7 +123,7 @@ type CustomTemplateSectionProps = {
   onGetTemplates?: (payload: Payload) => Promise<any>;
 };
 
-const customTemplateSection: SideSection = {
+const CustomTemplateSection: SideSection = {
   name: 'Templates',
   Tab: observer(
     (props: { store: StoreType; active: boolean; onClick: () => void }) => (
@@ -764,4 +762,4 @@ const customTemplateSection: SideSection = {
   ) as unknown as SideSection['Panel'],
 };
 
-export default customTemplateSection;
+export default CustomTemplateSection;
