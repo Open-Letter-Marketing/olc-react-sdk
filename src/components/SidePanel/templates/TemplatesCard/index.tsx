@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 
 // Utils
-import { MESSAGES } from "../../../../utils/message";
+import {MESSAGES} from '../../../../utils/message';
 
 // // icons
-import Dot from "../../../../assets/images/templates/dot";
-import ArrowDown from "../../../../assets/images/templates/arrow-down";
+import Dot from '../../../../assets/images/templates/dot';
+import ArrowDown from '../../../../assets/images/templates/arrow-down';
 import Button from '../../../../components/GenericUIBlocks/Button';
 import Typography from '../../../../components/GenericUIBlocks/Typography';
 
 // styles
-import './styles.scss'
+import './styles.scss';
 
 const TemplatesCard = (props: any) => {
-
-  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType, product, searchApplied, primaryColorRGBA } = props;
+  const {
+    templates,
+    loading,
+    handleLoadTemplateModel,
+    platformName,
+    currentTemplateType,
+    product,
+    searchApplied,
+    primaryColorRGBA
+  } = props;
 
   const [isFilpedIds, setIsFlipedIds] = useState<string[]>([]);
 
@@ -25,7 +33,7 @@ const TemplatesCard = (props: any) => {
     const existingTemplateIds = isFilpedIds || [];
     let updatedIds: string[];
     if (existingTemplateIds.includes(templateId)) {
-      updatedIds = existingTemplateIds.filter(item => item !== templateId);
+      updatedIds = existingTemplateIds.filter((item) => item !== templateId);
     } else {
       updatedIds = [...existingTemplateIds, templateId];
     }
@@ -34,18 +42,26 @@ const TemplatesCard = (props: any) => {
 
   // handler for setting color
   const colorSetter = (templateId: any, side: string) => {
-    const result = !isFilpedIds.includes(templateId) && side === "Front"
-      ? { fill: "#FFFFFF" } : isFilpedIds.includes(templateId) && side === "Back" ? { fill: "#FFFFFF" } : { fill: "#878585" };
+    const result =
+      !isFilpedIds.includes(templateId) && side === 'Front'
+        ? {fill: '#FFFFFF'}
+        : isFilpedIds.includes(templateId) && side === 'Back'
+          ? {fill: '#FFFFFF'}
+          : {fill: '#878585'};
     return result;
   };
 
   // handler for setting rotation
   const transformSetter = (templateId: any) => {
     const result = isFilpedIds.includes(templateId)
-      ? { transform: "rotateY(0deg)",
-        boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`
-       }
-      : { transform: "rotateY(360deg)", boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}` };
+      ? {
+          transform: 'rotateY(0deg)',
+          boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`,
+        }
+      : {
+          transform: 'rotateY(360deg)',
+          boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`,
+        };
     return result;
   };
 
@@ -66,7 +82,6 @@ const TemplatesCard = (props: any) => {
                       ? template.backThumbnailUrl
                       : template.thumbnailUrl
                   }
-                  // height={tempHeight + "px"}
                   alt="template"
                   style={transformSetter(template?.id)}
                   loading="lazy"

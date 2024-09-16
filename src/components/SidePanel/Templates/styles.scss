@@ -152,6 +152,10 @@
   padding-bottom: 15px;
   width: 100%;
 
+   @media (width <= 1340px){
+      justify-content: center !important;
+    }
+
   @media (width <= 1125px){
     max-height: calc(100vh - 320px);
   }
@@ -175,6 +179,7 @@
       scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
     }
   }
+
   .defaultDesign {
     display: flex;
     flex-direction: column;
@@ -188,7 +193,6 @@
     margin-bottom: 14px;
     padding: 1.5px;
     border-radius: 7px;
-    flex: 1;
 
     p {
       color: var(--text-color);
