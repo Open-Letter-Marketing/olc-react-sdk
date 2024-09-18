@@ -209,7 +209,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   const handleSave = async () => {
     try {
       const formData = new FormData();
-      const allFields = [...defaultFields, ...Object.values(dynamicFields)];
+      const allFields = [...defaultFields, ...Object.values(dynamicFields), ...defaultSenderFields];
       let selectedFields: any = [];
       if (templateType === 'json') {
         const blob = await store.toBlob();
