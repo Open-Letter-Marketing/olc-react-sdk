@@ -224,7 +224,7 @@ const initialState: TemplateState = {
     {
       value: "Website",
       key: "{{SPF.WEBSITE}}",
-      defaultValue: "https://web.openletterconnect.com/",
+      defaultValue: "www.example.com",
     },
   ],
   products: Products,
