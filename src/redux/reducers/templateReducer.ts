@@ -197,32 +197,32 @@ const initialState: TemplateState = {
   ],
   defaultSenderFields: [
     {
-      value: "First Name",
+      value: "Sender First Name",
       key: "{{SPF.FIRST_NAME}}",
       defaultValue: "John",
     },
     {
-      value: "Last Name",
+      value: "Sender Last Name",
       key: "{{SPF.LAST_NAME}}",
       defaultValue: "Doe",
     },
     {
-      value: "Company Name",
+      value: "Sender Company Name",
       key: "{{SPF.COMPANY_NAME}}",
       defaultValue: "ABC Company, Inc.",
     },  
     {
-      value: "Phone Number",
+      value: "Sender Phone Number",
       key: "{{SPF.PHONE_NUMBER}}",
       defaultValue: "(555) 278-9389",
     },
     {
-      value: "Email",
+      value: "Sender Email",
       key: "{{SPF.EMAIL}}",
       defaultValue: "johndoe@gmail.com",
     },
     {
-      value: "Website",
+      value: "Sender Website",
       key: "{{SPF.WEBSITE}}",
       defaultValue: "www.example.com",
     },
