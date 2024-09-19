@@ -59,6 +59,7 @@ export interface TemplateState {
   dynamicFields: Record<string, DynamicField>;
   defaultDynamicFieldsHashMap: Record<string, DynamicField>;
   defaultDynamicFields: DynamicField[];
+  defaultSenderFields: DynamicField[];
   products: any[];
   productDetailByTemplate: any[];
   templates: TemplatesState;
@@ -192,6 +193,38 @@ const initialState: TemplateState = {
       value: "Email",
       key: "{{C.EMAIL}}",
       defaultValue: "johndoe@gmail.com",
+    },
+  ],
+  defaultSenderFields: [
+    {
+      value: "First Name",
+      key: "{{SPF.FIRST_NAME}}",
+      defaultValue: "John",
+    },
+    {
+      value: "Last Name",
+      key: "{{SPF.LAST_NAME}}",
+      defaultValue: "Doe",
+    },
+    {
+      value: "Company Name",
+      key: "{{SPF.COMPANY_NAME}}",
+      defaultValue: "ABC Company, Inc.",
+    },  
+    {
+      value: "Phone Number",
+      key: "{{SPF.PHONE_NUMBER}}",
+      defaultValue: "(555) 278-9389",
+    },
+    {
+      value: "Email",
+      key: "{{SPF.EMAIL}}",
+      defaultValue: "johndoe@gmail.com",
+    },
+    {
+      value: "Website",
+      key: "{{SPF.WEBSITE}}",
+      defaultValue: "www.example.com",
     },
   ],
   products: Products,

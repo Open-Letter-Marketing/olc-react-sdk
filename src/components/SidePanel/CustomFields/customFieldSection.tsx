@@ -63,6 +63,11 @@ const customFieldSection: SideSection = {
     const defaultDynamicFields = useSelector(
       (state: RootState) => state.customFields.defaultDynamicFields
     );
+
+    const defaultSenderFields = useSelector(
+      (state: RootState) => state.templates.defaultSenderFields
+    );
+  
     const product = useSelector((state: RootState) => state.templates.product);
     const currentTemplateType = product?.productType;
 
@@ -145,8 +150,40 @@ const customFieldSection: SideSection = {
           </div>
         </div>
         {defaultDynamicFields.map(
-          ({key, value}: {key: string; value: string}, i: number) => (
-            <div style={{display: 'flex', alignItems: 'center'}} key={i}>
+          ({ key, value }: { key: string; value: string }, i: number) => (
+            <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_contact'}>
+              <span
+                className="contact-element"
+                onClick={(event) =>
+                  handleAddElementOnScreen(event, key, 'click')
+                }
+              >
+                {value}
+              </span>
+              <Button
+                style={iconButtonStyles}
+                onClick={() => copyCustomFieldText(key)}
+                backdrop={false}
+              >
+                <ContentCopyIcon className="copy" />
+              </Button>
+            </div>
+          )
+        )}
+        <div className="dynamic-content__top">
+          <div>
+            <span className="title">Sender Fields</span>
+            <InfoIcon fill="var(--primary-color)" className="sender" />
+            <GeneralTootip
+              anchorSelect=".sender"
+              place="bottom"
+              title="You can add sender fields to your template."
+            />
+          </div>
+        </div>
+        {defaultSenderFields?.map(
+          ({ key, value }: { key: string; value: string }, i: number) => (
+            <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_sender'}>
               <span
                 className="contact-element"
                 onClick={(event) =>
@@ -183,7 +220,7 @@ const customFieldSection: SideSection = {
             </div>
             {customFields?.map(
               ({key, value}: {key: string; value: string}, i: number) => (
-                <div style={{display: 'flex', alignItems: 'center'}} key={i}>
+                <div style={{display: 'flex', alignItems: 'center'}} key={i + '_custom'}>
                   <span
                     className="contact-element"
                     onClick={(event) =>
