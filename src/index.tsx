@@ -27,6 +27,7 @@ interface TemplateBuilderProps {
   olcTemplate?: Record<string, any>;
   defaultCategory?: string[];
   sandbox?: boolean;
+  allowSenderFields?: boolean;
   onReturnAndNavigate?: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -48,6 +49,7 @@ const TemplateBuilder = ({
   olcTemplate,
   defaultCategory,
   sandbox,
+  allowSenderFields,
   onReturnAndNavigate,
   onGetOneTemplate,
   onGetTemplates,
@@ -85,6 +87,7 @@ const TemplateBuilder = ({
             defaultCategory={defaultCategory}
             createTemplateRoute={createTemplateRoute}
             templateBuilderRoute={templateBuilderRoute}
+            allowSenderFields={allowSenderFields}
             onReturnAndNavigate={onReturnAndNavigate}
             onGetOneTemplate={onGetOneTemplate}
             onGetTemplates={onGetTemplates}
@@ -115,7 +118,8 @@ if (rootElement) {
     secretKey: import.meta.env.VITE_APP_PLOTNO_API_KEY,
     basicAuthUsername: import.meta.env.VITE_APP_BASIC_AUTH_USERNAME,
     basicAuthPassword: import.meta.env.VITE_APP_BASIC_AUTH_PASSWORD,
-    sandbox: false,
+    sandbox: true,
+    allowSenderFields: true,
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
     // onGetTemplates: getAllTemplatesByTab,
