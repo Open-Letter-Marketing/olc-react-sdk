@@ -1,11 +1,15 @@
 export const PROD_API_BASE_URL = 'https://api.openletterconnect.com/api/v1/sdk';
 export const DEMO_API_BASE_URL = 'https://demoapi.openletterconnect.com/api/v1/sdk';
 
+export const  DEMO_S3_URL = `https://demoapi.openletterconnect.com/api/v1/download/s3/openletterconnect`;
+export const  PROD_S3_URL = `https://api.openletterconnect.com/api/v1/download/s3/openletterconnect`;
+
 export const DPI: number = 96;
 
-export const Barcode: string = 'https://api.openletterconnect.com/api/v1/download/s3/openletterconnect/assets/preview/one-barcode.png';
+export const BARCODE_IMAGE_URL: string = `/assets/preview/one-barcode.png`;
+export const GOOGLE_STREET_VIEW_IMAGE_URL: string = `/default_images/dummyGSV.png`;
+
 export const PRODUCT_LEARN_URL: string = "https://help.openletterconnect.com/getting-support/designing-your-mailers/wip-designing-mail-creatives/wip-mail-piece-design-specs";
-export const GOOGLE_STREET_VIEW_IMAGE_URL = "https://api.openletterconnect.com/api/v1/download/s3/openletterconnect/default_images/dummyGSV.png";
 
 export const multiPageLetters: string[] = [
   "Postcards",

@@ -1,7 +1,8 @@
 /* eslint-disable no-useless-catch */
 
 // Utils
-import { multiPageLetters, Barcode } from './constants';
+import { multiPageLetters, BARCODE_IMAGE_URL, DEMO_S3_URL, PROD_S3_URL } from './constants';
+import { getIsSandbox } from './helper';
 
 // Restricted Area Files
 import { addRestrictedAreaToBiFold } from './templateRestrictedArea/biFold';
@@ -110,19 +111,20 @@ export interface Product {
 }
 
 export const drawRestrictedAreaOnPage = (store: any, product: Product, envelopeType: string) => {
+  const barcodeSrc = (getIsSandbox() ? DEMO_S3_URL : PROD_S3_URL) + BARCODE_IMAGE_URL;
   if (addressPrinting[`${product.productType}-${envelopeType}`]) {
     if (product.productType === 'Professional Letters') {
-      addAreaToProfessionalLetters(store, Barcode);
+      addAreaToProfessionalLetters(store, barcodeSrc);
     } else if (product.productType === multiPageLetters[0]) {
       addRestrictedAreaToPostCard(
         store,
         [3.2835, 2.375],
-        Barcode
+        barcodeSrc
       );
     } else if (product.productType === multiPageLetters[1]) {
-      addRestrictedAreaToTriFold(store, [3.2835, 2.375], Barcode);
+      addRestrictedAreaToTriFold(store, [3.2835, 2.375], barcodeSrc);
     } else if (product.productType === multiPageLetters[2]) {
-      addRestrictedAreaToBiFold(store, [3.2835, 2.375], Barcode);
+      addRestrictedAreaToBiFold(store, [3.2835, 2.375], barcodeSrc);
     }
   }
 };

@@ -15,13 +15,14 @@ import { failure } from "../../../redux/actions/snackbarActions";
 
 // Utils
 import { MESSAGES } from "../../../utils/message";
+import { getIsSandbox } from '../../../utils/helper';
 
 // MUI Components
 import GeneralTootip from '../../GenericUIBlocks/GeneralTooltip';
 import Typography from '../../GenericUIBlocks/Typography';
 
 // Dummy Image for GSV
-import {GOOGLE_STREET_VIEW_IMAGE_URL} from '../../../utils/constants';
+import {DEMO_S3_URL, GOOGLE_STREET_VIEW_IMAGE_URL, PROD_S3_URL} from '../../../utils/constants';
 
 // Icons
 //@ts-ignore
@@ -55,6 +56,7 @@ const CustomAddOns: SideSection = {
   Panel: observer(({store}: CustomAddOnsSectionProps) => {
 
     const dispatch: AppDispatch = useDispatch();
+    const googleStreetViewSrc: string = (getIsSandbox() ? DEMO_S3_URL : PROD_S3_URL) + GOOGLE_STREET_VIEW_IMAGE_URL;
 
     const handleAddElementOnScreen = (
       event: Event,
@@ -74,7 +76,7 @@ const CustomAddOns: SideSection = {
         store.activePage?.addElement({
           id: `gsv-image_${store.activePage.id}`,
           type: 'image',
-          src: GOOGLE_STREET_VIEW_IMAGE_URL,
+          src: googleStreetViewSrc,
           width: 287,
           height: 188,
           contentEditable: false,
