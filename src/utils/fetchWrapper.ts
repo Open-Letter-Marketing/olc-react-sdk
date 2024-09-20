@@ -1,12 +1,10 @@
 import { PROD_API_BASE_URL, DEMO_API_BASE_URL } from "./constants";
-import { getAuthUserName, getAuthUserPassword, getIsSandbox } from "./helper";
-
-const base64Credentials = () => btoa(`${getAuthUserName()}:${getAuthUserPassword()}`);
+import { getPublicApiKey, getIsSandbox } from "./helper";
 
 const getHeaders = (additionalHeaders: Record<string, string> = {}) => ({
   'Content-Type': 'application/json',
   'Accept': 'application/json',
-  'Authorization': `Basic ${base64Credentials()}`,
+  'Authorization': `Bearer ${getPublicApiKey()}`,
   ...additionalHeaders,
 });
 

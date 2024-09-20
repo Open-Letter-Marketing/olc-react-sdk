@@ -14,13 +14,12 @@ import '@fontsource/inter/700.css';
 
 // utils
 import { CustomCSSProperties } from './utils/customStyles';
-import { setAuthUserName, setAuthUserPassword, setIsSandbox } from './utils/helper';
+import { setIsSandbox, setPublicApiKey } from './utils/helper';
 
 interface TemplateBuilderProps {
   container: HTMLElement | null;
   secretKey: string;
-  basicAuthUsername: string;
-  basicAuthPassword: string;
+  publicApiKey: string;
   platformName?: string | null;
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
@@ -41,8 +40,7 @@ interface TemplateBuilderProps {
 const TemplateBuilder = ({
   container,
   secretKey,
-  basicAuthUsername,
-  basicAuthPassword,
+  publicApiKey,
   platformName,
   createTemplateRoute,
   templateBuilderRoute,
@@ -63,17 +61,13 @@ const TemplateBuilder = ({
   if (!secretKey) {
     throw new Error('secretKey not found');
   }
-  if (!basicAuthUsername) {
-    throw new Error('basicAuthUsername not found');
-  }
-  if (!basicAuthPassword) {
-    throw new Error('basicAuthPassword not found');
+  if (!publicApiKey) {
+    throw new Error('publicApiKey not found');
   }
   if (sandbox) {
     setIsSandbox(sandbox);
   }
-  setAuthUserName(basicAuthUsername);
-  setAuthUserPassword(basicAuthPassword);
+  setPublicApiKey(publicApiKey);
   const root = ReactDOM.createRoot(container);
   root.render(
     <>
@@ -116,9 +110,8 @@ if (rootElement) {
   TemplateBuilder({
     container: rootElement,
     secretKey: import.meta.env.VITE_APP_PLOTNO_API_KEY,
-    basicAuthUsername: import.meta.env.VITE_APP_BASIC_AUTH_USERNAME,
-    basicAuthPassword: import.meta.env.VITE_APP_BASIC_AUTH_PASSWORD,
-    sandbox: true,
+    publicApiKey: import.meta.env.VITE_APP_PUBLIC_API_KEY,
+    sandbox: false,
     allowSenderFields: true,
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,

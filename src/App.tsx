@@ -24,10 +24,10 @@ interface AppProps {
   platformName?: string | null;
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
-  styles?: any;
   olcTemplate?: Record<string, any>;
   defaultCategory?: string[];
   allowSenderFields?: boolean;
+  styles?: any;
   onReturnAndNavigate?: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -37,14 +37,14 @@ interface AppProps {
 
 const App: React.FC<AppProps> = ({
   secretKey,
-  onReturnAndNavigate,
   platformName,
-  defaultCategory,
   createTemplateRoute,
   templateBuilderRoute,
-  styles,
   olcTemplate,
+  defaultCategory,
   allowSenderFields,
+  styles,
+  onReturnAndNavigate,
   onGetOneTemplate,
   onGetCustomFields,
   onGetTemplates,
@@ -87,9 +87,9 @@ const App: React.FC<AppProps> = ({
           path={createTemplateRoute || '/create-template'}
           element={
             <CreateTemplate
-              onReturnAndNavigate={onReturnAndNavigate}
               createTemplateRoute={createTemplateRoute}
               templateBuilderRoute={templateBuilderRoute}
+              onReturnAndNavigate={onReturnAndNavigate}
             />
           }
         />
@@ -102,8 +102,8 @@ const App: React.FC<AppProps> = ({
               platformName={platformName}
               defaultCategory={defaultCategory}
               allowSenderFields={allowSenderFields}
-              onReturnAndNavigate={onReturnAndNavigate}
               createTemplateRoute={createTemplateRoute}
+              onReturnAndNavigate={onReturnAndNavigate}
               onGetOneTemplate={onGetOneTemplate}
               onGetTemplates={onGetTemplates}
               onGetCustomFields={onGetCustomFields}
