@@ -25,7 +25,6 @@ interface AppProps {
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
-  defaultCategory?: string[];
   allowSenderFields?: boolean;
   styles?: any;
   onReturnAndNavigate?: () => void;
@@ -41,7 +40,6 @@ const App: React.FC<AppProps> = ({
   createTemplateRoute,
   templateBuilderRoute,
   olcTemplate,
-  defaultCategory,
   allowSenderFields,
   styles,
   onReturnAndNavigate,
@@ -100,7 +98,6 @@ const App: React.FC<AppProps> = ({
               store={store}
               olcTemplate={olcTemplate}
               platformName={platformName}
-              defaultCategory={defaultCategory}
               allowSenderFields={allowSenderFields}
               createTemplateRoute={createTemplateRoute}
               onReturnAndNavigate={onReturnAndNavigate}
