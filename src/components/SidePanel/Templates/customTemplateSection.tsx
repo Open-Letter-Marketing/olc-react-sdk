@@ -116,7 +116,6 @@ type CustomTemplateSectionProps = {
   store: StoreType;
   active: boolean;
   platformName?: string | null;
-  defaultCategory?: string[];
   selectedSection?: string;
   onClick: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -136,7 +135,6 @@ const CustomTemplateSection: SideSection = {
     ({
       store,
       platformName,
-      defaultCategory,
       selectedSection,
       onGetOneTemplate,
       onGetTemplates,
@@ -277,50 +275,18 @@ const CustomTemplateSection: SideSection = {
           getAllTemplateCategories
         );
         if (categories?.status === 200) {
-          if (defaultCategory && categories?.data?.data) {
-            const fetchedCategories = categories.data.data
-              .filter((item: any) => item.totalTemplates > 0)
-              .map((item: any) => ({
-                ...item,
-                label: item.title.trim().toLowerCase(),
-              }));
-
-            if (fetchedCategories.length > 0) {
-              const normalizedDefaultCategories = defaultCategory.map(
-                (category) => category.trim().toLowerCase()
-              );
-
-              if (normalizedDefaultCategories.length === 1) {
-                const findCategory = fetchedCategories.find(
-                  (item: any) => item.label === normalizedDefaultCategories[0]
-                );
-
-                if (findCategory) {
-                  setSelectedCategory(findCategory);
-                  return;
-                }
-              } else if (normalizedDefaultCategories.length > 1) {
-                const filterCategory = fetchedCategories.filter((item: any) =>
-                  normalizedDefaultCategories.includes(item.label)
-                );
-
-                if (filterCategory.length > 0) {
-                  setSelectedCategory(filterCategory[0]);
-                  setTemplateCategories(filterCategory);
-                  return;
-                }
-              }
+          if (categories?.data?.data) {
+            const allCategories = categories?.data?.data?.map((item: any) => ({
+              ...item,
+              label: item.title,
+            }));
+            if (allCategories.length === 1) {
+              setSelectedCategory(allCategories[0]);
             }
+            setTemplateCategories(
+              allCategories.filter((item: any) => item.totalTemplates > 0)
+            );
           }
-
-          setTemplateCategories(
-            categories?.data?.data
-              .filter((item: any) => item.totalTemplates > 0)
-              .map((item: any) => ({
-                ...item,
-                label: item.title,
-              }))
-          );
         }
       };
 

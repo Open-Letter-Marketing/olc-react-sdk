@@ -17,7 +17,6 @@ interface Props {
   store: StoreType;
   currentTemplateType: string;
   platformName?: string | null;
-  defaultCategory?: string[];
   selectedSection?: string;
   allowSenderFields?: boolean;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -46,7 +45,6 @@ const SidePanel: React.FC<Props> = (props) => {
                     <customTemplateSection.Panel
                       {...panelProps}
                       platformName={props.platformName}
-                      defaultCategory={props.defaultCategory}
                       onGetTemplates={props.onGetTemplates}
                       onGetOneTemplate={props.onGetOneTemplate}
                       selectedSection={props.selectedSection}

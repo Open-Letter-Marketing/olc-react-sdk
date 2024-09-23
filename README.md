@@ -27,8 +27,7 @@ import TemplateBuilder from '@openlettermarketing/olc-react-sdk';
 const templateBuilderProps = {
   container: document.getElementById('element-id'),
   secretKey: 'your-secret-key',
-  basicAuthUsername: 'your-username',
-  basicAuthPassword: 'your-password',
+  publicApiKey: 'your-api-key',
   platformName: 'Your Platform Name',
   createTemplateRoute: '/create-template',
   templateBuilderRoute: '/edit-template',
@@ -66,13 +65,13 @@ The SDK uses several properties to manage its behavior. Below is a breakdown of 
 |------------------------|:-----------------|----------------------------------------------------------------------------------------------------------------|----------|:-----------------------------------------------------------|
 | `container`            | _HTMLDivElement_ | An HTML DOM element to render the template builder component.                                                  | &#10003; | `document.getElementById('template-builder-container')` |
 | `secretKey`            | _string_         | That key is used to communicate _Polotno_ Editor (Builder) with API requests.                                  | &#10003; | `'your-secret-key'`                                        |
-| `basicAuthUsername`    | _string_         | _Username_ for basic authentication.                                                                           | &#10003; | `'your-username'`                                          |
-| `basicAuthPassword`    | _string_         | _Password_ for basic authentication.                                                                           | &#10003; | `'your-password'`                                          |
+| `publicApiKey`         | _string_         | _publicApiKey_ is used for basic authentication between the OLC and the client platform.                       | &#10003; | `'your-api-key'`                                          |
 | `platformName`         | _string_         | The name of your platform.                                                                                     | &#10539; | `'My App'`                                                 |
 | `createTemplateRoute`  | _string_         | The route/path for creating new templates. _(begins with slash `/`)_                                           | &#10539; | `'/create-template'`                                       |
 | `templateBuilderRoute` | _string_         | The route/path for editing existing templates. _(begins with slash `/`)_                                       | &#10539; | `'/edit-template'`                                         |
 | `olcTemplate`          | _object_         | The template object to be edited or used as a base.                                                            | &#10539; | `{ ... }`                                                  |
-| `sandbox`          | _boolean_         | The sandbox setting can be either true or false. Set to true for demo purposes and false for production.                                                            | &#10539; | `true`                                                  |
+| `sandbox`              | _boolean_        | The sandbox setting can be either true or false. Set to true for demo purposes and false for production.       | &#10539; | `true`                                                     |
+| `allowSenderFields`    | _boolean_        | The allowSenderFields prop can be set to either true or false. When set to true, it makes the sender fields visible in the custom fields section.    | &#10539; | `true`               |
 | `onReturnAndNavigate`  | _function_       | An event which triggers when a user navigates away.                                                            | &#10539; | `onReturnAndNavigate () { ... }`                           |
 | `onGetOneTemplate`     | _function_       | An event which triggers when fetching a specific template.                                                     | &#10539; | `onGetOneTemplate ( payload ) { ... }`                     |
 | `onGetTemplates`       | _function_       | An event which triggers when fetching all templates.                                                           | &#10539; | `onGetTemplates ( payload ) { ... }`                       |
@@ -103,8 +102,7 @@ const App = () => {
     TemplateBuilder({
       container: document.getElementById('template-builder-container'),
       secretKey: 'your-secret-key',
-      basicAuthUsername: 'your-username',
-      basicAuthPassword: 'your-password',
+      publicApiKey: 'your-api-key',
       sandbox: false,
       async onSubmit (payload) {
         console.log('Template submitted:', payload);
