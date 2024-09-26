@@ -624,7 +624,7 @@ const CustomTemplateSection: SideSection = {
             </div>
             <div className="selectBar">
               {currentTemplateType?.id === '3' &&
-                templateCategories?.length >= 1 && (
+                templateCategories?.length > 1 && (
                   <div>
                     <GeneralSelect
                       placeholder="Select Category"

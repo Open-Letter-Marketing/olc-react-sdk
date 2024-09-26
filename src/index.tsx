@@ -93,7 +93,7 @@ const TemplateBuilder = ({
   //@ts-ignore
   return {
     destroy() {
-      console.log("react destroy");
+      console.log("React template builder destroyed");
       root.unmount();
     }
   }
