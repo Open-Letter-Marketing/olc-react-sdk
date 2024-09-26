@@ -40,6 +40,7 @@ type CustomFieldsSectionProps = {
   store: StoreType;
   active: boolean;
   allowSenderFields?: boolean;
+  allowPropertyFields?: boolean;
   onClick: () => void;
   onGetCustomFields?: () => Promise<any>;
 };
@@ -47,14 +48,14 @@ type CustomFieldsSectionProps = {
 const customFieldSection: SideSection = {
   name: 'Fields',
   Tab: observer(
-    (props: {store: StoreType; active: boolean; onClick: () => void}) => (
+    (props: { store: StoreType; active: boolean; onClick: () => void }) => (
       <SectionTab name="Fields" {...props}>
         <Field fill="var(--text-color)" />
       </SectionTab>
     )
   ) as SideSection['Tab'],
 
-  Panel: observer(({store, onGetCustomFields, allowSenderFields}: CustomFieldsSectionProps) => {
+  Panel: observer(({ store, onGetCustomFields, allowSenderFields, allowPropertyFields }: CustomFieldsSectionProps) => {
     const [isShowDialog, setIsShowDialog] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
     const customFields = useSelector(
@@ -68,7 +69,15 @@ const customFieldSection: SideSection = {
     const defaultSenderFields = useSelector(
       (state: RootState) => state.templates.defaultSenderFields
     );
-  
+
+    const defaultPropertyFields = useSelector(
+      (state: RootState) => state.templates.defaultPropertyFields
+    )
+
+    const defeultDynamicFieldsWithPropertyFields = allowPropertyFields
+      ? [...defaultDynamicFields, ...defaultPropertyFields]
+      : defaultDynamicFields;
+
     const product = useSelector((state: RootState) => state.templates.product);
     const currentTemplateType = product?.productType;
 
@@ -150,7 +159,7 @@ const customFieldSection: SideSection = {
             />
           </div>
         </div>
-        {defaultDynamicFields.map(
+        {defeultDynamicFieldsWithPropertyFields.map(
           ({ key, value }: { key: string; value: string }, i: number) => (
             <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_contact'}>
               <span
@@ -222,8 +231,8 @@ const customFieldSection: SideSection = {
               <Button onClick={handleShowDialog}></Button>
             </div>
             {customFields?.map(
-              ({key, value}: {key: string; value: string}, i: number) => (
-                <div style={{display: 'flex', alignItems: 'center'}} key={i + '_custom'}>
+              ({ key, value }: { key: string; value: string }, i: number) => (
+                <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_custom'}>
                   <span
                     className="contact-element"
                     onClick={(event) =>

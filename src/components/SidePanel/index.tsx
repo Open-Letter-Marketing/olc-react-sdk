@@ -19,6 +19,7 @@ interface Props {
   platformName?: string | null;
   selectedSection?: string;
   allowSenderFields?: boolean;
+  allowPropertyFields?: boolean;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
@@ -61,6 +62,7 @@ const SidePanel: React.FC<Props> = (props) => {
                 {...panelProps}
                 onGetCustomFields={props.onGetCustomFields}
                 allowSenderFields={props.allowSenderFields}
+                allowPropertyFields={props.allowPropertyFields}
               />
             ),
           },
