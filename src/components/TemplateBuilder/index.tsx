@@ -62,6 +62,7 @@ interface TemplateBuilderProps {
   createTemplateRoute?: string | null,
   olcTemplate?: Record<string, any>;
   allowSenderFields?: boolean;
+  allowPropertyFields?: boolean;
   onReturnAndNavigate?: () => void;
   onGetCustomFields?: () => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -69,7 +70,7 @@ interface TemplateBuilderProps {
   onSubmit?: (payload: any) => Promise<any>;
 }
 
-const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNavigate, platformName, createTemplateRoute, olcTemplate, allowSenderFields, onGetOneTemplate, onGetCustomFields, onGetTemplates, onSubmit }) => {
+const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNavigate, platformName, createTemplateRoute, olcTemplate, allowSenderFields, allowPropertyFields, onGetOneTemplate, onGetCustomFields, onGetTemplates, onSubmit }) => {
   const [isStoreUpdated, setIsStoreUpdated] = useState(false);
   const [switchTabCount, setSwitchTabCount] = useState(1);
   const [selectedSection, setSelectedSection] = useState('text');
@@ -326,6 +327,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
                 currentTemplateType={currentTemplateType}
                 platformName={platformName}
                 allowSenderFields={allowSenderFields}
+                allowPropertyFields={allowPropertyFields}
                 onGetTemplates={onGetTemplates}
                 onGetOneTemplate={onGetOneTemplate}
                 onGetCustomFields={onGetCustomFields}

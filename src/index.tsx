@@ -26,6 +26,7 @@ interface TemplateBuilderProps {
   olcTemplate?: Record<string, any>;
   sandbox?: boolean;
   allowSenderFields?: boolean;
+  allowPropertyFields?: boolean;
   onReturnAndNavigate?: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -46,6 +47,7 @@ const TemplateBuilder = ({
   olcTemplate,
   sandbox,
   allowSenderFields,
+  allowPropertyFields,
   onReturnAndNavigate,
   onGetOneTemplate,
   onGetTemplates,
@@ -79,6 +81,7 @@ const TemplateBuilder = ({
             createTemplateRoute={createTemplateRoute}
             templateBuilderRoute={templateBuilderRoute}
             allowSenderFields={allowSenderFields}
+            allowPropertyFields={allowPropertyFields}
             onReturnAndNavigate={onReturnAndNavigate}
             onGetOneTemplate={onGetOneTemplate}
             onGetTemplates={onGetTemplates}
@@ -110,6 +113,7 @@ if (rootElement) {
     publicApiKey: import.meta.env.VITE_APP_PUBLIC_API_KEY,
     sandbox: true,
     allowSenderFields: true,
+    allowPropertyFields: true,
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
     // onGetTemplates: getAllTemplatesByTab,

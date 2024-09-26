@@ -26,6 +26,7 @@ interface AppProps {
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
   allowSenderFields?: boolean;
+  allowPropertyFields?: boolean;
   styles?: any;
   onReturnAndNavigate?: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -41,6 +42,7 @@ const App: React.FC<AppProps> = ({
   templateBuilderRoute,
   olcTemplate,
   allowSenderFields,
+  allowPropertyFields,
   styles,
   onReturnAndNavigate,
   onGetOneTemplate,
@@ -99,6 +101,7 @@ const App: React.FC<AppProps> = ({
               olcTemplate={olcTemplate}
               platformName={platformName}
               allowSenderFields={allowSenderFields}
+              allowPropertyFields={allowPropertyFields}
               createTemplateRoute={createTemplateRoute}
               onReturnAndNavigate={onReturnAndNavigate}
               onGetOneTemplate={onGetOneTemplate}

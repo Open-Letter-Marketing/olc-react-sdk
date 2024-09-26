@@ -60,6 +60,7 @@ export interface TemplateState {
   defaultDynamicFieldsHashMap: Record<string, DynamicField>;
   defaultDynamicFields: DynamicField[];
   defaultSenderFields: DynamicField[];
+  defaultPropertyFields: DynamicField[];
   products: any[];
   productDetailByTemplate: any[];
   templates: TemplatesState;
@@ -225,6 +226,28 @@ const initialState: TemplateState = {
       value: "Sender Website",
       key: "{{SPF.WEBSITE}}",
       defaultValue: "www.example.com",
+    },
+  ],
+  defaultPropertyFields:[
+    {
+      value: "Property Address",
+      key: "{{C.PROPERTY_ADDRESS}}",
+      defaultValue: "912 Main Street",
+    },
+    {
+      value: "Property City",
+      key: "{{C.PROPERTY_CITY}}",
+      defaultValue: "New York",
+    },
+    {
+      value: "Property State",
+      key: "{{C.PROPERTY_STATE}}",
+      defaultValue: "NY",
+    },
+    {
+      value: "Property Zip Code",
+      key: "{{C.PROPERTY_ZIP_CODE}}",
+      defaultValue: "10008",
     },
   ],
   products: Products,
