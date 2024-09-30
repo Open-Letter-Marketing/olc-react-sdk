@@ -17,6 +17,7 @@ interface Props {
   store: StoreType;
   currentTemplateType: string;
   platformName?: string | null;
+  templateGalleryModal?: boolean;
   selectedSection?: string;
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
@@ -46,6 +47,7 @@ const SidePanel: React.FC<Props> = (props) => {
                     <customTemplateSection.Panel
                       {...panelProps}
                       platformName={props.platformName}
+                      templateGalleryModal={props.templateGalleryModal}
                       onGetTemplates={props.onGetTemplates}
                       onGetOneTemplate={props.onGetOneTemplate}
                       selectedSection={props.selectedSection}

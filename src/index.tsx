@@ -21,6 +21,7 @@ interface TemplateBuilderProps {
   secretKey: string;
   publicApiKey: string;
   platformName?: string | null;
+  templateGalleryModal?: boolean;
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
@@ -42,6 +43,7 @@ const TemplateBuilder = ({
   secretKey,
   publicApiKey,
   platformName,
+  templateGalleryModal = true,
   createTemplateRoute,
   templateBuilderRoute,
   olcTemplate,
@@ -78,6 +80,7 @@ const TemplateBuilder = ({
             styles={styles}
             olcTemplate={olcTemplate}
             platformName={platformName}
+            templateGalleryModal={templateGalleryModal}
             createTemplateRoute={createTemplateRoute}
             templateBuilderRoute={templateBuilderRoute}
             allowSenderFields={allowSenderFields}
@@ -114,6 +117,7 @@ if (rootElement) {
     sandbox: true,
     allowSenderFields: true,
     allowPropertyFields: true,
+    templateGalleryModal: false,
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
     // onGetTemplates: getAllTemplatesByTab,

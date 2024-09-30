@@ -59,6 +59,7 @@ setUploadFunc(uploadFile)
 interface TemplateBuilderProps {
   store: StoreType,
   platformName?: string | null;
+  templateGalleryModal?: boolean;
   createTemplateRoute?: string | null,
   olcTemplate?: Record<string, any>;
   allowSenderFields?: boolean;
@@ -70,7 +71,7 @@ interface TemplateBuilderProps {
   onSubmit?: (payload: any) => Promise<any>;
 }
 
-const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNavigate, platformName, createTemplateRoute, olcTemplate, allowSenderFields, allowPropertyFields, onGetOneTemplate, onGetCustomFields, onGetTemplates, onSubmit }) => {
+const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNavigate, platformName, templateGalleryModal, createTemplateRoute, olcTemplate, allowSenderFields, allowPropertyFields, onGetOneTemplate, onGetCustomFields, onGetTemplates, onSubmit }) => {
   const [isStoreUpdated, setIsStoreUpdated] = useState(false);
   const [switchTabCount, setSwitchTabCount] = useState(1);
   const [selectedSection, setSelectedSection] = useState('text');
@@ -326,6 +327,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
                 store={store}
                 currentTemplateType={currentTemplateType}
                 platformName={platformName}
+                templateGalleryModal={templateGalleryModal}
                 allowSenderFields={allowSenderFields}
                 allowPropertyFields={allowPropertyFields}
                 onGetTemplates={onGetTemplates}

@@ -22,6 +22,7 @@ const initializeStore = (secretKey: string) => {
 interface AppProps {
   secretKey: string;
   platformName?: string | null;
+  templateGalleryModal?: boolean;
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
@@ -38,6 +39,7 @@ interface AppProps {
 const App: React.FC<AppProps> = ({
   secretKey,
   platformName,
+  templateGalleryModal,
   createTemplateRoute,
   templateBuilderRoute,
   olcTemplate,
@@ -100,6 +102,7 @@ const App: React.FC<AppProps> = ({
               store={store}
               olcTemplate={olcTemplate}
               platformName={platformName}
+              templateGalleryModal={templateGalleryModal}
               allowSenderFields={allowSenderFields}
               allowPropertyFields={allowPropertyFields}
               createTemplateRoute={createTemplateRoute}
