@@ -13,7 +13,6 @@ import {
   getAllTemplatesByTab,
 } from '../../../redux/actions/templateActions';
 import {
-  GET_ONE_TEMPLATE,
   TEMPLATE_LOADING,
 } from '../../../redux/actions/action-types';
 import { failure } from '../../../redux/actions/snackbarActions';
@@ -33,20 +32,14 @@ import {
   getFileAsBlob,
 } from '../../../utils/template-builder';
 import { MESSAGES } from '../../../utils/message';
-import { removeSThroughOne } from '../../../utils/helper';
 import { getItem, removeItem, setItem } from '../../../utils/local-storage';
 
 // Components
-import Typography from '../../GenericUIBlocks/Typography';
 import Dialog from '../../GenericUIBlocks/Dialog';
-import GeneralSelect from '../../GenericUIBlocks/GeneralSelect';
-import Input from '../../GenericUIBlocks/Input';
-import Tabs from '../../GenericUIBlocks/Tabs';
-import TempCard from '../Templates/TemplatesCard';
+import SideBarGallery from './SideBarGallery';
+import ModalGallery from './ModalGallery';
 
 // Icons
-// @ts-ignore
-import DesignIcon from '../../../assets/images/templates/template-default-design';
 // @ts-ignore
 import CustomTemplate from '../../../assets/images/templates/custom-template';
 import ModalCross from '../../../assets/images/modal-icons/modal-cross';
@@ -66,24 +59,6 @@ const loadDialogStyles = {
   minHeight: '300px',
 };
 
-const cancelDialogStyles = {
-  maxWidth: '1090px',
-  minHeight: 'calc(100% - 100px)',
-};
-
-const galleryDialogStyles = {
-  maxWidth: '1090px',
-  minHeight: 'calc(100% - 50px)',
-};
-
-const templateTextStyles: React.CSSProperties = {
-  color: `#000`,
-  fontSize: `12px`,
-  fontStyle: `normal`,
-  fontWeight: `500`,
-  lineHeight: `normal`,
-  marginBottom: `16px`,
-};
 
 export type Payload = {
   tab: string;
@@ -106,7 +81,7 @@ export type TemplateCategory = {
   label?: string;
 };
 
-type TemplateRecord = {
+export type TemplateRecord = {
   id: string;
   thumbnailUrl: string;
   title: string;
@@ -116,6 +91,7 @@ type CustomTemplateSectionProps = {
   store: StoreType;
   active: boolean;
   platformName?: string | null;
+  templateGalleryModal?: boolean;
   selectedSection?: string;
   onClick: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -135,6 +111,7 @@ const CustomTemplateSection: SideSection = {
     ({
       store,
       platformName,
+      templateGalleryModal,
       selectedSection,
       onGetOneTemplate,
       onGetTemplates,
@@ -375,7 +352,9 @@ const CustomTemplateSection: SideSection = {
               if (workspaceElement) {
                 workspaceElement.classList.add('hide-loader');
               }
-              closeGalleryModal();
+              if (templateGalleryModal) {
+                closeGalleryModal();
+              }
             }
           } catch (error) {
             return error;
@@ -458,11 +437,13 @@ const CustomTemplateSection: SideSection = {
         }
         drawRestrictedAreaOnPage(store, product, envelopeType);
         handleDialogChange('');
-        closeGalleryModal();
+        if (templateGalleryModal) {
+          closeGalleryModal();
+        }
       };
 
       const handleScroll = () => {
-        const div = document.querySelector('.templatesContent');
+        const div = document.querySelector('.templatesContent') || document.querySelector('.polotno-panel-container');
         if (div) {
           const isAtBottom =
             div.scrollTop + div.clientHeight + 50 >= div.scrollHeight;
@@ -542,9 +523,9 @@ const CustomTemplateSection: SideSection = {
       }, [selectedCategory]);
 
       useEffect(() => {
-        const div = document.querySelector('.templatesContent');
+        const div = document.querySelector('.templatesContent') || document.querySelector('.polotno-panel-container');
 
-        if (store.openedSidePanel === 'Templates') {
+        if (store.openedSidePanel === 'Templates' && templateGalleryModal) {
           let sideBar = document.getElementsByClassName('polotno-panel-container');
           const firstSideBar = sideBar[0];
           if (firstSideBar) {
@@ -552,7 +533,7 @@ const CustomTemplateSection: SideSection = {
             firstSideBar.style.display = 'contents';
           }
           setOpenGalleryModal(true);
-        document.body.classList.add('no-scroll');
+          document.body.classList.add('no-scroll');
         }
 
         if (div) {
@@ -564,130 +545,59 @@ const CustomTemplateSection: SideSection = {
         };
       }, [templates]);
 
-      const primaryColorExtract =  getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
-
-      const hexToRgba = (hex:any, opacity:any) => {
-        // Remove the hash at the start if it's there
-        hex = hex.replace(/^#/, '');
-      
-        // Parse r, g, b values
-        let r = parseInt(hex.substring(0, 2), 16);
-        let g = parseInt(hex.substring(2, 4), 16);
-        let b = parseInt(hex.substring(4, 6), 16);
-      
-        // Return the RGBA string
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-      }
-      
-      const primaryColorRGBA = hexToRgba(primaryColorExtract, 0.5);
-      
       return (
         <>
-          <Dialog
-            customStyles={galleryDialogStyles}
-            open={openGalleryModal}
-            handleClose={closeGalleryModal}
-            title={
-              product?.productType === 'Postcards'
-                ? `${product?.productType} (${product?.selectedSize})`
-                : product?.title
-            }
-            isGallery={true}
-          >
-            <div className="topBar">
-              <div>
-                <Tabs
-                  value={currentTemplateType || {}}
-                  onChange={handleTabChange}
-                  tabs={templateTypes || []}
-                  className="myCustomTabs"
-                  tabClassName="myTab"
-                  indicatorClassName="myIndicator"
-                />
-              </div>
-              <div>
-                <Input
-                  name="search"
-                  type="text"
-                  value={search}
-                  // @ts-ignore
-                  onKeyDown={searchKeyDown}
-                  onChange={(e: any) => setSearch(e.target.value.trimStart())}
-                  placeholder="Search templates by name or ID"
-                  onClick={handleSearch}
-                  searchApplied={searchApplied}
-                  removeSearchInput={removeSearchInput}
-                  inputIcon={true}
-                  gellerySearch={true}
-                />
-              </div>
-            </div>
-            <div className="selectBar">
-              {currentTemplateType?.id === '3' &&
-                templateCategories?.length > 1 && (
-                  <div>
-                    <GeneralSelect
-                      placeholder="Select Category"
-                      options={templateCategories as any}
-                      setSelectedValue={setSelectedCategory as any}
-                      selectedValue={selectedCategory as any}
-                      builderSelect={true}
-                      gallerySelect={true}
-                      clearField={true}
-                      // @ts-ignore
-                      search={(() => { }) as any}
-                      updateErrors={() => { }}
-                      disableClearable={false}
-                      templateBuilder={true}
-                    />
-                  </div>
-                )}
-              <Typography>{removeSThroughOne(`${pagination.total} templates`)}</Typography>
-            </div>
-            <div className={`templatesContent ${currentTemplateType?.id === '3' && "heightOLC"}`} style={{
-              justifyContent: loader ? "center" : "flex-start",
-              alignItems: searchApplied ? "center" : "flex-start"
-              }}>
-              {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '1' && (
-                <div>
-                  <div
-                    className={`defaultDesign 
-                      ${product?.id === '13' && 
-                        product?.size.find((product:any) => product?.size === "4x6") ? "postcard-4x6" 
-                      : product?.id === '15' && product?.size.find((product:any) => product?.size === "6x11") ? "postcard-6x11"
-                      : product?.id === '14' && product?.size.find((product:any) => product?.size === "6x9") ? "postcard-6x9"
-                       : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
-                    onClick={() => handleDialogChange('design-own')}
-                    style={{
-                      boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`
-                    }}
-                  >
-                    <DesignIcon fill="var(--primary-color)"/>
-                    <Typography>Design Your Own</Typography>
-                  </div>
-                  <Typography className='ownHeading'>Design Your Own</Typography>
-                </div>
-              )}
-              <TempCard
-                templates={
-                  currentTemplateType?.id === '1'
-                    ? myTemplates
-                    : currentTemplateType?.id === '2'
-                      ? teamTemplates
-                      : currentTemplateType?.id === '3'
-                        ? olcTemplates
-                        : []
-                }
-                handleLoadTemplateModel={handleLoadTemplateModel}
-                loading={loader}
-                platformName={platformName}
-                currentTemplateType={currentTemplateType}
+          {
+            templateGalleryModal ?
+              <ModalGallery
                 product={product}
+                openGalleryModal={openGalleryModal}
+                pagination={pagination}
+                currentTemplateTypeRef={currentTemplateTypeRef}
+                selectedCategory={selectedCategory}
+                templateCategories={templateCategories}
+                currentTemplateType={currentTemplateType}
+                templateTypes={templateTypes}
+                search={search}
                 searchApplied={searchApplied}
-                primaryColorRGBA={primaryColorRGBA}
+                loader={loader}
+                platformName={platformName}
+                myTemplates={myTemplates}
+                teamTemplates={teamTemplates}
+                olcTemplates={olcTemplates}
+                setSearch={setSearch}
+                handleSearch={handleSearch}
+                removeSearchInput={removeSearchInput}
+                searchKeyDown={searchKeyDown}
+                setCurrentTemplateType={setCurrentTemplateType}
+                setSelectedCategory={setSelectedCategory}
+                handleLoadTemplateModel={handleLoadTemplateModel}
+                handleDialogChange={handleDialogChange}
+                handleTabChange={handleTabChange}
+                closeGalleryModal={closeGalleryModal}
+              /> :
+              <SideBarGallery
+                selectedCategory={selectedCategory}
+                templateCategories={templateCategories}
+                currentTemplateType={currentTemplateType}
+                templateTypes={templateTypes}
+                search={search}
+                searchApplied={searchApplied}
+                loader={loader}
+                platformName={platformName}
+                myTemplates={myTemplates}
+                teamTemplates={teamTemplates}
+                olcTemplates={olcTemplates}
+                setSearch={setSearch}
+                handleSearch={handleSearch}
+                removeSearchInput={removeSearchInput}
+                searchKeyDown={searchKeyDown}
+                setCurrentTemplateType={setCurrentTemplateType}
+                setSelectedCategory={setSelectedCategory}
+                handleLoadTemplateModel={handleLoadTemplateModel}
+                handleDialogChange={handleDialogChange}
               />
-            </div>
-          </Dialog>
+          }
 
           <div className="custom-template-section">
             {isShowDialog.open && isShowDialog.model === 'design-own' && (
