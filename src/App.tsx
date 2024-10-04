@@ -8,6 +8,7 @@ import {createStore, StoreType} from 'polotno/model/store';
 import CreateTemplate from './components/CreateTemplate';
 import TemplateBuilder from './components/TemplateBuilder';
 import {createGlobalStyle} from 'styled-components';
+import GenericSnackbar from './components/GenericUIBlocks/GenericSnackbar/Toast';
 
 // Initialize Plotno Store
 const initializeStore = (secretKey: string) => {
@@ -83,6 +84,7 @@ const App: React.FC<AppProps> = ({
 
   return (
     <div className="builder-wrapper">
+      <GenericSnackbar/>
       <GlobalStyle />
       <Routes>
         <Route

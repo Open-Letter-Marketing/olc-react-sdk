@@ -36,7 +36,7 @@ import LexiRegularFont from "../../assets/Fonts/Lexi-Regular.ttf";
 import TopNavigation from '../TopNavigation';
 import SidePanel from '../SidePanel';
 import Typography from '../GenericUIBlocks/Typography';
-import GenericSnackbar from '../GenericUIBlocks/GenericSnackbar';
+import GenericSnackbar from '../GenericUIBlocks/GenericSnackbar/Toast';
 
 import './styles.scss';
 
@@ -351,7 +351,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
                 <ZoomButtons store={store} />
               </WorkspaceWrap>
             </PolotnoContainer>
-            <GenericSnackbar />
+            <GenericSnackbar/>
           </div>
         )}
       </div>
