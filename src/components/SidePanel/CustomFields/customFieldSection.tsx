@@ -112,40 +112,6 @@ const customFieldSection: SideSection = {
       }
     };
 
-    const handleAddElementOnScreen = (event: any, value: any, type: any) => {
-      event.preventDefault();
-
-      if (currentTemplateType === 'Real Penned Letter') {
-        copyCustomFieldText(value);
-        return;
-      }
-
-      let x, y;
-
-      if (type === 'drag') {
-        const rect = event.currentTarget.getBoundingClientRect();
-        x = event.clientX - rect.left;
-        y = event.clientY - rect.top;
-      } else {
-        // For click events, use nativeEvent.offsetX and nativeEvent.offsetY
-        x = store.width / 2 - 200;
-        y = 300;
-      }
-      //@ts-ignore
-      x /= store?.activePage?.scale;
-      //@ts-ignore
-      y /= store?.activePage?.scale;
-
-      store.activePage.addElement({
-        type: 'text',
-        x,
-        y,
-        text: value,
-        width: value.length > 15 ? 10 * value.length : 150,
-        contentEditable: false,
-      });
-    };
-
     return (
       <div className="dynamic-content">
         <div className="dynamic-content__top">
@@ -164,8 +130,8 @@ const customFieldSection: SideSection = {
             <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_contact'}>
               <span
                 className="contact-element"
-                onClick={(event) =>
-                  handleAddElementOnScreen(event, key, 'click')
+                onClick={() =>
+                  copyCustomFieldText(key)
                 }
               >
                 {value}
@@ -197,8 +163,8 @@ const customFieldSection: SideSection = {
               <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_sender'}>
                 <span
                   className="contact-element"
-                  onClick={(event) =>
-                    handleAddElementOnScreen(event, key, 'click')
+                  onClick={() =>
+                    copyCustomFieldText(key)
                   }
                 >
                   {value}
@@ -235,8 +201,8 @@ const customFieldSection: SideSection = {
                 <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_custom'}>
                   <span
                     className="contact-element"
-                    onClick={(event) =>
-                      handleAddElementOnScreen(event, key, 'click')
+                    onClick={() =>
+                      copyCustomFieldText(key)
                     }
                   >
                     {value}
