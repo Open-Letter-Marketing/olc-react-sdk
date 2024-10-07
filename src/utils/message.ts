@@ -17,6 +17,7 @@ export const MESSAGES = {
     POSTCARD_SIZE_REQUIRED: "Postcard Size is required",
     NAME_LESS_50: "Template Name should be less than or equal to 50 characters",
     GSV_RESTRICT_ONE_PER_PAGE: 'Only one GSV image is allowed per page.',
+    EMOJI_NOT_ALLOWED: 'Emojis are not allowed in the template. Please remove them before saving.',
     CREATE: {
       TITLE: 'Create New Template',
       TEMPLATE_LABEL: 'Template Name*',

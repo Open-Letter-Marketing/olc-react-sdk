@@ -19,7 +19,7 @@ import ConfirmNavigateDialog from './ConfirmNavigateDialog';
 import EditTemplateNameModel from './EditTemplateNameModel';
 
 // Utils
-import { downloadPDF, extractFontFamilies, multiPageTemplates, validateGSV } from '../../utils/template-builder';
+import { downloadPDF, extractFontFamilies, multiPageTemplates, validateEmoji, validateGSV } from '../../utils/template-builder';
 import { getItem, setItem } from '../../utils/local-storage';
 import { MESSAGES } from '../../utils/message';
 // @ts-ignore
@@ -248,6 +248,15 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
           return;
         }
 
+        const hasEmoji = validateEmoji(jsonData.pages);
+
+        if (hasEmoji) {
+          dispatch(failure(MESSAGES.TEMPLATE.EMOJI_NOT_ALLOWED));
+          return;
+        }
+
+        setIsShowModel((prev) => ({ ...prev, loading: true }));
+
         if (multiPageTemplates.includes(product.productType)) {
           const backJsonData = { ...jsonData, pages: [jsonData.pages[1]] }
           await store.loadJSON(backJsonData);
@@ -262,7 +271,6 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         formData.append('thumbnail', blob, 'logo.png');
         selectedFields = allFields.filter(field => jsonString.includes(field.key));
       }
-      setIsShowModel((prev) => ({ ...prev, loading: true }));
 
       formData.append('title', title);
       formData.append('productId', product?.id);
