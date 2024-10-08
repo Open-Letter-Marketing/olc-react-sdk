@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-catch */
 
 // Utils
-import { multiPageLetters, BARCODE_IMAGE_URL, DEMO_S3_URL, PROD_S3_URL } from './constants';
+import { multiPageLetters, BARCODE_IMAGE_URL, DEMO_S3_URL, PROD_S3_URL, emojiRegex } from './constants';
 import { getIsSandbox } from './helper';
 
 // Restricted Area Files
@@ -159,3 +159,19 @@ export const validateGSV = (pages: any) => {
   }
   return true;
 };
+
+
+export const validateEmoji = (pages: any) => {
+  const textElements = (children: any) =>
+    children.filter(
+      ({ type, text }: any) => type === "text" && emojiRegex.test(text)
+    );
+
+
+  for (const page of pages) {
+    if (textElements(page.children).length) {
+      return true;
+    }
+  }
+  return false;
+}
