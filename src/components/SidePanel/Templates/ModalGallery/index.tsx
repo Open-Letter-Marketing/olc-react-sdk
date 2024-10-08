@@ -82,6 +82,14 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
 
     const primaryColorRGBA = hexToRgba(primaryColorExtract, 0.5);
 
+    const currentTemplates = currentTemplateType?.id === '1'
+        ? myTemplates
+        : currentTemplateType?.id === '2'
+            ? teamTemplates
+            : currentTemplateType?.id === '3'
+                ? olcTemplates
+                : []
+
     return (
         <>
             <Dialog
@@ -142,7 +150,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                 />
                             </div>
                         )}
-                    <Typography>{removeSThroughOne(`${pagination.total} templates`)}</Typography>
+                    <Typography>{removeSThroughOne(`${currentTemplates.length > 0 ? pagination.total : 0} templates`)}</Typography>
                 </div>
                 <div className={`templatesContent ${currentTemplateType?.id === '3' && "heightOLC"}`} style={{
                     justifyContent: loader ? "center" : "flex-start",
@@ -169,15 +177,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                         </div>
                     )}
                     <TempCard
-                        templates={
-                            currentTemplateType?.id === '1'
-                                ? myTemplates
-                                : currentTemplateType?.id === '2'
-                                    ? teamTemplates
-                                    : currentTemplateType?.id === '3'
-                                        ? olcTemplates
-                                        : []
-                        }
+                        templates={currentTemplates}
                         handleLoadTemplateModel={handleLoadTemplateModel}
                         loading={loader}
                         platformName={platformName}
