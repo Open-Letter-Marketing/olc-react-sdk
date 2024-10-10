@@ -14,7 +14,7 @@ import './styles.scss'
 
 const TemplatesCard = (props: any) => {
 
-  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType, product, searchApplied, primaryColorRGBA } = props;
+  const { templates, loading, handleLoadTemplateModel, platformName, currentTemplateType, product, searchApplied, primaryColorRGBA, totalCount, designYourOwn } = props;
 
   const [isFilpedIds, setIsFlipedIds] = useState<string[]>([]);
 
@@ -58,7 +58,9 @@ const TemplatesCard = (props: any) => {
       ) : templates.length ? (
         templates.map((template: any, index: string) => {
           return (
-            <div className="templateCard" key={index}>
+            <div className={`templateCard 
+              ${totalCount % 2 === 0 ? `${designYourOwn ? "layoutWithDesignYourOwn tempWrap" : "tempWrap"}` : "noTempWrap"}
+              `} key={index}>
               <div className="templateImage">
                 <img
                   src={
@@ -66,7 +68,6 @@ const TemplatesCard = (props: any) => {
                       ? template.backThumbnailUrl
                       : template.thumbnailUrl
                   }
-                  // height={tempHeight + "px"}
                   alt="template"
                   style={transformSetter(template?.id)}
                   loading="lazy"
