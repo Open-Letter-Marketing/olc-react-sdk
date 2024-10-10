@@ -41,6 +41,7 @@ type CustomFieldsSectionProps = {
   active: boolean;
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
+  excludedFields?: string[] | null;
   onClick: () => void;
   onGetCustomFields?: () => Promise<any>;
 };
@@ -55,7 +56,7 @@ const customFieldSection: SideSection = {
     )
   ) as SideSection['Tab'],
 
-  Panel: observer(({ store, onGetCustomFields, allowSenderFields, allowPropertyFields }: CustomFieldsSectionProps) => {
+  Panel: observer(({ store, onGetCustomFields, allowSenderFields, excludedFields, allowPropertyFields }: CustomFieldsSectionProps) => {
     const [isShowDialog, setIsShowDialog] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
     const customFields = useSelector(
@@ -125,42 +126,11 @@ const customFieldSection: SideSection = {
             />
           </div>
         </div>
-        {defeultDynamicFieldsWithPropertyFields.map(
-          ({ key, value }: { key: string; value: string }, i: number) => (
-            <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_contact'}>
-              <span
-                className="contact-element"
-                onClick={() =>
-                  copyCustomFieldText(key)
-                }
-              >
-                {value}
-              </span>
-              <Button
-                style={iconButtonStyles}
-                onClick={() => copyCustomFieldText(key)}
-                backdrop={false}
-              >
-                <ContentCopyIcon className="copy" />
-              </Button>
-            </div>
-          )
-        )}
-        {allowSenderFields && <>
-          <div className="dynamic-content__top">
-            <div>
-              <span className="title">Sender Fields</span>
-              <InfoIcon fill="var(--primary-color)" className="sender" />
-              <GeneralTootip
-                anchorSelect=".sender"
-                place="bottom"
-                title="You can add sender fields to your template."
-              />
-            </div>
-          </div>
-          {defaultSenderFields?.map(
+        {defeultDynamicFieldsWithPropertyFields
+          ?.filter(({ key }) => !excludedFields?.includes(key))
+          ?.map(
             ({ key, value }: { key: string; value: string }, i: number) => (
-              <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_sender'}>
+              <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_contact'}>
                 <span
                   className="contact-element"
                   onClick={() =>
@@ -179,6 +149,41 @@ const customFieldSection: SideSection = {
               </div>
             )
           )}
+        {allowSenderFields && <>
+          <div className="dynamic-content__top">
+            <div>
+              <span className="title">Sender Fields</span>
+              <InfoIcon fill="var(--primary-color)" className="sender" />
+              <GeneralTootip
+                anchorSelect=".sender"
+                place="bottom"
+                title="You can add sender fields to your template."
+              />
+            </div>
+          </div>
+          {defaultSenderFields
+            ?.filter(({ key }) => !excludedFields?.includes(key))
+            ?.map(
+              ({ key, value }: { key: string; value: string }, i: number) => (
+                <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_sender'}>
+                  <span
+                    className="contact-element"
+                    onClick={() =>
+                      copyCustomFieldText(key)
+                    }
+                  >
+                    {value}
+                  </span>
+                  <Button
+                    style={iconButtonStyles}
+                    onClick={() => copyCustomFieldText(key)}
+                    backdrop={false}
+                  >
+                    <ContentCopyIcon className="copy" />
+                  </Button>
+                </div>
+              )
+            )}
         </>}
         <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
         {onGetCustomFields && (
@@ -196,26 +201,28 @@ const customFieldSection: SideSection = {
               </div>
               <Button onClick={handleShowDialog}></Button>
             </div>
-            {customFields?.map(
-              ({ key, value }: { key: string; value: string }, i: number) => (
-                <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_custom'}>
-                  <span
-                    className="contact-element"
-                    onClick={() =>
-                      copyCustomFieldText(key)
-                    }
-                  >
-                    {value}
-                  </span>
-                  <Button
-                    style={iconButtonStyles}
-                    onClick={() => copyCustomFieldText(key)}
-                  >
-                    <ContentCopyIcon className="copy" />
-                  </Button>
-                </div>
-              )
-            )}
+            {customFields
+              ?.filter(({ key }: { key: string }) => !excludedFields?.includes(key))
+              ?.map(
+                ({ key, value }: { key: string; value: string }, i: number) => (
+                  <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_custom'}>
+                    <span
+                      className="contact-element"
+                      onClick={() =>
+                        copyCustomFieldText(key)
+                      }
+                    >
+                      {value}
+                    </span>
+                    <Button
+                      style={iconButtonStyles}
+                      onClick={() => copyCustomFieldText(key)}
+                    >
+                      <ContentCopyIcon className="copy" />
+                    </Button>
+                  </div>
+                )
+              )}
           </>
         )}
       </div>

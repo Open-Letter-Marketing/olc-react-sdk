@@ -28,6 +28,7 @@ interface AppProps {
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
   allowSenderFields?: boolean;
+  excludedFields?: string[] | null;
   allowPropertyFields?: boolean;
   styles?: any;
   onReturnAndNavigate?: () => void;
@@ -45,6 +46,7 @@ const App: React.FC<AppProps> = ({
   templateBuilderRoute,
   olcTemplate,
   allowSenderFields,
+  excludedFields,
   allowPropertyFields,
   styles,
   onReturnAndNavigate,
@@ -106,6 +108,7 @@ const App: React.FC<AppProps> = ({
               platformName={platformName}
               templateGalleryModal={templateGalleryModal}
               allowSenderFields={allowSenderFields}
+              excludedFields={excludedFields}
               allowPropertyFields={allowPropertyFields}
               createTemplateRoute={createTemplateRoute}
               onReturnAndNavigate={onReturnAndNavigate}

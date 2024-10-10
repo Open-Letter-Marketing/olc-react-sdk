@@ -28,6 +28,7 @@ interface TemplateBuilderProps {
   sandbox?: boolean;
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
+  excludedFields?: string[] | null;
   onReturnAndNavigate?: () => void;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -50,6 +51,7 @@ const TemplateBuilder = ({
   sandbox,
   allowSenderFields,
   allowPropertyFields,
+  excludedFields,
   onReturnAndNavigate,
   onGetOneTemplate,
   onGetTemplates,
@@ -85,6 +87,7 @@ const TemplateBuilder = ({
             templateBuilderRoute={templateBuilderRoute}
             allowSenderFields={allowSenderFields}
             allowPropertyFields={allowPropertyFields}
+            excludedFields={excludedFields}
             onReturnAndNavigate={onReturnAndNavigate}
             onGetOneTemplate={onGetOneTemplate}
             onGetTemplates={onGetTemplates}
@@ -118,6 +121,7 @@ if (rootElement) {
     allowSenderFields: true,
     allowPropertyFields: true,
     templateGalleryModal: false,
+    excludedFields: ['{{C.FIRST_NAME}}', '{{C.ADDRESS_1}}', '{{SPF.FIRST_NAME}}'],
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
     // onGetTemplates: getAllTemplatesByTab,

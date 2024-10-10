@@ -20,6 +20,7 @@ interface Props {
   templateGalleryModal?: boolean;
   selectedSection?: string;
   allowSenderFields?: boolean;
+  excludedFields?: string[] | null;
   allowPropertyFields?: boolean;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -64,6 +65,7 @@ const SidePanel: React.FC<Props> = (props) => {
                 {...panelProps}
                 onGetCustomFields={props.onGetCustomFields}
                 allowSenderFields={props.allowSenderFields}
+                excludedFields={props.excludedFields}
                 allowPropertyFields={props.allowPropertyFields}
               />
             ),
