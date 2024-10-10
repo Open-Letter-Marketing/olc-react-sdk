@@ -87,11 +87,20 @@
   }
 }
 
+.layoutWithDesignYourOwn{
+  &:last-child{
+      @media ( 992px <= width <= 1340px){
+        flex: none;
+        width: 48%;
+      }
+    }
+}
+
 .noTempWrap{
     &:last-child{
       @media ( 992px <= width <= 1340px){
         flex: none;
-        width: 48%;
+        width: 48.6%;
       }
     }
 }
