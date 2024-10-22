@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './redux/store';
-import App from './App';
+import store from '~/redux/store';
+import App from '~/App';
 import './index.scss';
 
 // font families
@@ -13,8 +13,8 @@ import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 
 // utils
-import { CustomCSSProperties } from './utils/customStyles';
-import { setIsSandbox, setPublicApiKey } from './utils/helper';
+import { CustomCSSProperties } from '~/utils/customStyles';
+import { setIsSandbox, setPublicApiKey } from '~/utils/helper';
 
 interface TemplateBuilderProps {
   container: HTMLElement | null;

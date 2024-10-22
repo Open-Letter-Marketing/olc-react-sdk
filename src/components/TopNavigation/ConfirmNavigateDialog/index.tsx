@@ -1,13 +1,13 @@
 import React from "react";
 
 // Utils
-import { MESSAGES } from "../../../utils/message";
+import { MESSAGES } from "~/utils/message";
 
 // Components
-import Dialog from '../../GenericUIBlocks/Dialog';
+import Dialog from '~/components/GenericUIBlocks/Dialog';
 
 // images
-import ModalCross from '../../../assets/images/modal-icons/modal-cross';
+import ModalCross from '~/assets/images/modal-icons/modal-cross';
 
 // Styles
 import "./styles.scss";

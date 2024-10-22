@@ -8,28 +8,28 @@ import type {TemplatesSection} from 'polotno/side-panel';
 
 // Hooks
 import { useDispatch } from "react-redux";
-import { AppDispatch } from '../../../redux/store';
+import { AppDispatch } from '~/redux/store';
 
 // Actions
-import { failure } from "../../../redux/actions/snackbarActions";
+import { failure } from "~/redux/actions/snackbarActions";
 
 // Utils
-import { MESSAGES } from "../../../utils/message";
-import { getIsSandbox } from '../../../utils/helper';
+import { MESSAGES } from "~/utils/message";
+import { getIsSandbox } from '~/utils/helper';
 
 // MUI Components
-import GeneralTootip from '../../GenericUIBlocks/GeneralTooltip';
-import Typography from '../../GenericUIBlocks/Typography';
+import GeneralTootip from '~/components/GenericUIBlocks/GeneralTooltip';
+import Typography from '~/components/GenericUIBlocks/Typography';
 
 // Dummy Image for GSV
-import {DEMO_S3_URL, GOOGLE_STREET_VIEW_IMAGE_URL, PROD_S3_URL} from '../../../utils/constants';
+import {DEMO_S3_URL, GOOGLE_STREET_VIEW_IMAGE_URL, PROD_S3_URL} from '~/utils/constants';
 
 // Icons
 //@ts-ignore
-import CustomAddOnIcon from '../../../assets/images/templates/custom-add-on-icon';
-import InfoIcon from '../../../assets/images/templates/info-icon';
-import GsvIcon from "../../../assets/images/templates/gsv-icon";
-import EpoIcon from "../../../assets/images/templates/epo-icon";
+import CustomAddOnIcon from '~/assets/images/templates/custom-add-on-icon';
+import InfoIcon from '~/assets/images/templates/info-icon';
+import GsvIcon from "~/assets/images/templates/gsv-icon";
+import EpoIcon from "~/assets/images/templates/epo-icon";
 
 
 import './styles.scss';

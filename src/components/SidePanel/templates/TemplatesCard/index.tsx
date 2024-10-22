@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
 // Utils
-import { MESSAGES } from "../../../../utils/message";
+import { MESSAGES } from "~/utils/message";
 
 // // icons
-import Dot from "../../../../assets/images/templates/dot";
-import ArrowDown from "../../../../assets/images/templates/arrow-down";
-import Button from '../../../../components/GenericUIBlocks/Button';
-import Typography from '../../../../components/GenericUIBlocks/Typography';
+import Dot from "~/assets/images/templates/dot";
+import ArrowDown from "~/assets/images/templates/arrow-down";
+import Button from '~/components/GenericUIBlocks/Button';
+import Typography from '~/components/GenericUIBlocks/Typography';
 
 // styles
 import './styles.scss'

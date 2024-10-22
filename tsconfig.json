@@ -19,10 +19,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmitOnError": false,
-    "baseUrl" : ".",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    "baseUrl": "./",
+      "paths": {
+        "~/*": ["src/*"]
+      }
   },
   "include": ["src/*.tsx", "src/importMeta.d.ts"],
   "exclude": ["src/**/tests", "node_modules", "assets/**"],

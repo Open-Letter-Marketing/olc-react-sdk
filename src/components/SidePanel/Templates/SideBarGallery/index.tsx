@@ -1,17 +1,17 @@
 import React from 'react';
 
 // Utils
-import { MESSAGES } from '../../../../utils/message';
+import { MESSAGES } from '~/utils/message';
 import { TemplateCategory, TemplateRecord, TemplateType } from '../customTemplateSection';
 
 // Components
-import Typography from '../../../GenericUIBlocks/Typography';
-import GeneralSelect from '../../../GenericUIBlocks/GeneralSelect';
-import Input from '../../../GenericUIBlocks/Input';
+import Typography from '~/components/GenericUIBlocks/Typography';
+import GeneralSelect from '~/components/GenericUIBlocks/GeneralSelect';
+import Input from '~/components/GenericUIBlocks/Input';
 
 // Icons
-import DesignIcon from '../../../../assets/images/templates/template-default-design';
-import dummyTemplateIcon from '../../../../assets/images/templates/template-default-design';
+import DesignIcon from '~/assets/images/templates/template-default-design';
+import dummyTemplateIcon from '~/assets/images/templates/template-default-design';
 
 // styles
 import './styles.scss';

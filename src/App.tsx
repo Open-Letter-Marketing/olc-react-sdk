@@ -3,12 +3,12 @@ import React, {useState, useEffect} from 'react';
 // Libraries/Packages
 import {Routes, Route} from 'react-router-dom';
 import {createStore, StoreType} from 'polotno/model/store';
+import {createGlobalStyle} from 'styled-components';
 
 // components
-import CreateTemplate from './components/CreateTemplate';
-import TemplateBuilder from './components/TemplateBuilder';
-import {createGlobalStyle} from 'styled-components';
-import GenericSnackbar from './components/GenericUIBlocks/GenericSnackbar/Toast';
+import CreateTemplate from '~/components/CreateTemplate';
+import TemplateBuilder from '~/components/TemplateBuilder';
+import GenericSnackbar from '~/components/GenericUIBlocks/GenericSnackbar/Toast';
 
 // Initialize Plotno Store
 const initializeStore = (secretKey: string) => {

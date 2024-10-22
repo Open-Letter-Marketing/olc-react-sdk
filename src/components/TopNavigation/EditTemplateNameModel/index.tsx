@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 
 // Hooks
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../../../redux/store';
+import { RootState, AppDispatch } from '~/redux/store';
 
 // Actions
-import { searchAndAdvanceChange } from '../../../redux/actions/templateActions';
-import { failure } from '../../../redux/actions/snackbarActions';
+import { searchAndAdvanceChange } from '~/redux/actions/templateActions';
+import { failure } from '~/redux/actions/snackbarActions';
 
 // Utils
-import { MESSAGES } from '../../../utils/message';
+import { MESSAGES } from '~/utils/message';
 
 // UI Components
-import Dialog from '../../../components/GenericUIBlocks/Dialog';
-import Input from '../../../components/GenericUIBlocks/Input';
+import Dialog from '~/components/GenericUIBlocks/Dialog';
+import Input from '~/components/GenericUIBlocks/Input';
 
 // Styles
 import './styles.scss';

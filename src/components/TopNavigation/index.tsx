@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 // Hooks
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AppDispatch, RootState } from '../../redux/store';
+import { AppDispatch, RootState } from '~/redux/store';
 
 // Actions
 import {
   clearTemplateFields,
   loadFormDataToStore,
   downloadProof,
-} from '../../redux/actions/templateActions';
-import { failure, success } from '../../redux/actions/snackbarActions';
+} from '~/redux/actions/templateActions';
+import { failure, success } from '~/redux/actions/snackbarActions';
 
 // Components
 import SaveTemplateModel from './SaveTemplateModel';
@@ -20,10 +20,10 @@ import EditTemplateNameModel from './EditTemplateNameModel';
 
 // Utils
 import { downloadPDF, extractFontFamilies, multiPageTemplates, validateEmoji, validateGSV } from '../../utils/template-builder';
-import { getItem, setItem } from '../../utils/local-storage';
-import { MESSAGES } from '../../utils/message';
+import { getItem, setItem } from '~/utils/local-storage';
+import { MESSAGES } from '~/utils/message';
 // @ts-ignore
-import fonts from '../../utils/fonts.json';
+import fonts from '~/utils/fonts.json';
 
 // UI Components
 import Typography from "../GenericUIBlocks/Typography";
@@ -33,7 +33,7 @@ import { GridContainer, GridItem } from '../GenericUIBlocks/Grid';
 
 // Icons
 // @ts-ignore
-import EditIcon from '../../assets/images/templates/edit-pencil-icon.tsx';
+import EditIcon from '~/assets/images/templates/edit-pencil-icon.tsx';
 
 // Styles
 import './styles.scss';

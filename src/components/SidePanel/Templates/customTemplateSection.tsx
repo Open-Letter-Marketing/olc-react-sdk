@@ -11,28 +11,28 @@ import {
   clearAllTemplates,
   getAllTemplateCategories,
   getAllTemplatesByTab,
-} from '../../../redux/actions/templateActions';
+} from '~/redux/actions/templateActions';
 import {
   TEMPLATE_LOADING,
-} from '../../../redux/actions/action-types';
-import { failure } from '../../../redux/actions/snackbarActions';
+} from '~/redux/actions/action-types';
+import { failure } from '~/redux/actions/snackbarActions';
 
 // Hooks
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../redux/store';
+import { AppDispatch, RootState } from '~/redux/store';
 
 // Utils
 import {
   multiPageLetters,
   defaultTemplateTypes,
   DPI,
-} from '../../../utils/constants';
+} from '~/utils/constants';
 import {
   drawRestrictedAreaOnPage,
   getFileAsBlob,
-} from '../../../utils/template-builder';
-import { MESSAGES } from '../../../utils/message';
-import { getItem, removeItem, setItem } from '../../../utils/local-storage';
+} from '~/utils/template-builder';
+import { MESSAGES } from '~/utils/message';
+import { getItem, removeItem, setItem } from '~/utils/local-storage';
 
 // Components
 import Dialog from '../../GenericUIBlocks/Dialog';
@@ -41,8 +41,8 @@ import ModalGallery from './ModalGallery';
 
 // Icons
 // @ts-ignore
-import CustomTemplate from '../../../assets/images/templates/custom-template';
-import ModalCross from '../../../assets/images/modal-icons/modal-cross';
+import CustomTemplate from '~/assets/images/templates/custom-template';
+import ModalCross from '~/assets/images/modal-icons/modal-cross';
 
 // styles
 import './styles.scss';

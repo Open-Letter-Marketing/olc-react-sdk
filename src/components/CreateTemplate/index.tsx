@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 //hooks
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store';
+import { AppDispatch, RootState } from '~/redux/store';
 
 //actions
 import {
@@ -11,14 +11,14 @@ import {
   searchAndAdvanceChange,
   selectPostCard,
   selectProduct,
-} from '../../redux/actions/templateActions';
-import { CLEAR_TEMPLATE } from '../../redux/actions/action-types';
+} from '~/redux/actions/templateActions';
+import { CLEAR_TEMPLATE } from '~/redux/actions/action-types';
 
 //utils
-import { PRODUCT_LEARN_URL, sortOrderForTemplates } from '../../utils/constants';
-import { removeItem } from '../../utils/local-storage';
-import { MESSAGES } from '../../utils/message';
-import { envelopeTypes } from '../../utils/template-builder';
+import { PRODUCT_LEARN_URL, sortOrderForTemplates } from '~/utils/constants';
+import { removeItem } from '~/utils/local-storage';
+import { MESSAGES } from '~/utils/message';
+import { envelopeTypes } from '~/utils/template-builder';
 
 // UI Components
 import { GridContainer, GridItem } from '../GenericUIBlocks/Grid';
@@ -29,21 +29,21 @@ import GenericSnackbar from '../GenericUIBlocks/GenericSnackbar/Toast';
 
 // Images
 //@ts-ignore
-import Postcard from '../../assets/images/templates/postcard.tsx';
+import Postcard from '~/assets/images/templates/postcard.tsx';
 //@ts-ignore
-import PersonalLetter from '../../assets/images/templates/personal-letter.tsx';
+import PersonalLetter from '~/assets/images/templates/personal-letter.tsx';
 //@ts-ignore
-import ProfessionalLetter from '../../assets/images/templates/professional-letter.tsx';
+import ProfessionalLetter from '~/assets/images/templates/professional-letter.tsx';
 //@ts-ignore
-import RealPennedLetter from '../../assets/images/templates/real-penned-letters.tsx';
+import RealPennedLetter from '~/assets/images/templates/real-penned-letters.tsx';
 //@ts-ignore
-import TriFoldSelfMailers from '../../assets/images/templates/tri-fold-self-mailers.tsx';
+import TriFoldSelfMailers from '~/assets/images/templates/tri-fold-self-mailers.tsx';
 //@ts-ignore
-import BiFoldSelfMailers from '../../assets/images/templates/bi-fold-self-mailers.tsx';
+import BiFoldSelfMailers from '~/assets/images/templates/bi-fold-self-mailers.tsx';
 
-import SizeImage from '../../assets/images/templates/size-image';
-import SizeImageMid from '../../assets/images/templates/size-image-mid';
-import SizeImageLarge from '../../assets/images/templates/size-image-lg';
+import SizeImage from '~/assets/images/templates/size-image';
+import SizeImageMid from '~/assets/images/templates/size-image-mid';
+import SizeImageLarge from '~/assets/images/templates/size-image-lg';
 import Input from '../GenericUIBlocks/Input';
 import Divider from '../GenericUIBlocks/Divider';
 

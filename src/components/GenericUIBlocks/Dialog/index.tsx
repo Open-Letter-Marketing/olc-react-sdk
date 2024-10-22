@@ -6,7 +6,7 @@ import Typography from '../Typography';
 import CircularProgress from '../CircularProgress';
 
 // cross-icon
-import Cross from '../../../assets/images/modal-icons/cross'
+import Cross from '~/assets/images/modal-icons/cross'
 
 // styles
 import './styles.scss';

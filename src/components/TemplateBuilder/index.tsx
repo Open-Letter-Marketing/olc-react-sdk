@@ -11,26 +11,27 @@ import { setGoogleFonts } from 'polotno/config';
 // Hooks
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { RootState } from '../../redux/reducers';
-import { AppDispatch } from '../../redux/store';
+import { RootState } from '~/redux/reducers';
+import { AppDispatch } from '~/redux/store';
 import { StoreType } from 'polotno/model/store';
 
 // Actions
 import {
   uploadFile,
-} from '../../redux/actions/templateActions';
-import { GET_ONE_TEMPLATE, SET_CUSTOM_FIELDS, TEMPLATE_LOADING } from '../../redux/actions/action-types';
-import { failure } from '../../redux/actions/snackbarActions';
+} from '~/redux/actions/templateActions';
+import { GET_ONE_TEMPLATE, SET_CUSTOM_FIELDS, TEMPLATE_LOADING } from '~/redux/actions/action-types';
+import { failure } from '~/redux/actions/snackbarActions';
 
 // Utils
-import { drawRestrictedAreaOnPage, getFileAsBlob } from '../../utils/template-builder';
-import { addElementsforRealPennedLetters } from '../../utils/templateRestrictedArea/realPenned';
-import { DPI, multiPageLetters } from '../../utils/constants';
+import { drawRestrictedAreaOnPage, getFileAsBlob } from '~/utils/template-builder';
+import { addElementsforRealPennedLetters } from '~/utils/templateRestrictedArea/realPenned';
+import { DPI, multiPageLetters } from '~/utils/constants';
+import { MESSAGES } from '~/utils/message';
 
 // @ts-ignore
-import fonts from "../../utils/fonts.json";
+import fonts from "~/utils/fonts.json";
 // @ts-ignore
-import LexiRegularFont from "../../assets/Fonts/Lexi-Regular.ttf";
+import LexiRegularFont from "~/assets/Fonts/Lexi-Regular.ttf";
 
 // Components
 import TopNavigation from '../TopNavigation';
@@ -39,9 +40,6 @@ import Typography from '../GenericUIBlocks/Typography';
 import GenericSnackbar from '../GenericUIBlocks/GenericSnackbar/Toast';
 
 import './styles.scss';
-
-// utils
-import {MESSAGES} from '../../utils/message';
 
 setUploadFunc(uploadFile)
 /**

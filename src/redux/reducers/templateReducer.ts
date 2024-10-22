@@ -14,7 +14,7 @@ import {
 } from "../actions/action-types";
 
 // Utils
-import { Products } from "../../utils/products";
+import { Products } from "~/utils/products";
 
 export interface DynamicField {
   value: string;

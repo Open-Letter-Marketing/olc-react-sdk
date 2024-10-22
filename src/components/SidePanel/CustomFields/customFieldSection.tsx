@@ -8,23 +8,23 @@ import type { TemplatesSection } from 'polotno/side-panel';
 
 // Hooks
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../redux/store';
+import { AppDispatch, RootState } from '~/redux/store';
 
 // Actions
-import { failure, success } from '../../../redux/actions/snackbarActions';
-import { SET_CUSTOM_FIELDS } from '../../../redux/actions/action-types';
+import { failure, success } from '~/redux/actions/snackbarActions';
+import { SET_CUSTOM_FIELDS } from '~/redux/actions/action-types';
 
 // Components
-import Button from '../../GenericUIBlocks/Button';
-import GeneralTootip from '../../GenericUIBlocks/GeneralTooltip';
+import Button from '~/components/GenericUIBlocks/Button';
+import GeneralTootip from '~/components/GenericUIBlocks/GeneralTooltip';
 
 // Utils
-import { copyToClipboard } from '../../../utils/helper';
+import { copyToClipboard } from '~/utils/helper';
 
 // Icons
-import InfoIcon from '../../../assets/images/templates/info-icon';
-import ContentCopyIcon from '../../..//assets/images/templates/content-copy-icon';
-import Field from '../../../assets/images/templates/field';
+import InfoIcon from '~/assets/images/templates/info-icon';
+import ContentCopyIcon from '~//assets/images/templates/content-copy-icon';
+import Field from '~/assets/images/templates/field';
 
 // Styles
 import './styles.scss'

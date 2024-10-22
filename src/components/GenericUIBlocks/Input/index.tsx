@@ -4,8 +4,8 @@ import React, {ChangeEvent, FC} from 'react';
 import Typography from '../Typography';
 
 // icon
-import Search from '../../../assets/images/input/search';
-import Cancel from '../../../assets/images/input/cancel';
+import Search from '~/assets/images/input/search';
+import Cancel from '~/assets/images/input/cancel';
 
 // styles
 import './styles.scss';

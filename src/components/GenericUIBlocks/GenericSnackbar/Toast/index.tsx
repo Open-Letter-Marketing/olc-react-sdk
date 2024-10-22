@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
 
 // Action
-import {CLEAR_SNACKBAR} from '../../../../redux/actions/action-types';
+import {CLEAR_SNACKBAR} from '~/redux/actions/action-types';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../../../../redux/store';
+import {AppDispatch, RootState} from '~/redux/store';
 
 // utils
-import {MESSAGES} from '../../../../utils/message';
+import {MESSAGES} from '~/utils/message';
 
 // icon
-import Cross from '../../../../assets/images/modal-icons/cross';
+import Cross from '~/assets/images/modal-icons/cross';
 
 // styles
 import './styles.scss';

@@ -2,18 +2,18 @@ import React from 'react';
 
 // Utils
 import { TemplateCategory, TemplateRecord, TemplateType } from '../customTemplateSection';
-import { hexToRgba, removeSThroughOne } from '../../../../utils/helper';
+import { hexToRgba, removeSThroughOne } from '~/utils/helper';
 
 // Components
 import TempCard from '../TemplatesCard';
-import Tabs from '../../../GenericUIBlocks/Tabs';
-import Typography from '../../../GenericUIBlocks/Typography';
-import GeneralSelect from '../../../GenericUIBlocks/GeneralSelect';
-import Input from '../../../GenericUIBlocks/Input';
-import Dialog from '../../../GenericUIBlocks/Dialog';
+import Tabs from '~/components/GenericUIBlocks/Tabs';
+import Typography from '~/components/GenericUIBlocks/Typography';
+import GeneralSelect from '~/components/GenericUIBlocks/GeneralSelect';
+import Input from '~/components/GenericUIBlocks/Input';
+import Dialog from '~/components/GenericUIBlocks/Dialog';
 
 // Icons
-import DesignIcon from '../../../../assets/images/templates/template-default-design';
+import DesignIcon from '~/assets/images/templates/template-default-design';
 
 const galleryDialogStyles = {
     maxWidth: '1090px',

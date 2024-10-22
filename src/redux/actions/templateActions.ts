@@ -1,7 +1,7 @@
 import { AppDispatch } from '../store';
 
 // Utils
-import { get, post, patch } from '../../utils/api';
+import { get, post } from '~/utils/api';
 
 // Action Types
 import {
