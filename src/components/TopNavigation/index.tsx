@@ -114,6 +114,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
     (state: RootState) => state.templates.defaultSenderFields
   );
 
+  const customFields = useSelector(
+    (state: RootState) => state.customFields.customFields
+  );
+
   const defaultPropertyFields = useSelector(
     (state: RootState) => state.templates.defaultPropertyFields
   );
@@ -162,7 +166,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   const handleViewProofWithLamda = async () => {
     try {
       setDownloaingProof(true);
-      const fields = [...defaultFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields];
+      const fields = [...defaultFields, ...customFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields];
       let json = store.toJSON();
       if (product?.productType === "Real Penned Letter") {
         let clonedJson = JSON.stringify(json)
@@ -213,7 +217,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   const handleSave = async () => {
     try {
       const formData = new FormData();
-      const allFields = [...defaultFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields];
+      const allFields = [...defaultFields, ...customFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields];
       let selectedFields: any = [];
       if (templateType === 'json') {
         const blob = await store.toBlob();
