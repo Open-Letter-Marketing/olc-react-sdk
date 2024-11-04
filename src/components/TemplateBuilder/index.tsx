@@ -222,7 +222,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
   const validateFile = (file: File) => {
     if (!file || !allowedImageTypes.includes(file?.type)) {
       dispatch(failure('Only image files with extensions jpeg, png, or svg are allowed.'))
-      return;
+      throw new Error('Unsupported type');
     } 
     return uploadFile(file);
   }
