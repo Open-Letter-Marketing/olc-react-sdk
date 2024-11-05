@@ -89,7 +89,7 @@ const customFieldSection: SideSection = {
     const fetchCustomFields = async () => {
       if (onGetCustomFields) {
         const customFields: any = await onGetCustomFields();
-        if (customFields?.length) {
+        if (customFields?.length >= 0) {
           dispatch({
             type: SET_CUSTOM_FIELDS,
             payload: customFields,
