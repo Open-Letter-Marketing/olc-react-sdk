@@ -25,7 +25,7 @@ import { failure } from '../../redux/actions/snackbarActions';
 // Utils
 import { drawRestrictedAreaOnPage, getFileAsBlob } from '../../utils/template-builder';
 import { addElementsforRealPennedLetters } from '../../utils/templateRestrictedArea/realPenned';
-import { DPI, multiPageLetters } from '../../utils/constants';
+import { DPI, allowedImageTypes, multiPageLetters } from '../../utils/constants';
 
 // @ts-ignore
 import fonts from "../../utils/fonts.json";
@@ -43,7 +43,6 @@ import './styles.scss';
 // utils
 import {MESSAGES} from '../../utils/message';
 
-setUploadFunc(uploadFile)
 /**
  * This code defines a React functional component called `TemplateBuilder` that is responsible for rendering a template builder interface.
  * It includes various useEffect hooks to handle component lifecycle events and state updates.
@@ -134,6 +133,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
   // @ts-ignore
   useEffect(() => {
     if (product || (id && onGetOneTemplate)) {
+      setUploadFunc(validateFile);
       setGoogleFonts(fonts);
 
       if (id && onGetOneTemplate) {
@@ -217,6 +217,14 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
         })
       }
     }
+  }
+
+  const validateFile = (file: File) => {
+    if (!file || !allowedImageTypes.includes(file?.type)) {
+      dispatch(failure('Only image files with extensions jpeg, png, or svg are allowed.'))
+      throw new Error('Unsupported type');
+    } 
+    return uploadFile(file);
   }
 
   const createInitialPage = async () => {
