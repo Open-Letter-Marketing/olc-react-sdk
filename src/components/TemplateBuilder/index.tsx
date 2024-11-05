@@ -151,6 +151,8 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
           });
         } catch (error) {
           return error;
+        } finally {
+          dispatch({ type: TEMPLATE_LOADING, payload: false });
         }
         // @ts-ignore
       } else if (store.pages.length === 0 && !olcTemplate) {

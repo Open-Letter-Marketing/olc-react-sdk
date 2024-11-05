@@ -1,7 +1,7 @@
 {
   "name": "@openlettermarketing/olc-react-sdk",
   "private": false,
-  "version": "1.5.5",
+  "version": "1.5.6",
   "type": "module",
   "description": "Simplify template builder integration for any product.",
   "main": "build/index.js",
