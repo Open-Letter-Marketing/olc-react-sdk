@@ -359,6 +359,7 @@ const CustomTemplateSection: SideSection = {
           } catch (error) {
             return error;
           } finally {
+            dispatch({ type: TEMPLATE_LOADING, payload: false });
             handleDialogChange('');
           }
         } else {
