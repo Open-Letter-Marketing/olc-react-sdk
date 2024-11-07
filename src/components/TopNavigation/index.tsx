@@ -19,7 +19,7 @@ import ConfirmNavigateDialog from './ConfirmNavigateDialog';
 import EditTemplateNameModel from './EditTemplateNameModel';
 
 // Utils
-import { downloadPDF, extractFontFamilies, multiPageTemplates, validateEmoji, validateGSV } from '../../utils/template-builder';
+import { downloadPDF, extractFontFamilies, multiPageTemplates, removeBracketsFromRPL, validateEmoji, validateGSV } from '../../utils/template-builder';
 import { getItem, setItem } from '../../utils/local-storage';
 import { MESSAGES } from '../../utils/message';
 // @ts-ignore
@@ -169,6 +169,8 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
       const fields = [...defaultFields, ...customFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields];
       let json = store.toJSON();
       if (product?.productType === "Real Penned Letter") {
+        const removedUnsupportedBrackets = removeBracketsFromRPL(json);
+        json = removedUnsupportedBrackets;
         let clonedJson = JSON.stringify(json)
           .replace(/\(\(/g, "{{")
           .replace(/\)\)/g, "}}");
@@ -224,6 +226,8 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         let jsonData = store.toJSON();
 
         if (product?.productType === "Real Penned Letter") {
+          const removedUnsupportedBrackets = removeBracketsFromRPL(jsonData);
+          jsonData = removedUnsupportedBrackets;
           let clonedJson = JSON.stringify(jsonData)
             .replace(/\(\(/g, "{{")
             .replace(/\)\)/g, "}}");
