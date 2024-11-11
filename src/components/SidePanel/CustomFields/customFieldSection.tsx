@@ -186,7 +186,7 @@ const customFieldSection: SideSection = {
             )}
         </>}
         <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
-        {onGetCustomFields && (
+        {onGetCustomFields && customFields?.length > 0 &&(
           <>
             <hr className="divider" />
             <div className="dynamic-content__top">

@@ -8,6 +8,8 @@ import { getIsSandbox } from './helper';
 import { addRestrictedAreaToBiFold } from './templateRestrictedArea/biFold';
 import { addRestrictedAreaToPostCard } from './templateRestrictedArea/postCard';
 import { addAreaToProfessionalLetters } from './templateRestrictedArea/professional';
+import { addAreaToNonWindowProfessionalLetters } from './templateRestrictedArea/nonWindowProfessional';
+import { addAreaToPersonalLetters } from './templateRestrictedArea/personal';
 import { addRestrictedAreaToTriFold } from './templateRestrictedArea/triFold';
 
 
@@ -15,7 +17,9 @@ export const addressPrinting: { [key: string]: boolean } = {
   'Postcards-': true,
   'Tri-Fold Self-Mailers-': true,
   'Bi-Fold Self-Mailers-': true,
+  "Personal Letters-": true,
   'Professional Letters-#10 Double-Window': true,
+  'Professional Letters-#10 Grey': true,
 };
 
 export const multiPageTemplates: string[] = [
@@ -113,8 +117,18 @@ export interface Product {
 export const drawRestrictedAreaOnPage = (store: any, product: Product, envelopeType: string) => {
   const barcodeSrc = (getIsSandbox() ? DEMO_S3_URL : PROD_S3_URL) + BARCODE_IMAGE_URL;
   if (addressPrinting[`${product.productType}-${envelopeType}`]) {
-    if (product.productType === 'Professional Letters') {
+    if (
+      product.productType === "Professional Letters" &&
+      envelopeType === "#10 Double-Window"
+    ) {
       addAreaToProfessionalLetters(store, barcodeSrc);
+    } else if (
+      product.productType === "Professional Letters" &&
+      envelopeType === "#10 Grey"
+    ) {
+      addAreaToNonWindowProfessionalLetters(store);
+    } else if (product.productType === "Personal Letters") {
+      addAreaToPersonalLetters(store);
     } else if (product.productType === multiPageLetters[0]) {
       addRestrictedAreaToPostCard(
         store,
