@@ -160,6 +160,23 @@ export const extractFontFamilies = (jsonData: any[]): string[] => {
   return fontFamilies;
 };
 
+export const removeBracketsFromRPL = (jsonData: any[]) => {
+  let clonedData = JSON.parse(JSON.stringify(jsonData));
+  const updatedJson = clonedData.pages.map((obj: any) => {
+    if (obj.children) {
+      obj.children = obj.children.map((child: any) => {
+        if (child.type === 'text' && typeof child.text === 'string') {
+          child.text = child.text.replace(/[{}\[\]]/g, '');
+        }
+        return child;
+      });
+    }
+    return obj;
+  });
+  clonedData.pages = updatedJson;
+  return clonedData;
+};
+
 export const validateGSV = (pages: any) => {
   const hasMultipleGSV = (children: any) =>
     children.filter(
