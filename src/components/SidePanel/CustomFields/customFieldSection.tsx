@@ -46,7 +46,7 @@ type CustomFieldsSectionProps = {
   onGetCustomFields?: () => Promise<any>;
 };
 
-const customFieldSection: SideSection = {
+const CustomFieldSection: SideSection = {
   name: 'Fields',
   Tab: observer(
     (props: { store: StoreType; active: boolean; onClick: () => void }) => (
@@ -231,4 +231,4 @@ const customFieldSection: SideSection = {
   }) as unknown as SideSection['Panel'],
 };
 
-export default customFieldSection;
+export default CustomFieldSection;

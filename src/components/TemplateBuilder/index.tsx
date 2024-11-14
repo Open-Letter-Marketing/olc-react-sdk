@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 // Import Polotno and third-party libraries
 import { PolotnoContainer, WorkspaceWrap } from 'polotno';
-import { setUploadFunc } from 'polotno/config';
 import { Toolbar } from 'polotno/toolbar/toolbar';
 import { ZoomButtons } from 'polotno/toolbar/zoom-buttons';
 import { Workspace } from 'polotno/canvas/workspace';
@@ -16,9 +15,6 @@ import { AppDispatch } from '../../redux/store';
 import { StoreType } from 'polotno/model/store';
 
 // Actions
-import {
-  uploadFile,
-} from '../../redux/actions/templateActions';
 import { GET_ONE_TEMPLATE, SET_CUSTOM_FIELDS, TEMPLATE_LOADING } from '../../redux/actions/action-types';
 import { failure } from '../../redux/actions/snackbarActions';
 
@@ -133,7 +129,6 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
   // @ts-ignore
   useEffect(() => {
     if (product || (id && onGetOneTemplate)) {
-      setUploadFunc(validateFile);
       setGoogleFonts(fonts);
 
       if (id && onGetOneTemplate) {
@@ -219,14 +214,6 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
         })
       }
     }
-  }
-
-  const validateFile = (file: File) => {
-    if (!file || !allowedImageTypes.includes(file?.type)) {
-      dispatch(failure('Only image files with extensions jpeg, png, or svg are allowed.'))
-      throw new Error('Unsupported type');
-    } 
-    return uploadFile(file);
   }
 
   const createInitialPage = async () => {
