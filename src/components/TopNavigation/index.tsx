@@ -222,7 +222,6 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
       const allFields = [...defaultFields, ...customFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields];
       let selectedFields: any = [];
       if (templateType === 'json') {
-        const blob = await store.toBlob();
         let jsonData = store.toJSON();
 
         if (product?.productType === "Real Penned Letter") {
@@ -232,6 +231,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
             .replace(/\(\(/g, "{{")
             .replace(/\)\)/g, "}}");
           jsonData = JSON.parse(clonedJson);
+          await store.loadJSON(jsonData);
         }
 
         // get all fonts family from json
@@ -264,6 +264,8 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         }
 
         setIsShowModel((prev) => ({ ...prev, loading: true }));
+
+        const blob = await store.toBlob();
 
         if (multiPageTemplates.includes(product.productType)) {
           const backJsonData = { ...jsonData, pages: [jsonData.pages[1]] }
