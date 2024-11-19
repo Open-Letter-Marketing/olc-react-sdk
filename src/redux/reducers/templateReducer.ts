@@ -7,6 +7,7 @@ import {
   CLEAR_ALL_TEMPLATE,
   SELECT_PRODUCT,
   SELECT_POSTCARD,
+  SET_UPLOADED_IMAGES,
   CLEAR_TEMPLATE_FIELDS,
   LOAD_DATA_FROM_LOCAL_STORAGE,
   CLEAR_TEMPLATE,
@@ -73,6 +74,7 @@ export interface TemplateState {
   templateType: string;
   envelopeType: string;
   templateLoading: boolean | null;
+  uploadedImages: any[];
 }
 
 
@@ -273,6 +275,7 @@ const initialState: TemplateState = {
   templateType: "json",
   envelopeType: "",
   templateLoading: null,
+  uploadedImages: []
 };
 
 // @ts-ignore
@@ -326,6 +329,11 @@ const templateReducer = (state = initialState, { type, payload }): TemplateState
           ...payload.product,
           productType: payload.productType,
         },
+      };
+    case SET_UPLOADED_IMAGES:
+      return {
+        ...state,
+        uploadedImages: payload,
       };
     case CLEAR_ALL_TEMPLATE:
       return {

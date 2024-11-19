@@ -50,3 +50,17 @@ export const hexToRgba = (hex: any, opacity: any) => {
   // Return the RGBA string
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 }
+
+export const getType = (file: any) => {
+  const { type } = file;
+  if (type.indexOf('svg') >= 0) {
+    return 'svg';
+  }
+  if (type.indexOf('image') >= 0) {
+    return 'image';
+  }
+  if (type.indexOf('video') >= 0) {
+    return 'video';
+  }
+  return 'image';
+}

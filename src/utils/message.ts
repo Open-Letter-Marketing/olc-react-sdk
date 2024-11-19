@@ -21,7 +21,7 @@ export const MESSAGES = {
     CREATE: {
       TITLE: 'Create New Template',
       TEMPLATE_LABEL: 'Template Name*',
-      PRODUCT_LABEL : 'Product Type*',
+      PRODUCT_LABEL: 'Product Type*',
       LEARN_TEXT: 'Learn More',
       CANCEL_BUTTON: "Cancel",
       SUBMIT_BUTTON: "Next",
@@ -68,6 +68,14 @@ export const MESSAGES = {
         "You will lose your changes. Please save your changes or click ok to proceed.",
       SUBMIT_BUTTON: "OK",
       CANCEL_BUTTON: "Cancel",
+    },
+    CUSTOM_UPLOAD_SECTION: {
+      HEADING: 'Do you want to upload your own images?',
+      ACCEPTED_FORMATS: 'Accepted File Formats: JPEG, PNG, SVG',
+      MAX_SIZE: 'Max File Size Limits: 5MB',
+      UPLOAD_BTN_TEXT: 'Upload Image',
+      TYPE_VALIDATION: 'Only image files with extensions jpeg, png, or svg are allowed.',
+      SIZE_VALIDATION: 'File size must be under 5MB.',
     },
     DOWNLOAD_PROOF_BUTTON: "Download Proof",
     CANCEL_BUTTON: "Cancel",

@@ -9,8 +9,9 @@ import {
 } from 'polotno/side-panel';
 
 // Custom Sections / Components
-import customTemplateSection from './Templates/customTemplateSection';
-import customFieldSection from './CustomFields/customFieldSection';
+import CustomTemplateSection from './Templates/customTemplateSection';
+import CustomFieldSection from './CustomFields/customFieldSection';
+import CustomUploadSection from './CustomUploads';
 import customAddOns from './CustomAddOns';
 
 interface Props {
@@ -43,9 +44,10 @@ const SidePanel: React.FC<Props> = (props) => {
           ...(props.currentTemplateType !== 'Real Penned Letter'
             ? [
                 {
-                  ...customTemplateSection,
+                  ...CustomTemplateSection,
+                  ...CustomUploadSection,
                   Panel: (panelProps: any) => (
-                    <customTemplateSection.Panel
+                    <CustomTemplateSection.Panel
                       {...panelProps}
                       platformName={props.platformName}
                       templateGalleryModal={props.templateGalleryModal}
@@ -59,9 +61,10 @@ const SidePanel: React.FC<Props> = (props) => {
             : []),
           ...sections,
           {
-            ...customFieldSection,
+            ...CustomFieldSection,
+            ...CustomUploadSection,
             Panel: (panelProps: any) => (
-              <customFieldSection.Panel
+              <CustomFieldSection.Panel
                 {...panelProps}
                 onGetCustomFields={props.onGetCustomFields}
                 allowSenderFields={props.allowSenderFields}
