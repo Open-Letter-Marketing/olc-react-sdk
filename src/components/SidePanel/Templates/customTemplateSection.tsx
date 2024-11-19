@@ -147,6 +147,7 @@ const CustomTemplateSection: SideSection = {
       const paginationRef = useRef(pagination);
       const searchRef = useRef(search);
       const currentTemplateTypeRef = useRef(currentTemplateType);
+      const selectedCategoryRef = useRef(selectedCategory);
 
       const templates = useSelector(
         (state: RootState) => state.templates.templates
@@ -193,7 +194,7 @@ const CustomTemplateSection: SideSection = {
             ? (payload.search = searchRef.current)
             : undefined;
           currentTemplateTypeRef.current?.id === '3'
-            ? (payload.categoryIds = selectedCategory?.id.split(','))
+            ? (payload.categoryIds = selectedCategoryRef?.current?.id.split(','))
             : undefined;
           const isCustomTemplateType =
             currentTemplateTypeRef.current?.id === '1' ||
@@ -481,6 +482,10 @@ const CustomTemplateSection: SideSection = {
       useEffect(() => {
         currentTemplateTypeRef.current = currentTemplateType;
       }, [currentTemplateType]);
+
+      useEffect(()=>{
+        selectedCategoryRef.current = selectedCategory;
+      }, [selectedCategory]);
 
       useEffect(() => {
         paginationRef.current = pagination;
