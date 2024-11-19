@@ -64,3 +64,13 @@ export const getType = (file: any) => {
   }
   return 'image';
 }
+
+export const cleanString = (input: string): string => {
+  var output = "";
+  for (var i = 0; i < input.length; i++) {
+    if (input.charCodeAt(i) <= 127) {
+      output += input.charAt(i);
+    }
+  }
+  return output;
+}

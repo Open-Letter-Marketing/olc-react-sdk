@@ -2,7 +2,7 @@
 
 // Utils
 import { multiPageLetters, BARCODE_IMAGE_URL, DEMO_S3_URL, PROD_S3_URL, emojiRegex } from './constants';
-import { getIsSandbox } from './helper';
+import { cleanString, getIsSandbox } from './helper';
 
 // Restricted Area Files
 import { addRestrictedAreaToBiFold } from './templateRestrictedArea/biFold';
@@ -166,7 +166,8 @@ export const removeBracketsFromRPL = (jsonData: any[]) => {
     if (obj.children) {
       obj.children = obj.children.map((child: any) => {
         if (child.type === 'text' && typeof child.text === 'string') {
-          child.text = child.text.replace(/[{}\[\]]/g, '');
+          const cleanedText = cleanString(child.text);
+          child.text = cleanedText.replace(/[{}\[\]]/g, '');
         }
         return child;
       });
