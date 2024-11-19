@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // Third Party Libraries
 import { observer } from 'mobx-react-lite';
+import type { StoreType } from 'polotno/model/store';
 import {
   ImagesGrid,
   UploadSection as DefaultUploadSection,
@@ -25,7 +26,12 @@ import { MESSAGES } from '../../../utils/message';
 // UI Components
 import { Button } from '@blueprintjs/core';
 
-export const UploadPanel = observer(({ store }) => {
+
+interface UploadPanelProps {
+  store: StoreType;
+}
+
+export const UploadPanel = observer(({ store } : UploadPanelProps) => {
   const [images, setImages] = useState<Array<{
     url: string;
     type: string;
@@ -100,7 +106,7 @@ export const UploadPanel = observer(({ store }) => {
             icon="upload"
             style={{ width: '100%', backgroundColor: '#f6f7f9', boxShadow: 'inset 0 0 0 1px #11141833,0 1px 2px #1114181a', color: '#1c2127'}}
             onClick={() => {
-              document.querySelector('#input-file')?.click();
+              (document.querySelector('#input-file') as HTMLInputElement)?.click();
             }}
             loading={isUploading}
             intent="primary"
