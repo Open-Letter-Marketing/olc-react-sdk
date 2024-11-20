@@ -74,6 +74,10 @@ const SideBarSelction = (props: CustomTemplateSectionProps) => {
         handleDialogChange,
     } = props;
 
+    const uniqueCurrentTemplates = Array.from(
+        new Map(olcTemplates.map((item) => [item.id, item])).values()
+    );
+
     return (
         <div className="custom-template-section">
             <div className="templateTabsWrapper">
@@ -195,8 +199,8 @@ const SideBarSelction = (props: CustomTemplateSectionProps) => {
                     </>
                 ) : currentTemplateType?.id === '3' ? (
                     <>
-                        {olcTemplates.length ? (
-                            olcTemplates?.map((template, i) => (
+                        {uniqueCurrentTemplates.length ? (
+                            uniqueCurrentTemplates?.map((template, i) => (
                                 <div
                                     className="design-template"
                                     key={i}
