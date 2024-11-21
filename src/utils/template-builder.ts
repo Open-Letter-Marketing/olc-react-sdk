@@ -13,7 +13,7 @@ import { addAreaToPersonalLetters } from './templateRestrictedArea/personal';
 import { addRestrictedAreaToTriFold } from './templateRestrictedArea/triFold';
 
 // Safety Borders Files
-import { addSafetyBordersTo4x6PostCard } from './templateSafetyBorders/postCard';
+import { addSafetyBordersForTemplates } from './templateSafetyBorders';
 
 export const addressPrinting: { [key: string]: boolean } = {
   'Postcards-': true,
@@ -113,6 +113,7 @@ export const downloadPDF = (title: string, url: string): void => {
 };
 
 export interface Product {
+  id: string;
   productType: string;
   selectedSize: string;
 }
@@ -138,9 +139,7 @@ export const drawRestrictedAreaOnPage = (store: any, product: Product, envelopeT
         [3.2835, 2.375],
         barcodeSrc
       );
-      if (product?.selectedSize === "4x6") {
-        addSafetyBordersTo4x6PostCard(store);
-      }
+      addSafetyBordersForTemplates(product?.id, store);
     } else if (product.productType === multiPageLetters[1]) {
       addRestrictedAreaToTriFold(store, [3.2835, 2.375], barcodeSrc);
     } else if (product.productType === multiPageLetters[2]) {

@@ -52,9 +52,10 @@ interface Store {
 }
 
 export const addSafetyBordersTo4x6PostCard = (store: Store): void => {
-    
+    const randomizedId = Math.random().toString(36).substring(2,7);
+
     const firstPageBorders: Element = {
-        id: "safety-border-1",
+        id: `safety-border-1-${randomizedId}`,
         type: "group",
         opacity: 1,
         visible: true,
@@ -71,7 +72,7 @@ export const addSafetyBordersTo4x6PostCard = (store: Store): void => {
     };
 
     const secondPageBorders: Element = {
-        id: "safety-border-2",
+        id: `safety-border-2-${randomizedId}`,
         type: "group",
         opacity: 1,
         visible: true,
@@ -80,10 +81,10 @@ export const addSafetyBordersTo4x6PostCard = (store: Store): void => {
         alwaysOnTop: true,
         showInExport: false,
         children: [
-            createBorder("top-2", 18.19, 14.7, 539.61, 1.97, 0),
-            createBorder("bottom-2", 18.19, 367.32, 539.61, 1.97, 0),
-            createBorder("left-2", 17.21, 368.31, 352.62, 1.97, -90),
-            createBorder("right-2", 556.82, 368.31, 352.62, 1.97, -90),
+            createBorder(`top-2-${randomizedId}`, 18.19, 14.7, 539.61, 1.97, 0),
+            createBorder(`bottom-2-${randomizedId}`, 18.19, 367.32, 539.61, 1.97, 0),
+            createBorder(`left-2-${randomizedId}`, 17.21, 368.31, 352.62, 1.97, -90),
+            createBorder(`right-2-${randomizedId}`, 556.82, 368.31, 352.62, 1.97, -90),
         ],
     };
 
