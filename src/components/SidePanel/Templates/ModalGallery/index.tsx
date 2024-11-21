@@ -91,6 +91,10 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                 ? olcTemplates
                 : []
 
+    const uniqueCurrentTemplates = Array.from(
+        new Map(currentTemplates.map((item) => [item.id, item])).values()
+    );
+
     return (
         <>
             <Dialog
@@ -162,9 +166,9 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                             <div
                                 className={`defaultDesign 
                       ${product?.id === '13' &&
-                                        product?.size?.find((product: any) => product?.size === "4x6") ||  product?.paperSize === "4x6" ? "postcard-4x6"
-                                        : product?.id === '15' && product?.size?.find((product: any) => product?.size === "6x11") ||  product?.paperSize === "6x11" ? "postcard-6x11"
-                                            : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") ||  product?.paperSize === "6x9" ? "postcard-6x9"
+                                        product?.size?.find((product: any) => product?.size === "4x6") || product?.paperSize === "4x6" ? "postcard-4x6"
+                                        : product?.id === '15' && product?.size?.find((product: any) => product?.size === "6x11") || product?.paperSize === "6x11" ? "postcard-6x11"
+                                            : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") || product?.paperSize === "6x9" ? "postcard-6x9"
                                                 : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                                 onClick={() => handleDialogChange('design-own')}
                                 style={{
@@ -178,7 +182,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                         </div>
                     )}
                     <TempCard
-                        templates={currentTemplates}
+                        templates={uniqueCurrentTemplates}
                         handleLoadTemplateModel={handleLoadTemplateModel}
                         loading={loader}
                         platformName={platformName}
