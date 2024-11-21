@@ -5,7 +5,7 @@ import { addSafetyBordersTo4x6PostCard } from './postCards'
 
 export const addSafetyBordersForTemplates = (productId: string, store: StoreType) => {
     if (!productId) return;
-    if (productId === '13') {
+    if (+productId === 13) {
         addSafetyBordersTo4x6PostCard(store);
     }
 };
