@@ -33,6 +33,7 @@ import {
 } from '../../../utils/template-builder';
 import { MESSAGES } from '../../../utils/message';
 import { getItem, removeItem, setItem } from '../../../utils/local-storage';
+import { addSafetyBordersForTemplates } from '../../../utils/templateSafetyBorders';
 
 // Components
 import Dialog from '../../GenericUIBlocks/Dialog';
@@ -349,6 +350,7 @@ const CustomTemplateSection: SideSection = {
               }
               store.loadJSON(jsonData);
               await store.waitLoading();
+              addSafetyBordersForTemplates(template?.product?.id, store);
               dispatch({ type: TEMPLATE_LOADING, payload: false });
               if (workspaceElement) {
                 workspaceElement.classList.add('hide-loader');

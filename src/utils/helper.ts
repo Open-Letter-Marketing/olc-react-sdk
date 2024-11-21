@@ -74,3 +74,30 @@ export const cleanString = (input: string): string => {
   }
   return output;
 }
+
+export const createBorder = (
+  id: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  rotation: number
+) => ({
+  id,
+  type: "line",
+  opacity: 1,
+  visible: true,
+  selectable: false,
+  removable: false,
+  alwaysOnTop: true,
+  showInExport: false,
+  x,
+  y,
+  width,
+  height,
+  rotation,
+  color: "rgba(48,155,95,1)",
+  dash: [4, 1],
+  draggable: false,
+  resizable: false,
+});

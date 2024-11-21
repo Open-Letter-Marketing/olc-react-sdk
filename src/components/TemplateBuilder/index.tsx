@@ -22,6 +22,8 @@ import { failure } from '../../redux/actions/snackbarActions';
 import { drawRestrictedAreaOnPage, getFileAsBlob } from '../../utils/template-builder';
 import { addElementsforRealPennedLetters } from '../../utils/templateRestrictedArea/realPenned';
 import { DPI, allowedImageTypes, multiPageLetters } from '../../utils/constants';
+import { addSafetyBordersForTemplates } from '../../utils/templateSafetyBorders';
+import { MESSAGES } from '../../utils/message';
 
 // @ts-ignore
 import fonts from "../../utils/fonts.json";
@@ -35,9 +37,6 @@ import Typography from '../GenericUIBlocks/Typography';
 import GenericSnackbar from '../GenericUIBlocks/GenericSnackbar/Toast';
 
 import './styles.scss';
-
-// utils
-import {MESSAGES} from '../../utils/message';
 
 /**
  * This code defines a React functional component called `TemplateBuilder` that is responsible for rendering a template builder interface.
@@ -136,6 +135,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
           onGetOneTemplate(id).then((template) => {
             if (template) {
               dispatch({ type: GET_ONE_TEMPLATE, payload: { data: template } });
+              addSafetyBordersForTemplates(template?.product?.id, store);
               dispatch({ type: TEMPLATE_LOADING, payload: true });
             } else {
               dispatch(failure('Unable to load the Template'));
@@ -287,13 +287,14 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
       });
       store.setSize(+paperDimensions[1] * DPI, +paperDimensions[0] * DPI);
       let jsonData = await getFileAsBlob(existingTemplate?.templateUrl);
-      if (template?.product?.productType === 'Real Penned Letter') {
+      if (existingTemplate?.product?.productType === 'Real Penned Letter') {
         let clonedJson = JSON.stringify(jsonData).replace(/{{/g, "((").replace(/}}/g, "))");
         jsonData = JSON.parse(clonedJson);
       }
       store.loadJSON(jsonData);
       await store.waitLoading();
       setIsStoreUpdated(false);
+      addSafetyBordersForTemplates(existingTemplate?.product?.id, store);
       dispatch({ type: TEMPLATE_LOADING, payload: false });
       if (workspaceElement) {
         workspaceElement.classList.add("hide-loader");
