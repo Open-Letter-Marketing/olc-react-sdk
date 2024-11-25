@@ -9,5 +9,7 @@ export const addSafetyBordersForTemplates = (productId: string, store: StoreType
         addSafetyBordersTo4x6PostCard(store);
     } else if (+productId === 14) {
         addSafetyBordersTo6x9PostCard(store);
+    } else if (+productId === 15) {
+        addSafetyBordersTo6x11PostCard(store);
     }
 };
