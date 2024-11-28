@@ -139,12 +139,12 @@ export const drawRestrictedAreaOnPage = (store: any, product: Product, envelopeT
         [3.2835, 2.375],
         barcodeSrc
       );
-      addSafetyBordersForTemplates(product?.id, store);
     } else if (product.productType === multiPageLetters[1]) {
       addRestrictedAreaToTriFold(store, [3.2835, 2.375], barcodeSrc);
     } else if (product.productType === multiPageLetters[2]) {
       addRestrictedAreaToBiFold(store, [3.2835, 2.375], barcodeSrc);
     }
+    addSafetyBordersForTemplates(product?.id, store);
   }
 };
 
