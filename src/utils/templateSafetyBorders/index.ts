@@ -4,7 +4,7 @@ import { StoreType } from "polotno/model/store";
 import { addSafetyBordersTo4x6PostCard, addSafetyBordersTo6x9PostCard, addSafetyBordersTo6x11PostCard } from './postCards'
 import { addSafetyBordersToPersonalLetter } from './personal'
 import { addSafetyBordersToNonWindowProfessioanl, addSafetyBordersToWindowProfessioanl } from './professional'
-
+import { addSafetyBordersToBiFold } from './biFold'
 
 
 export const addSafetyBordersForTemplates = (productId: string, store: StoreType) => {
@@ -21,5 +21,7 @@ export const addSafetyBordersForTemplates = (productId: string, store: StoreType
         addSafetyBordersToNonWindowProfessioanl(store);
     } else if (+productId === 2) {
         addSafetyBordersToWindowProfessioanl(store);
+    } else if (+productId === 9) {
+        addSafetyBordersToBiFold(store);
     }
 };
