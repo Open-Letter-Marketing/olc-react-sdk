@@ -3,7 +3,7 @@ import { StoreType } from "polotno/model/store";
 // Safety Border Files
 import { addSafetyBordersTo4x6PostCard, addSafetyBordersTo6x9PostCard, addSafetyBordersTo6x11PostCard } from './postCards'
 import { addSafetyBordersToPersonalLetter } from './personal'
-import { addSafetyBordersToNonWindowProfessioanl } from './professional'
+import { addSafetyBordersToNonWindowProfessioanl, addSafetyBordersToWindowProfessioanl } from './professional'
 
 
 
@@ -19,5 +19,7 @@ export const addSafetyBordersForTemplates = (productId: string, store: StoreType
         addSafetyBordersToPersonalLetter(store);
     } else if (+productId === 4) {
         addSafetyBordersToNonWindowProfessioanl(store);
+    } else if (+productId === 2) {
+        addSafetyBordersToWindowProfessioanl(store);
     }
 };
