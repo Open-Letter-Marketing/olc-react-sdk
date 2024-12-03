@@ -5,6 +5,7 @@ import { addSafetyBordersTo4x6PostCard, addSafetyBordersTo6x9PostCard, addSafety
 import { addSafetyBordersToPersonalLetter } from './personal'
 import { addSafetyBordersToNonWindowProfessioanl, addSafetyBordersToWindowProfessioanl } from './professional'
 import { addSafetyBordersToBiFold } from './biFold'
+import { addSafetyBordersToTriFold } from './triFold'
 
 
 export const addSafetyBordersForTemplates = (productId: string, store: StoreType) => {
@@ -23,5 +24,7 @@ export const addSafetyBordersForTemplates = (productId: string, store: StoreType
         addSafetyBordersToWindowProfessioanl(store);
     } else if (+productId === 9) {
         addSafetyBordersToBiFold(store);
+    } else if (+productId === 11) {
+        addSafetyBordersToTriFold(store);
     }
 };
