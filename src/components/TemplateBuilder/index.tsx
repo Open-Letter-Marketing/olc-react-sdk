@@ -20,6 +20,7 @@ import { failure } from '../../redux/actions/snackbarActions';
 
 // Utils
 import { drawRestrictedAreaOnPage, getFileAsBlob } from '../../utils/template-builder';
+import { addIdentifiersForTemplates } from '../../utils/templateIdentifierArea';
 import { addElementsforRealPennedLetters } from '../../utils/templateRestrictedArea/realPenned';
 import { DPI, allowedImageTypes, multiPageLetters } from '../../utils/constants';
 import { addSafetyBordersForTemplates } from '../../utils/templateSafetyBorders';
@@ -232,7 +233,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
       }
       //@ts-ignore
       drawRestrictedAreaOnPage(store, product, envelopeType);
-
+      addIdentifiersForTemplates(product.id, store);
       if (currentTemplateType === "Real Penned Letter") {
         handleRealPennedLetters();
       }
