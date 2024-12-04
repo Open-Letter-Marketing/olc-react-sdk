@@ -129,14 +129,14 @@ export const addIdentifierAreaTo6x11PostCard = (store: Store): void => {
     const page = store.pages[1];
 
     const elements: Element[] = [
-        createTextElement("cont-id-placeholder", "C:", 909.5172787002037, 545, 11),
-        createTextElement("contId", "0000001", 912.032892116843, 545, 30),
-        createTextElement("sequence-id-placeholder", "| S:", 936.0328921218431, 545, 12),
-        createTextElement("sequence", "0000001", 942.032892126843, 545, 29),
-        createTextElement("template-id-placeholder", "| T:", 964.0328921318434, 545, 14),
-        createTextElement("templateId", "0001034", 971.032892136843, 545, 29),
-        createTextElement("order-id-placeholder", "| O:", 996.7496765011042, 545, 11),
-        createTextElement("orderId", "0000127", 1002.2496765061048, 545, 29),
+        createTextElement("cont-id-placeholder", "C:", 909.5172787002037, 540, 11),
+        createTextElement("contId", "0000001", 912.032892116843, 540, 30),
+        createTextElement("sequence-id-placeholder", "| S:", 936.0328921218431, 540, 12),
+        createTextElement("sequence", "0000001", 942.032892126843, 540, 29),
+        createTextElement("template-id-placeholder", "| T:", 964.0328921318434, 540, 14),
+        createTextElement("templateId", "0001034", 971.032892136843, 540, 29),
+        createTextElement("order-id-placeholder", "| O:", 996.7496765011042, 540, 11),
+        createTextElement("orderId", "0000127", 1002.2496765061048, 540, 29),
     ];
 
     elements.forEach(element => page.addElement(element));
