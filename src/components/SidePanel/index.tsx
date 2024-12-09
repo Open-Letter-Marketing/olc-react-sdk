@@ -13,6 +13,7 @@ import CustomTemplateSection from './Templates/customTemplateSection';
 import CustomFieldSection from './CustomFields/customFieldSection';
 import CustomUploadSection from './CustomUploads';
 import customAddOns from './CustomAddOns';
+import CustomQRCode from './CustomQRCode';
 
 interface Props {
   store: StoreType;
@@ -55,6 +56,12 @@ const SidePanel: React.FC<Props> = (props) => {
                       onGetOneTemplate={props.onGetOneTemplate}
                       selectedSection={props.selectedSection}
                     />
+                  ),
+                },
+                {
+                  ...CustomQRCode,
+                  Panel: (panelProps: any) => (
+                    <CustomQRCode.Panel {...panelProps} />
                   ),
                 },
               ]
