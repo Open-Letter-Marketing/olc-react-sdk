@@ -1,61 +1,110 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+// Import Polotno and third-party libraries
 import QRCode from 'qrcode';
 import { observer } from 'mobx-react-lite';
 import { SectionTab } from 'polotno/side-panel';
 import type { StoreType } from 'polotno/model/store';
-
 import * as svg from 'polotno/utils/svg';
-import ImQrcode from '@meronex/icons/im/ImQrcode';
-import { Button, InputGroup } from '@blueprintjs/core';
+
+// Hooks
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../redux/store';
+import { failure } from '../../../redux/actions/snackbarActions';
+
+// Utils
+import { MESSAGES } from '../../../utils/message';
+
+// UI Components
+import { Button } from '@blueprintjs/core';
+import Input from '../../../components/GenericUIBlocks/Input';
+
+// Icons
+import CustomQRIcon from '../../../assets/images/templates/custom-qr-section-icon'
+
 
 interface CustomQRProps {
-    store: StoreType;
+  store: StoreType;
 }
 
-// create svg image for QR code for input text
-export async function getQR(text) {
-  return new Promise((resolve) => {
-    QRCode.toString(
-      text || 'no-data',
-      {
-        type: 'svg',
-        color: {
-          dark: '#00F', // Blue dots
-          light: '#0000', // Transparent background
-        },
-      },
-      (err, string) => {
-        resolve(svg.svgToURL(string));
-      }
-    );
-  });
-}
 
 // define the new custom section
 const CustomQRCode = {
-  name: 'qr',
-  Tab: (props) => (
-    <SectionTab name="Qr" {...props}>
-      <ImQrcode />
+  name: 'QR-Section',
+  Tab: (props: any) => (
+    <SectionTab name="QR" {...props} iconSize={20}>
+      <CustomQRIcon />
     </SectionTab>
   ),
+
   // we need observer to update component automatically on any store changes
-  Panel: observer(({ store } : CustomQRProps) => {
-    const [val, setVal] = React.useState('');
+  Panel: observer(({ store }: CustomQRProps) => {
+    const [val, setVal] = useState('');
 
     const el = store.selectedElements[0];
     const isQR = el?.name === 'qr';
 
+    const dispatch: AppDispatch = useDispatch();
+
+    const clearQRFields = () => {
+      store.selectElements([]);
+      setVal('');
+    }
+
+    // create svg image for QR code for input text
+    const getQR = (text: string) => {
+      return new Promise((resolve) => {
+        QRCode.toString(
+          text || 'no-data',
+          {
+            type: 'svg',
+            color: {
+              dark: '#000000',
+              light: '#0000',
+            },
+          },
+          (err: any, string: string) => {
+            resolve(svg.svgToURL(string));
+          }
+        );
+      });
+    }
+
+    const addNewQRCode = async () => {
+      if (val) {
+        const randomizedId = Math.random().toString(36).substring(2, 7);
+        const src = await getQR(val);
+        store.activePage.addElement({
+          id: `qr-${randomizedId}`,
+          type: 'svg',
+          name: 'qr',
+          x: 50,
+          y: 50,
+          width: 100,
+          height: 100,
+          keepRatio: true,
+          src,
+          custom: {
+            value: val,
+          },
+        });
+        clearQRFields();
+      } else {
+        dispatch(failure(MESSAGES.TEMPLATE.QR_SECTION.EMPTY_QR))
+      }
+    }
+
     // if selection is changed we need to update input value
-    React.useEffect(() => {
-      if (el?.custom?.value) {
+    useEffect(() => {
+      if (el?.name === 'qr') {
         setVal(el?.custom.value);
+      } else {
+        setVal('');
       }
     }, [isQR, el]);
 
     // update image src when we change input data
-    React.useEffect(() => {
+    useEffect(() => {
       if (isQR) {
         getQR(val).then((src) => {
           el.set({
@@ -70,58 +119,20 @@ const CustomQRCode = {
 
     return (
       <div>
-        {isQR && <p>Update select QR code:</p>}
-        {!isQR && <p>Create new QR code:</p>}
-        <InputGroup
+        <Input
+          type="text"
           onChange={(e) => {
             setVal(e.target.value);
           }}
-          placeholder="Type qr code content"
+          placeholder={MESSAGES.TEMPLATE.QR_SECTION.QR_PLACEHOLDER}
           value={val}
-          style={{ width: '100%' }}
         />
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            paddingTop: '20px',
-          }}
+        <Button
+          onClick={isQR ? clearQRFields : addNewQRCode}
+          style={{ width: '100%', padding: '5px', marginTop: '10px', backgroundColor: '#f6f7f9', boxShadow: 'inset 0 0 0 1px #11141833,0 1px 2px #1114181a', color: '#1c2127' }}
         >
-          <Button
-            style={{
-              display: isQR ? '' : 'none',
-            }}
-            onClick={() => {
-              store.selectElements([]);
-              setVal('');
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            style={{
-              display: isQR ? 'none' : '',
-            }}
-            onClick={async () => {
-              const src = await getQR(val);
-
-              store.activePage.addElement({
-                type: 'svg',
-                name: 'qr',
-                x: 50,
-                y: 50,
-                width: 200,
-                height: 200,
-                src,
-                custom: {
-                  value: val,
-                },
-              });
-            }}
-          >
-            Add new QR code
-          </Button>
-        </div>
+          {isQR ? MESSAGES.TEMPLATE.QR_SECTION.CANCEL_BUTTON : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
+        </Button>
       </div>
     );
   }),

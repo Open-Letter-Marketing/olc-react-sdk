@@ -1,8 +1,8 @@
 import React from 'react';
 
 // Polotno and third party imports
-import {SidePanelWrap} from 'polotno';
-import type {StoreType} from 'polotno/model/store';
+import { SidePanelWrap } from 'polotno';
+import type { StoreType } from 'polotno/model/store';
 import {
   SidePanel as PolotnoSidePanel,
   DEFAULT_SECTIONS,
@@ -34,8 +34,8 @@ const SidePanel: React.FC<Props> = (props) => {
     props.currentTemplateType === 'Real Penned Letter'
       ? DEFAULT_SECTIONS.filter((section) => section.name === '')
       : DEFAULT_SECTIONS.filter(
-          (section) => !['photos', 'size', 'templates'].includes(section.name)
-        );
+        (section) => !['photos', 'size', 'templates'].includes(section.name)
+      );
 
   return (
     <SidePanelWrap>
@@ -44,27 +44,21 @@ const SidePanel: React.FC<Props> = (props) => {
         sections={[
           ...(props.currentTemplateType !== 'Real Penned Letter'
             ? [
-                {
-                  ...CustomTemplateSection,
-                  ...CustomUploadSection,
-                  Panel: (panelProps: any) => (
-                    <CustomTemplateSection.Panel
-                      {...panelProps}
-                      platformName={props.platformName}
-                      templateGalleryModal={props.templateGalleryModal}
-                      onGetTemplates={props.onGetTemplates}
-                      onGetOneTemplate={props.onGetOneTemplate}
-                      selectedSection={props.selectedSection}
-                    />
-                  ),
-                },
-                {
-                  ...CustomQRCode,
-                  Panel: (panelProps: any) => (
-                    <CustomQRCode.Panel {...panelProps} />
-                  ),
-                },
-              ]
+              {
+                ...CustomTemplateSection,
+                ...CustomUploadSection,
+                Panel: (panelProps: any) => (
+                  <CustomTemplateSection.Panel
+                    {...panelProps}
+                    platformName={props.platformName}
+                    templateGalleryModal={props.templateGalleryModal}
+                    onGetTemplates={props.onGetTemplates}
+                    onGetOneTemplate={props.onGetOneTemplate}
+                    selectedSection={props.selectedSection}
+                  />
+                ),
+              },
+            ]
             : []),
           ...sections,
           {
@@ -82,13 +76,19 @@ const SidePanel: React.FC<Props> = (props) => {
           },
           ...(props.currentTemplateType !== 'Real Penned Letter'
             ? [
-                {
-                  ...customAddOns,
-                  Panel: (panelProps: any) => (
-                    <customAddOns.Panel {...panelProps} />
-                  ),
-                },
-              ]
+              {
+                ...CustomQRCode,
+                Panel: (panelProps: any) => (
+                  <CustomQRCode.Panel {...panelProps} />
+                ),
+              },
+              {
+                ...customAddOns,
+                Panel: (panelProps: any) => (
+                  <customAddOns.Panel {...panelProps} />
+                ),
+              },
+            ]
             : []),
         ]}
         defaultSection="text"
