@@ -212,3 +212,18 @@ export const validateEmoji = (pages: any) => {
   }
   return false;
 }
+
+export const isValidQR = (pages: any) => {
+  const QRElements = (children: any) =>
+    children.filter(
+      ({ name, custom }: any) => name === "qr" && custom.value === ''
+    );
+
+
+  for (const page of pages) {
+    if (QRElements(page.children).length) {
+      return false;
+    }
+  }
+  return true;
+}
