@@ -80,9 +80,10 @@ export const MESSAGES = {
     },
     QR_SECTION: {
       EMPTY_QR: 'Please add a URL to your QR code.',
-      QR_PLACEHOLDER: 'Type QR code content',
+      QR_PLACEHOLDER: 'Type a URL',
+      INVALID_URL: 'Please add a valid URL to your QR code.',
       SUBMIT_BUTTON: "Add new QR code",
-      CANCEL_BUTTON: "Cancel",
+      UPDATE_BUTTON: "Update QR code",
     },
     DOWNLOAD_PROOF_BUTTON: "Download Proof",
     CANCEL_BUTTON: "Cancel",

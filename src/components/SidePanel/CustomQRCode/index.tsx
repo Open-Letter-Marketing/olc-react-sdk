@@ -14,6 +14,7 @@ import { failure } from '../../../redux/actions/snackbarActions';
 
 // Utils
 import { MESSAGES } from '../../../utils/message';
+import { validURL } from '../../../utils/helper';
 
 // UI Components
 import { Button } from '@blueprintjs/core';
@@ -72,50 +73,61 @@ const CustomQRCode = {
 
     const addNewQRCode = async () => {
       if (val) {
-        const randomizedId = Math.random().toString(36).substring(2, 7);
-        const src = await getQR(val);
-        store.activePage.addElement({
-          id: `qr-${randomizedId}`,
-          type: 'svg',
-          name: 'qr',
-          x: 50,
-          y: 50,
-          width: 100,
-          height: 100,
-          keepRatio: true,
-          src,
-          custom: {
-            value: val,
-          },
-        });
-        clearQRFields();
+        if (validURL(val)) {
+          const randomizedId = Math.random().toString(36).substring(2, 7);
+          const src = await getQR(val);
+          store.activePage.addElement({
+            id: `qr-${randomizedId}`,
+            type: 'svg',
+            name: 'qr',
+            x: 50,
+            y: 50,
+            width: 100,
+            height: 100,
+            keepRatio: true,
+            src,
+            custom: {
+              value: val,
+            },
+          });
+          clearQRFields();
+        } else {
+          dispatch(failure(MESSAGES.TEMPLATE.QR_SECTION.INVALID_URL))
+        }
       } else {
         dispatch(failure(MESSAGES.TEMPLATE.QR_SECTION.EMPTY_QR))
       }
     }
 
     // if selection is changed we need to update input value
-    useEffect(() => {
-      if (el?.name === 'qr') {
-        setVal(el?.custom.value);
-      } else {
-        setVal('');
-      }
-    }, [isQR, el]);
-
-    // update image src when we change input data
-    useEffect(() => {
-      if (isQR) {
-        getQR(val).then((src) => {
-          el.set({
-            src,
-            custom: {
-              value: val,
-            },
+    const updateQRCode = async() => {
+      if (el?.name === 'qr' && val) {
+        if (validURL(val)) {
+          await getQR(val).then((src) => {
+            el.set({
+              src,
+              custom: {
+                value: val,
+              },
+            });
           });
-        });
+          clearQRFields();
+        } else {
+          dispatch(failure(MESSAGES.TEMPLATE.QR_SECTION.INVALID_URL))
+        }
+      } else {
+        dispatch(failure(MESSAGES.TEMPLATE.QR_SECTION.EMPTY_QR))
       }
-    }, [el, val, isQR]);
+    }
+
+      // if selection is changed we need to update input value
+      useEffect(() => {
+        if (el?.name === 'qr') {
+          setVal(el?.custom.value);
+        } else {
+          setVal('');
+        }
+      }, [isQR, el]);
 
     return (
       <div>
@@ -128,10 +140,10 @@ const CustomQRCode = {
           value={val}
         />
         <Button
-          onClick={isQR ? clearQRFields : addNewQRCode}
+          onClick={isQR ? updateQRCode : addNewQRCode}
           style={{ width: '100%', padding: '5px', marginTop: '10px', backgroundColor: '#f6f7f9', boxShadow: 'inset 0 0 0 1px #11141833,0 1px 2px #1114181a', color: '#1c2127' }}
         >
-          {isQR ? MESSAGES.TEMPLATE.QR_SECTION.CANCEL_BUTTON : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
+          {isQR ? MESSAGES.TEMPLATE.QR_SECTION.UPDATE_BUTTON : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
         </Button>
       </div>
     );
