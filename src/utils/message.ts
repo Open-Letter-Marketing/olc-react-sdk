@@ -18,6 +18,7 @@ export const MESSAGES = {
     NAME_LESS_50: "Template Name should be less than or equal to 50 characters",
     GSV_RESTRICT_ONE_PER_PAGE: 'Only one GSV image is allowed per page.',
     EMOJI_NOT_ALLOWED: 'Emojis are not allowed in the template. Please remove them before saving.',
+    EMPTY_QR_NOT_ALLOWED: 'Please add a URL to your QR code in order to save the template.',
     CREATE: {
       TITLE: 'Create New Template',
       TEMPLATE_LABEL: 'Template Name*',
@@ -76,6 +77,13 @@ export const MESSAGES = {
       UPLOAD_BTN_TEXT: 'Upload Image',
       TYPE_VALIDATION: 'Only image files with extensions jpeg, png, or svg are allowed.',
       SIZE_VALIDATION: 'File size must be under 5MB.',
+    },
+    QR_SECTION: {
+      EMPTY_QR: 'Please add a URL to your QR code.',
+      QR_PLACEHOLDER: 'Type a URL',
+      INVALID_URL: 'Please add a valid URL to your QR code.',
+      SUBMIT_BUTTON: "Add new QR code",
+      UPDATE_BUTTON: "Update QR code",
     },
     DOWNLOAD_PROOF_BUTTON: "Download Proof",
     CANCEL_BUTTON: "Cancel",
