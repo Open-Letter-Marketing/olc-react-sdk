@@ -34,6 +34,7 @@ import {
 import { MESSAGES } from '../../../utils/message';
 import { getItem, removeItem, setItem } from '../../../utils/local-storage';
 import { addSafetyBordersForTemplates } from '../../../utils/templateSafetyBorders';
+import { addIdentifiersForTemplates } from '../../../utils/templateIdentifierArea';
 
 // Components
 import Dialog from '../../GenericUIBlocks/Dialog';
@@ -440,6 +441,7 @@ const CustomTemplateSection: SideSection = {
           store.selectPage(store.pages[0].id);
         }
         drawRestrictedAreaOnPage(store, product, envelopeType);
+        addIdentifiersForTemplates(product.id, store);
         handleDialogChange('');
         if (templateGalleryModal) {
           closeGalleryModal();

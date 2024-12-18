@@ -19,7 +19,7 @@ import ConfirmNavigateDialog from './ConfirmNavigateDialog';
 import EditTemplateNameModel from './EditTemplateNameModel';
 
 // Utils
-import { downloadPDF, extractFontFamilies, multiPageTemplates, removeBracketsFromRPL, validateEmoji, validateGSV } from '../../utils/template-builder';
+import { downloadPDF, extractFontFamilies, isValidQR, multiPageTemplates, removeBracketsFromRPL, validateEmoji, validateGSV } from '../../utils/template-builder';
 import { getItem, setItem } from '../../utils/local-storage';
 import { MESSAGES } from '../../utils/message';
 // @ts-ignore
@@ -260,6 +260,13 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
 
         if (hasEmoji) {
           dispatch(failure(MESSAGES.TEMPLATE.EMOJI_NOT_ALLOWED));
+          return;
+        }
+
+        const hasEmptyQR = !isValidQR(jsonData.pages);
+        
+        if (hasEmptyQR) {
+          dispatch(failure(MESSAGES.TEMPLATE.EMPTY_QR_NOT_ALLOWED));
           return;
         }
 

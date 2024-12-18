@@ -139,12 +139,12 @@ export const drawRestrictedAreaOnPage = (store: any, product: Product, envelopeT
         [3.2835, 2.375],
         barcodeSrc
       );
-      addSafetyBordersForTemplates(product?.id, store);
     } else if (product.productType === multiPageLetters[1]) {
       addRestrictedAreaToTriFold(store, [3.2835, 2.375], barcodeSrc);
     } else if (product.productType === multiPageLetters[2]) {
       addRestrictedAreaToBiFold(store, [3.2835, 2.375], barcodeSrc);
     }
+    addSafetyBordersForTemplates(product?.id, store);
   }
 };
 
@@ -211,4 +211,19 @@ export const validateEmoji = (pages: any) => {
     }
   }
   return false;
+}
+
+export const isValidQR = (pages: any) => {
+  const QRElements = (children: any) =>
+    children.filter(
+      ({ name, custom }: any) => name === "qr" && custom.value === ''
+    );
+
+
+  for (const page of pages) {
+    if (QRElements(page.children).length) {
+      return false;
+    }
+  }
+  return true;
 }

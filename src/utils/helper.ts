@@ -37,6 +37,16 @@ export const removeSThroughOne = (input: string) => {
   return input;
 }
 
+export const validURL = (str: string) => {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
+
 
 export const hexToRgba = (hex: any, opacity: any) => {
   // Remove the hash at the start if it's there
@@ -81,7 +91,8 @@ export const createBorder = (
   y: number,
   width: number,
   height: number,
-  rotation: number
+  rotation: number,
+  color: string = "rgba(48,155,95,1)",
 ) => ({
   id,
   type: "line",
@@ -96,8 +107,69 @@ export const createBorder = (
   width,
   height,
   rotation,
-  color: "rgba(48,155,95,1)",
+  color,
   dash: [4, 1],
   draggable: false,
   resizable: false,
 });
+
+
+export const createSafetyTextElement = (
+  id: string,
+  x: number,
+  y: number,
+  width: number,
+  text: string,
+  rotation: number = 0
+) => {
+  return {
+    id,
+    type: "text",
+    name: "",
+    opacity: 1,
+    visible: true,
+    selectable: false,
+    removable: false,
+    alwaysOnTop: true,
+    showInExport: false,
+    x,
+    y,
+    width,
+    height: 12,
+    rotation,
+    animations: [],
+    blurEnabled: false,
+    blurRadius: 10,
+    brightnessEnabled: false,
+    brightness: 0,
+    sepiaEnabled: false,
+    grayscaleEnabled: false,
+    shadowEnabled: false,
+    shadowBlur: 5,
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    shadowColor: "black",
+    shadowOpacity: 1,
+    draggable: false,
+    resizable: false,
+    contentEditable: false,
+    styleEditable: false,
+    text,
+    fontSize: 9,
+    fontFamily: "Noto Sans JP",
+    fontStyle: "italic",
+    fontWeight: "normal",
+    fill: "rgba(74,74,74,1)",
+    align: "center",
+    verticalAlign: "top",
+    strokeWidth: 0,
+    stroke: "black",
+    lineHeight: 1.2,
+    letterSpacing: 0,
+    backgroundEnabled: false,
+    backgroundColor: "#7ED321",
+    backgroundOpacity: 1,
+    backgroundCornerRadius: 0.5,
+    backgroundPadding: 0.5,
+  };
+}
