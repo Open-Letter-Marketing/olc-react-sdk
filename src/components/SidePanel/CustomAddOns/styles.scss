@@ -1,44 +1,56 @@
-.gsv-contact-element{
-    width: 100%;
-    border-radius: 3px;
-    border: 0.5px solid #303030;
-    text-align: center;
-    height: 100px;
-    line-height: 35px;
-    margin: 5px auto;
-    display: flex;
-    justify-content: center;
-    span {
-        transform: translateY(30%);
-    }
+.gsv-contact-element {
+  width: 100%;
+  border-radius: 3px;
+  border: 0.5px solid #303030;
+  text-align: center;
+  height: 100px;
+  line-height: 35px;
+  margin: 5px auto;
+  display: flex;
+  justify-content: center;
+
+  span {
+    transform: translateY(30%);
+  }
 }
 
 .addonBox {
-    border-radius: 10px;
-    border: 1px solid #303030;
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-bottom: 10px;
-    cursor: pointer;
-    p {
-      font-size: 16px;
-      font-style: normal;
-      color: #303030;
-      font-weight: 800;
+  border-radius: 10px;
+  border: 1px solid #303030;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 10px;
+  cursor: pointer;
 
-      &:last-child {
-        font-weight: 500;
-      }
+  .no-margin {
+    margin: 0 !important;
+  }
+
+  p {
+    font-size: 16px;
+    font-style: normal;
+    color: #303030;
+    font-weight: 800;
+
+    &:last-child {
+      font-weight: 500;
     }
-    svg {
-      width: 100px;
-      height: 120px;
-      opacity: 0.5;
-    }
+  }
+
+  svg {
+    width: 100px;
+    height: 120px;
+    opacity: 0.5;
+  }
+
+  .copy {
+    width: 30px !important;
+    height: 30px !important;
+  }
 }
 
 .hidden-important {
-    display: none !important;
+  display: block !important;
 }
