@@ -131,7 +131,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
 
   useEffect(() => {
     if (designerTemplateQuery) {
-      setTimeout(()=>{
+      setTimeout(() => {
         handleLoadDesignerTemplate();
       }, 100);
     }
