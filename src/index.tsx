@@ -25,6 +25,7 @@ interface TemplateBuilderProps {
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
+  designerTemplateQuery?: Record<string, any> | null;
   sandbox?: boolean;
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
@@ -48,6 +49,7 @@ const TemplateBuilder = ({
   createTemplateRoute,
   templateBuilderRoute,
   olcTemplate,
+  designerTemplateQuery,
   sandbox,
   allowSenderFields,
   allowPropertyFields,
@@ -81,6 +83,7 @@ const TemplateBuilder = ({
             secretKey={secretKey}
             styles={styles}
             olcTemplate={olcTemplate}
+            designerTemplateQuery={designerTemplateQuery}
             platformName={platformName}
             templateGalleryModal={templateGalleryModal}
             createTemplateRoute={createTemplateRoute}
