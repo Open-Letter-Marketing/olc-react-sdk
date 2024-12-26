@@ -25,6 +25,7 @@ interface Props {
   excludedFields?: string[] | null;
   allowPropertyFields?: boolean;
   onGetOneTemplate?: (payload: any) => Promise<any>;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
 }
@@ -52,6 +53,7 @@ const SidePanel: React.FC<Props> = (props) => {
                     {...panelProps}
                     platformName={props.platformName}
                     templateGalleryModal={props.templateGalleryModal}
+                    onCreateCustomTemplateQuery={props.onCreateCustomTemplateQuery}
                     onGetTemplates={props.onGetTemplates}
                     onGetOneTemplate={props.onGetOneTemplate}
                     selectedSection={props.selectedSection}

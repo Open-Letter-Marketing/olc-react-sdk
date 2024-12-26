@@ -31,6 +31,7 @@ interface TemplateBuilderProps {
   allowPropertyFields?: boolean;
   excludedFields?: string[] | null;
   onReturnAndNavigate?: () => void;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
@@ -55,6 +56,7 @@ const TemplateBuilder = ({
   allowPropertyFields,
   excludedFields,
   onReturnAndNavigate,
+  onCreateCustomTemplateQuery,
   onGetOneTemplate,
   onGetTemplates,
   onGetCustomFields,
@@ -92,6 +94,7 @@ const TemplateBuilder = ({
             allowPropertyFields={allowPropertyFields}
             excludedFields={excludedFields}
             onReturnAndNavigate={onReturnAndNavigate}
+            onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
             onGetOneTemplate={onGetOneTemplate}
             onGetTemplates={onGetTemplates}
             onGetCustomFields={onGetCustomFields}

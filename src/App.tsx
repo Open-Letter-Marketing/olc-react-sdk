@@ -33,6 +33,7 @@ interface AppProps {
   allowPropertyFields?: boolean;
   styles?: any;
   onReturnAndNavigate?: () => void;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
@@ -52,6 +53,7 @@ const App: React.FC<AppProps> = ({
   allowPropertyFields,
   styles,
   onReturnAndNavigate,
+  onCreateCustomTemplateQuery,
   onGetOneTemplate,
   onGetCustomFields,
   onGetTemplates,
@@ -115,6 +117,7 @@ const App: React.FC<AppProps> = ({
               allowPropertyFields={allowPropertyFields}
               createTemplateRoute={createTemplateRoute}
               onReturnAndNavigate={onReturnAndNavigate}
+              onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
               onGetOneTemplate={onGetOneTemplate}
               onGetTemplates={onGetTemplates}
               onGetCustomFields={onGetCustomFields}
