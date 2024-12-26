@@ -74,6 +74,7 @@ interface TemplateBuilderProps {
   excludedFields?: string[] | null;
   onReturnAndNavigate?: () => void;
   onGetCustomFields?: () => Promise<any>;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onSubmit?: (payload: any) => Promise<any>;
@@ -89,6 +90,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   allowSenderFields,
   excludedFields,
   allowPropertyFields,
+  onCreateCustomTemplateQuery,
   onReturnAndNavigate,
   onGetOneTemplate,
   onGetCustomFields,
@@ -397,6 +399,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
                 onGetOneTemplate={onGetOneTemplate}
                 onGetCustomFields={onGetCustomFields}
                 selectedSection={selectedSection}
+                onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
               />
               <WorkspaceWrap>
                 {currentTemplateType !== 'Real Penned Letter' && (
