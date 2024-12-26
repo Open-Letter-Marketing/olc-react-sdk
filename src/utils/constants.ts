@@ -1,8 +1,8 @@
-export const PROD_API_BASE_URL = 'https://api.openletterconnect.com/api/v1/sdk';
-export const DEMO_API_BASE_URL = 'https://demoapi.openletterconnect.com/api/v1/sdk';
+export const PROD_API_BASE_URL = 'https://qrforward.org/api/v1/sdk';
+export const DEMO_API_BASE_URL = 'https://demo.qrforward.org/api/v1/sdk';
 
-export const  DEMO_S3_URL = `https://demoapi.openletterconnect.com/api/v1/download/s3/openletterconnect`;
-export const  PROD_S3_URL = `https://api.openletterconnect.com/api/v1/download/s3/openletterconnect`;
+export const  DEMO_S3_URL = `https://demo.qrforward.org/api/v1/download/s3/sdk-images`;
+export const  PROD_S3_URL = `https://qrforward.org/api/v1/download/s3/sdk-images`;
 
 export const DPI: number = 96;
 
