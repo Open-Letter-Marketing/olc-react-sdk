@@ -23,6 +23,7 @@ interface Props {
   selectedSection?: string;
   allowSenderFields?: boolean;
   excludedFields?: string[] | null;
+  designerQueryAmount?: string | number;
   allowPropertyFields?: boolean;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
@@ -53,10 +54,11 @@ const SidePanel: React.FC<Props> = (props) => {
                     {...panelProps}
                     platformName={props.platformName}
                     templateGalleryModal={props.templateGalleryModal}
+                    designerQueryAmount={props.designerQueryAmount}
+                    selectedSection={props.selectedSection}
                     onCreateCustomTemplateQuery={props.onCreateCustomTemplateQuery}
                     onGetTemplates={props.onGetTemplates}
                     onGetOneTemplate={props.onGetOneTemplate}
-                    selectedSection={props.selectedSection}
                   />
                 ),
               },

@@ -30,6 +30,7 @@ interface AppProps {
   designerTemplateQuery?: Record<string, any> | null; 
   allowSenderFields?: boolean;
   excludedFields?: string[] | null;
+  designerQueryAmount?: string | number;
   allowPropertyFields?: boolean;
   styles?: any;
   onReturnAndNavigate?: () => void;
@@ -50,6 +51,7 @@ const App: React.FC<AppProps> = ({
   designerTemplateQuery,
   allowSenderFields,
   excludedFields,
+  designerQueryAmount,
   allowPropertyFields,
   styles,
   onReturnAndNavigate,
@@ -114,6 +116,7 @@ const App: React.FC<AppProps> = ({
               templateGalleryModal={templateGalleryModal}
               allowSenderFields={allowSenderFields}
               excludedFields={excludedFields}
+              designerQueryAmount={designerQueryAmount}
               allowPropertyFields={allowPropertyFields}
               createTemplateRoute={createTemplateRoute}
               onReturnAndNavigate={onReturnAndNavigate}

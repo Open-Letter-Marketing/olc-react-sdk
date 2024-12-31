@@ -29,6 +29,7 @@ type CustomTemplateSectionProps = {
     templateCategories: TemplateCategory[],
     currentTemplateType: TemplateType | undefined,
     templateTypes: [TemplateType] | null | undefined,
+    designerQueryAmount?: string | number;
     search: any,
     searchApplied: boolean,
     loader: boolean,
@@ -61,6 +62,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
         templateCategories,
         currentTemplateType,
         templateTypes,
+        designerQueryAmount,
         search,
         searchApplied,
         loader,
@@ -184,7 +186,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                             <Typography className='ownHeading'>Design Your Own</Typography>
                         </div>
                     )}
-                    {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '3' && (
+                    {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '3' && designerQueryAmount && (
                         <div>
                             <div
                                 className={`defaultDesign 
@@ -204,7 +206,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                 <Designer fill="var(--primary-color)" />
                                 <Typography>Hire a Designer</Typography>
                             </div>
-                            <Typography className='ownHeading'>Hire a Designer +$75</Typography>
+                            <Typography className='ownHeading'>Hire a Designer +${designerQueryAmount}</Typography>
                         </div>
                     )}
                     <TempCard
