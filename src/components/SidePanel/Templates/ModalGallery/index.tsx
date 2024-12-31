@@ -50,6 +50,7 @@ type CustomTemplateSectionProps = {
     handleDialogChange: any,
     closeGalleryModal: any,
     setOpenGalleryModal: any
+    setHireDesignerModal: any;
 };
 
 
@@ -81,7 +82,8 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
         handleTabChange,
         handleDialogChange,
         closeGalleryModal,
-        setOpenGalleryModal
+        setOpenGalleryModal,
+        setHireDesignerModal,
     } = props;
 
     const primaryColorExtract = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
@@ -196,7 +198,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                             : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") || product?.paperSize === "6x9" ? "postcard-6x9"
                                                 : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                                 onClick={() => {
-                                    handleDialogChange('hire-designer')
+                                    setHireDesignerModal(true);
                                     setOpenGalleryModal(false)
                                 }}
                                 style={{

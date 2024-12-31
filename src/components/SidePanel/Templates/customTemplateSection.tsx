@@ -97,6 +97,8 @@ type CustomTemplateSectionProps = {
   templateGalleryModal?: boolean;
   selectedSection?: string;
   designerQueryAmount?: string | number;
+  hireDesignerModal?: any; 
+  setHireDesignerModal?: any;
   onClick: () => void;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -119,6 +121,8 @@ const CustomTemplateSection: SideSection = {
       templateGalleryModal,
       selectedSection,
       designerQueryAmount,
+      hireDesignerModal,
+      setHireDesignerModal,
       onCreateCustomTemplateQuery,
       onGetOneTemplate,
       onGetTemplates,
@@ -580,6 +584,7 @@ const CustomTemplateSection: SideSection = {
               teamTemplates={teamTemplates}
               olcTemplates={olcTemplates}
               designerQueryAmount={designerQueryAmount}
+              setHireDesignerModal={setHireDesignerModal}
               setSearch={setSearch}
               handleSearch={handleSearch}
               removeSearchInput={removeSearchInput}
@@ -632,9 +637,9 @@ const CustomTemplateSection: SideSection = {
                 submitText="OK"
               />
             )}
-            {isShowDialog.open && isShowDialog.model === 'hire-designer' && (
+            {hireDesignerModal && (
               <HireDesigner
-                open={isShowDialog.open}
+                open={hireDesignerModal}
                 onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
                 productId={product?.id}
                 onClose={() => {
