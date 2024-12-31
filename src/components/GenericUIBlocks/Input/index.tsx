@@ -101,8 +101,8 @@ const Input: FC<InputProps> = ({
         {videoTooltip && (
           <>
             <span className="urlTooltip" 
-            onClick={()=>setShowTooltip(true)} 
-            // onMouseOver={()=>setShowTooltip(true)}
+            // onClick={()=>setShowTooltip(true)} 
+            onMouseOver={()=>setShowTooltip(true)}
             // onMouseLeave={(prev) => setShowTooltip(!prev)}
             >
               <VideoInfo />

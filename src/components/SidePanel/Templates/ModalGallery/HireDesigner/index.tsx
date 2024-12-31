@@ -11,7 +11,7 @@ import {success} from '../../../../../redux/actions/snackbarActions';
 import {post} from '../../../../../utils/api';
 
 // constants
-import {EMAIL_REGEX} from '../../../../../utils/constants';
+import {EMAIL_REGEX, VIDEO_URL_REGEX} from '../../../../../utils/constants';
 
 // components
 import Dialog from '../../../../GenericUIBlocks/Dialog';
@@ -34,7 +34,7 @@ import './styles.scss';
 
 const hireModalStyles = {
   maxWidth: '725px',
-  minHeight: '750px',
+  minHeight: '760px',
 };
 
 const hireModalButtonStyles = {
@@ -94,8 +94,33 @@ const HireDesigner = (props: any) => {
   };
 
   const handleFileChange = (event: any) => {
-    const filesArray = Array.from(event.target.files);
-    setQueryFile(filesArray as never[]);
+    const newFilesArray = Array.from(event.target.files);
+    const acceptableTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  
+    const validFiles = newFilesArray.filter((file: any) => acceptableTypes.includes(file.type));
+    const invalidFiles = newFilesArray.filter((file: any) => !acceptableTypes.includes(file.type));
+  
+    if (invalidFiles.length > 0) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        files: 'Some files have unsupported formats. Please upload only .png, .jpg, .jpeg, .pdf, .doc, or .docx files.',
+      }));
+      setTimeout(() => {
+        setFormErrors((prevErrors) => ({
+          ...prevErrors,
+          files: '',
+        }));
+      }, 4000);
+    } else {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        files: '',
+      }));
+    }
+  
+    if (validFiles.length > 0) {
+      setQueryFile((prevFiles) => [...prevFiles, ...validFiles] as never[]);
+    }
   };
 
   const handleFileRemove = (file: any) => {
@@ -124,6 +149,8 @@ const HireDesigner = (props: any) => {
 
     if (!formData.queryVideoUrl.trim()) {
       errors.videoUrl = 'Video URL is required';
+    } else if (!VIDEO_URL_REGEX.test(formData.queryVideoUrl.trim())) {
+      errors.videoUrl = 'Video URL is not valid';
     }
 
     if (!formData.queryComments.trim()) {
@@ -248,7 +275,6 @@ const HireDesigner = (props: any) => {
                 {formErrors.files}
               </Typography>
             )}
-          </div>
           {queryFile.length > 0 && (
             <div className="uploaded-files">
               <h3>Uploaded</h3>
@@ -286,6 +312,7 @@ const HireDesigner = (props: any) => {
               ))}
             </div>
           )}
+          </div>
           <Input
             type="text"
             placeholder="https://www.example.com"
