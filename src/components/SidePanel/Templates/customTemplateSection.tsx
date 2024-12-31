@@ -96,6 +96,7 @@ type CustomTemplateSectionProps = {
   platformName?: string | null;
   templateGalleryModal?: boolean;
   selectedSection?: string;
+  designerQueryAmount?: string | number;
   onClick: () => void;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -117,6 +118,7 @@ const CustomTemplateSection: SideSection = {
       platformName,
       templateGalleryModal,
       selectedSection,
+      designerQueryAmount,
       onCreateCustomTemplateQuery,
       onGetOneTemplate,
       onGetTemplates,
@@ -577,6 +579,7 @@ const CustomTemplateSection: SideSection = {
               myTemplates={myTemplates}
               teamTemplates={teamTemplates}
               olcTemplates={olcTemplates}
+              designerQueryAmount={designerQueryAmount}
               setSearch={setSearch}
               handleSearch={handleSearch}
               removeSearchInput={removeSearchInput}

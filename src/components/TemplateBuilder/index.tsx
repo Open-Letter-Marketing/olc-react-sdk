@@ -73,6 +73,7 @@ interface TemplateBuilderProps {
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
   excludedFields?: string[] | null;
+  designerQueryAmount?: string | number;
   onReturnAndNavigate?: () => void;
   onGetCustomFields?: () => Promise<any>;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
@@ -90,6 +91,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   olcTemplate,
   allowSenderFields,
   excludedFields,
+  designerQueryAmount,
   allowPropertyFields,
   onCreateCustomTemplateQuery,
   onReturnAndNavigate,
@@ -406,6 +408,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
                 allowSenderFields={allowSenderFields}
                 allowPropertyFields={allowPropertyFields}
                 excludedFields={excludedFields}
+                designerQueryAmount={designerQueryAmount}
                 onGetTemplates={onGetTemplates}
                 onGetOneTemplate={onGetOneTemplate}
                 onGetCustomFields={onGetCustomFields}
