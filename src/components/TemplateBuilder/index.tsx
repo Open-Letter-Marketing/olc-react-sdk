@@ -37,6 +37,7 @@ import { addElementsforRealPennedLetters } from '../../utils/templateRestrictedA
 import { DPI, allowedImageTypes, multiPageLetters } from '../../utils/constants';
 import { addSafetyBordersForTemplates } from '../../utils/templateSafetyBorders';
 import { MESSAGES } from '../../utils/message';
+import { removeItem } from '../../utils/local-storage';
 
 // @ts-ignore
 import fonts from '../../utils/fonts.json';
@@ -219,6 +220,8 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
         off();
       };
     }
+    removeItem('hireDesignerFormState');
+    removeItem('queryFiles');
   }, []);
 
   useEffect(() => {

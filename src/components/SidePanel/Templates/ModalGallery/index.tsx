@@ -198,8 +198,8 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                             : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") || product?.paperSize === "6x9" ? "postcard-6x9"
                                                 : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                                 onClick={() => {
+                                    setOpenGalleryModal(false);
                                     setHireDesignerModal(true);
-                                    setOpenGalleryModal(false)
                                 }}
                                 style={{
                                     boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`

@@ -566,7 +566,7 @@ const CustomTemplateSection: SideSection = {
 
       return (
         <>
-          {templateGalleryModal ? (
+          {templateGalleryModal && !hireDesignerModal ? (
             <ModalGallery
               product={product}
               openGalleryModal={openGalleryModal}
@@ -597,7 +597,7 @@ const CustomTemplateSection: SideSection = {
               closeGalleryModal={closeGalleryModal}
               setOpenGalleryModal={setOpenGalleryModal}
             />
-          ) : (
+          ) : !hireDesignerModal && (
             <SideBarGallery
               selectedCategory={selectedCategory}
               templateCategories={templateCategories}
@@ -643,20 +643,18 @@ const CustomTemplateSection: SideSection = {
                 onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
                 productId={product?.id}
                 onClose={() => {
-                  handleDialogChange('');
-                  // store.openSidePanel(selectedSection || 'text');
-                  // removeItem('currentTab');
-                  // document.body.classList.remove('no-scroll');
+                  setHireDesignerModal(false);
                   let sideBar = document.getElementsByClassName('polotno-panel-container');
-        const firstSideBar = sideBar[0];
-        if (firstSideBar) {
-          //@ts-ignore
-          firstSideBar.style.display = 'block';
-        }
-        // setOpenGalleryModal(false);
-        store.openSidePanel(selectedSection || 'text');
-        removeItem('currentTab');
-        document.body.classList.remove('no-scroll');
+                  const firstSideBar = sideBar[0];
+                  if (firstSideBar) {
+                    //@ts-ignore
+                    firstSideBar.style.display = 'block';
+                  }
+                  store.openSidePanel(selectedSection || 'text');
+                  removeItem('currentTab');
+                  removeItem('hireDesignerFormState');
+                  removeItem('queryFiles');
+                  document.body.classList.remove('no-scroll');
                 }}
               />
             )}

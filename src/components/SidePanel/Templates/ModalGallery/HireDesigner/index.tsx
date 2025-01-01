@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 // redux
 import {useDispatch} from 'react-redux';
@@ -9,6 +9,8 @@ import {success} from '../../../../../redux/actions/snackbarActions';
 
 // utils
 import {post} from '../../../../../utils/api';
+import { getItem, removeItem, setItem } from '../../../../../utils/local-storage';
+import { dataURLtoBlob } from '../../../../../utils/helper';
 
 // constants
 import {EMAIL_REGEX, VIDEO_URL_REGEX} from '../../../../../utils/constants';
@@ -52,12 +54,18 @@ const errorStyles = {
 };
 
 const HireDesigner = (props: any) => {
-  const {open, onClose, onCreateCustomTemplateQuery, productId} = props;
-  const [queryTitle, setQueryTitle] = useState('');
-  const [queryEmail, setQueryEmail] = useState('');
+  const { open, onClose, onCreateCustomTemplateQuery, productId } = props;
+
+  const loadState = () => {
+    const savedState = getItem('hireDesignerFormState');
+    return savedState ? JSON.parse(savedState) : {};
+  };
+
+  const [queryTitle, setQueryTitle] = useState(loadState().queryTitle || '');
+  const [queryEmail, setQueryEmail] = useState(loadState().queryEmail || '');
   const [queryFile, setQueryFile] = useState([]);
-  const [queryVideoUrl, setQueryVideoUrl] = useState('');
-  const [queryComments, setQueryComments] = useState('');
+  const [queryVideoUrl, setQueryVideoUrl] = useState(loadState().queryVideoUrl || '');
+  const [queryComments, setQueryComments] = useState(loadState().queryComments || '');
   const [isLoading, setIsLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({
     title: '',
@@ -69,28 +77,71 @@ const HireDesigner = (props: any) => {
 
   const dispatch: AppDispatch = useDispatch();
 
+  // Update localStorage whenever a form state changes
+  const updateLocalStorage = (newState: any) => {
+    setItem('hireDesignerFormState', JSON.stringify(newState));
+  };
+
   const handleTitleChange = (event: any) => {
-    setQueryTitle(event.target.value);
+    const newTitle = event.target.value;
+    setQueryTitle(newTitle);
     setFormErrors((prevErrors) => ({
       ...prevErrors,
-      title: event.target.value.trim() && '',
+      title: newTitle.trim() && '',
     }));
+    updateLocalStorage({ ...loadState(), queryTitle: newTitle });
   };
 
   const handleEmailChange = (event: any) => {
-    setQueryEmail(event.target.value);
+    const newEmail = event.target.value;
+    setQueryEmail(newEmail);
     setFormErrors((prevErrors) => ({
       ...prevErrors,
-      email: event.target.value.trim() && '',
+      email: newEmail.trim() && '',
     }));
+    updateLocalStorage({ ...loadState(), queryEmail: newEmail });
   };
 
   const handleVideoUrlChange = (event: any) => {
-    setQueryVideoUrl(event.target.value);
+    const newVideoUrl = event.target.value;
+    setQueryVideoUrl(newVideoUrl);
     setFormErrors((prevErrors) => ({
       ...prevErrors,
-      videoUrl: event.target.value.trim() && '',
+      videoUrl: newVideoUrl.trim() && '',
     }));
+    updateLocalStorage({ ...loadState(), queryVideoUrl: newVideoUrl });
+  };
+
+  const saveFilesToLocalStorage = (files: File[]) => {
+    const fileData = files.map((file) => ({
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      content: "", // Placeholder for Base64 content
+    }));
+
+    files.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        fileData[index].content = reader.result as string;
+        if (index === files.length - 1) {
+          localStorage.setItem("queryFiles", JSON.stringify(fileData));
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // Retrieve files from localStorage
+  const getFilesFromLocalStorage = (): File[] => {
+    const savedFiles = localStorage.getItem("queryFiles");
+    if (!savedFiles) return [];
+    const fileData = JSON.parse(savedFiles);
+
+    return fileData.map((file: any) => {
+      const blob = dataURLtoBlob(file.content, file.type);
+      return new File([blob], file.name, { type: file.type });
+    });
   };
 
   const handleFileChange = (event: any) => {
@@ -110,7 +161,7 @@ const HireDesigner = (props: any) => {
           ...prevErrors,
           files: '',
         }));
-      }, 4000);
+      }, 6000);
     } else {
       setFormErrors((prevErrors) => ({
         ...prevErrors,
@@ -119,21 +170,25 @@ const HireDesigner = (props: any) => {
     }
   
     if (validFiles.length > 0) {
-      setQueryFile((prevFiles) => [...prevFiles, ...validFiles] as never[]);
+      setQueryFile((prevFiles: any) => [...prevFiles, ...validFiles] as never[]);
+      saveFilesToLocalStorage([...queryFile, ...validFiles] as never[]);
     }
   };
 
   const handleFileRemove = (file: any) => {
     const updatedFiles = queryFile.filter((f: any) => f.name !== file.name);
     setQueryFile(updatedFiles);
+    updateLocalStorage({ ...loadState(), queryFile: updatedFiles });
   };
 
   const handleCommentsChange = (event: any) => {
-    setQueryComments(event.target.value);
+    const newComments = event.target.value;
+    setQueryComments(newComments);
     setFormErrors((prevErrors: any) => ({
       ...prevErrors,
-      comments: event.target.value.trim() && '',
+      comments: newComments.trim() && '',
     }));
+    updateLocalStorage({ ...loadState(), queryComments: newComments });
   };
 
   const validateForm = (formData: any, setFormErrors: any) => {
@@ -165,7 +220,6 @@ const HireDesigner = (props: any) => {
 
     setFormErrors(errors);
 
-    // Return true if there are no errors, false otherwise
     return Object.keys(errors).length === 0;
   };
 
@@ -182,6 +236,8 @@ const HireDesigner = (props: any) => {
       videoUrl: '',
       comments: '',
     });
+    removeItem('hireDesignerFormState');
+    removeItem('queryFiles');
   };
 
   const handleSubmit = async (event: any) => {
@@ -227,6 +283,13 @@ const HireDesigner = (props: any) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(()=>{
+    const savedFiles: any = getFilesFromLocalStorage();
+    setQueryFile(savedFiles);
+  },[])
+  
+ 
 
   return (
     <Dialog

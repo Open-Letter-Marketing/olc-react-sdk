@@ -173,3 +173,12 @@ export const createSafetyTextElement = (
     backgroundPadding: 0.5,
   };
 }
+
+export const dataURLtoBlob = (dataURL: string, type: string): Blob => {
+  const byteString = atob(dataURL.split(',')[1]);
+  const arrayBuffer = new Uint8Array(byteString.length);
+  for (let i = 0; i < byteString.length; i++) {
+    arrayBuffer[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([arrayBuffer], { type });
+}
