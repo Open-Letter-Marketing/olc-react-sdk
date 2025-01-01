@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Polotno and third party imports
 import { SidePanelWrap } from 'polotno';
@@ -23,13 +23,17 @@ interface Props {
   selectedSection?: string;
   allowSenderFields?: boolean;
   excludedFields?: string[] | null;
+  designerQueryAmount?: string | number;
   allowPropertyFields?: boolean;
   onGetOneTemplate?: (payload: any) => Promise<any>;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
 }
 
 const SidePanel: React.FC<Props> = (props) => {
+  const [hireDesignerModal, setHireDesignerModal] = useState(false);
+
   const sections =
     props.currentTemplateType === 'Real Penned Letter'
       ? DEFAULT_SECTIONS.filter((section) => section.name === '')
@@ -52,9 +56,13 @@ const SidePanel: React.FC<Props> = (props) => {
                     {...panelProps}
                     platformName={props.platformName}
                     templateGalleryModal={props.templateGalleryModal}
+                    designerQueryAmount={props.designerQueryAmount}
+                    selectedSection={props.selectedSection}
+                    hireDesignerModal={hireDesignerModal}
+                    setHireDesignerModal={setHireDesignerModal}
+                    onCreateCustomTemplateQuery={props.onCreateCustomTemplateQuery}
                     onGetTemplates={props.onGetTemplates}
                     onGetOneTemplate={props.onGetOneTemplate}
-                    selectedSection={props.selectedSection}
                   />
                 ),
               },

@@ -30,7 +30,9 @@ interface TemplateBuilderProps {
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
   excludedFields?: string[] | null;
+  designerQueryAmount?: string | number;
   onReturnAndNavigate?: () => void;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
@@ -54,7 +56,9 @@ const TemplateBuilder = ({
   allowSenderFields,
   allowPropertyFields,
   excludedFields,
+  designerQueryAmount,
   onReturnAndNavigate,
+  onCreateCustomTemplateQuery,
   onGetOneTemplate,
   onGetTemplates,
   onGetCustomFields,
@@ -91,7 +95,9 @@ const TemplateBuilder = ({
             allowSenderFields={allowSenderFields}
             allowPropertyFields={allowPropertyFields}
             excludedFields={excludedFields}
+            designerQueryAmount={designerQueryAmount}
             onReturnAndNavigate={onReturnAndNavigate}
+            onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
             onGetOneTemplate={onGetOneTemplate}
             onGetTemplates={onGetTemplates}
             onGetCustomFields={onGetCustomFields}
@@ -123,7 +129,8 @@ if (rootElement) {
     sandbox: true,
     allowSenderFields: true,
     allowPropertyFields: true,
-    templateGalleryModal: false,
+    templateGalleryModal: true,
+    designerQueryAmount: 175,
     excludedFields: ['{{C.FIRST_NAME}}', '{{C.ADDRESS_1}}', '{{SPF.FIRST_NAME}}'],
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,

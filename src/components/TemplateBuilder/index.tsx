@@ -37,6 +37,7 @@ import { addElementsforRealPennedLetters } from '../../utils/templateRestrictedA
 import { DPI, allowedImageTypes, multiPageLetters } from '../../utils/constants';
 import { addSafetyBordersForTemplates } from '../../utils/templateSafetyBorders';
 import { MESSAGES } from '../../utils/message';
+import { removeItem } from '../../utils/local-storage';
 
 // @ts-ignore
 import fonts from '../../utils/fonts.json';
@@ -73,8 +74,10 @@ interface TemplateBuilderProps {
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
   excludedFields?: string[] | null;
+  designerQueryAmount?: string | number;
   onReturnAndNavigate?: () => void;
   onGetCustomFields?: () => Promise<any>;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onSubmit?: (payload: any) => Promise<any>;
@@ -89,7 +92,9 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   olcTemplate,
   allowSenderFields,
   excludedFields,
+  designerQueryAmount,
   allowPropertyFields,
+  onCreateCustomTemplateQuery,
   onReturnAndNavigate,
   onGetOneTemplate,
   onGetCustomFields,
@@ -131,7 +136,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
 
   useEffect(() => {
     if (designerTemplateQuery) {
-      setTimeout(()=>{
+      setTimeout(() => {
         handleLoadDesignerTemplate();
       }, 100);
     }
@@ -163,6 +168,11 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
       document.removeEventListener('click', handleClick);
     };
   }, []);
+
+  useEffect(() => {
+    removeItem('hireDesignerFormState');
+    removeItem('queryFiles');
+  }, [])
 
   useEffect(() => {
     if (!product && !olcTemplate && !id && !designerTemplateQuery) {
@@ -404,10 +414,12 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
                 allowSenderFields={allowSenderFields}
                 allowPropertyFields={allowPropertyFields}
                 excludedFields={excludedFields}
+                designerQueryAmount={designerQueryAmount}
                 onGetTemplates={onGetTemplates}
                 onGetOneTemplate={onGetOneTemplate}
                 onGetCustomFields={onGetCustomFields}
                 selectedSection={selectedSection}
+                onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
               />
               <WorkspaceWrap>
                 {currentTemplateType !== 'Real Penned Letter' && (
