@@ -82,6 +82,7 @@ const Input: FC<InputProps> = ({
         style={loomButtonStyles}
         onClick={(e) => {
           e.stopPropagation();
+          window.open('https://www.loom.com/','_blank');
         }}
       >
         Open Loom
@@ -101,9 +102,7 @@ const Input: FC<InputProps> = ({
         {videoTooltip && (
           <>
             <span className="urlTooltip" 
-            // onClick={()=>setShowTooltip(true)} 
             onMouseOver={()=>setShowTooltip(true)}
-            // onMouseLeave={(prev) => setShowTooltip(!prev)}
             >
               <VideoInfo />
             </span>

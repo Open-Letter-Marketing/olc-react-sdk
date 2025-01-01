@@ -1,9 +1,9 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 
-// icons
+// Icons
 import ToolArrow from '../../../assets/images/tooltip/tool-arrow';
 
-// styles
+// Styles
 import './styles.scss';
 
 interface TooltipProps {
@@ -46,17 +46,8 @@ const CustomTooltip: React.FC<TooltipProps> = ({
     switch (place) {
       case 'top':
         return {inset: '-98px 0px auto 10%'};
-      // case "right":
-      //   return {
-      //     top: '50%', left: '100%',
-      //     // inset: 'auto 0px -17px 9.3%'
-      //   };
       case 'bottom':
         return {inset: 'auto 0px -17px 9.3%'};
-      // case "left":
-      //   return {top: '50%', left: '0', transform: 'translateY(-50%)'};
-      // case "top-start":
-      //   return {top: '-84px', left: '0'};
       default:
         return {top: '0', left: '0'};
     }
@@ -68,21 +59,11 @@ const CustomTooltip: React.FC<TooltipProps> = ({
         return {
           inset: 'auto auto -8px 15px',
         };
-      // case "right":
-      //   return {
-      //     top: '50%', left: '100%',
-      //     // inset: 'auto auto -8px 15px',
-      //   };
       case 'bottom':
         return {
-          // top: 'calc(100% - 10px)', left: '50%'
           inset: '-10px auto auto 15px',
           transform: 'rotate(180deg)',
         };
-      // case "left":
-      //   return {top: '50%', left: '-10px', transform: 'translateX(100%)'};
-      // case "top-start":
-      //   return {top: '-10px', left: '0'};
       default:
         return {top: '0', left: '0'};
     }

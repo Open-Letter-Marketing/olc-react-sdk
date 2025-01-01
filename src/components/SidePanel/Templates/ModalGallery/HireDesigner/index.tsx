@@ -1,27 +1,26 @@
 import React, {useEffect, useState} from 'react';
 
-// redux
+// Hooks
 import {useDispatch} from 'react-redux';
 import {AppDispatch} from '../../../../../redux/store';
 
-// actions
+// Actions
 import {success} from '../../../../../redux/actions/snackbarActions';
 
-// utils
+// Utils
 import {post} from '../../../../../utils/api';
 import { getItem, removeItem, setItem } from '../../../../../utils/local-storage';
 import { dataURLtoBlob } from '../../../../../utils/helper';
-
-// constants
 import {EMAIL_REGEX, VIDEO_URL_REGEX} from '../../../../../utils/constants';
+import { MESSAGES } from '../../../../../utils/message';
 
-// components
+// Components
 import Dialog from '../../../../GenericUIBlocks/Dialog';
 import Input from '../../../../GenericUIBlocks/Input';
 import Typography from '../../../../GenericUIBlocks/Typography';
 import Button from '../../../../GenericUIBlocks/Button';
 
-// icons
+// Icons
 import PDF from '../../../../../assets/images/modal-icons/pdf';
 import PNG from '../../../../../assets/images/modal-icons/png';
 import DOC from '../../../../../assets/images/modal-icons/doc';
@@ -31,8 +30,9 @@ import JPEG from '../../../../../assets/images/modal-icons/jpeg';
 import CancelFile from '../../../../../assets/images/modal-icons/cancel-file';
 import Add from '../../../../../assets/images/modal-icons/add';
 
-// styles
+// Styles
 import './styles.scss';
+
 
 const hireModalStyles = {
   maxWidth: '725px',
@@ -117,7 +117,7 @@ const HireDesigner = (props: any) => {
       name: file.name,
       type: file.type,
       size: file.size,
-      content: "", // Placeholder for Base64 content
+      content: "",
     }));
 
     files.forEach((file, index) => {
@@ -154,7 +154,7 @@ const HireDesigner = (props: any) => {
     if (invalidFiles.length > 0) {
       setFormErrors((prevErrors) => ({
         ...prevErrors,
-        files: 'Some files have unsupported formats. Please upload only .png, .jpg, .jpeg, .pdf, .doc, or .docx files.',
+        files: MESSAGES.TEMPLATE.HIRE_DESIGNER.FILE_VALLIDATION,
       }));
       setTimeout(() => {
         setFormErrors((prevErrors) => ({
@@ -195,27 +195,27 @@ const HireDesigner = (props: any) => {
     const errors: any = {};
 
     if (!formData.queryTitle.trim()) {
-      errors.title = 'Template Name is required';
+      errors.title = MESSAGES.TEMPLATE.HIRE_DESIGNER.TITLE_REQUIRED;
     }
 
     if (formData.queryFile.length > 5) {
-      errors.files = 'You can only upload up to 5 files.';
+      errors.files = MESSAGES.TEMPLATE.HIRE_DESIGNER.FILE_NUMBER;
     }
 
     if (!formData.queryVideoUrl.trim()) {
-      errors.videoUrl = 'Video URL is required';
+      errors.videoUrl = MESSAGES.TEMPLATE.HIRE_DESIGNER.URL_REQUIRED;
     } else if (!VIDEO_URL_REGEX.test(formData.queryVideoUrl.trim())) {
-      errors.videoUrl = 'Video URL is not valid';
+      errors.videoUrl = MESSAGES.TEMPLATE.HIRE_DESIGNER.URL_VAIDATION;
     }
 
     if (!formData.queryComments.trim()) {
-      errors.comments = 'Comments are required';
+      errors.comments = MESSAGES.TEMPLATE.HIRE_DESIGNER.COMMENT_REQUIRED;
     }
 
     if (!formData.queryEmail.trim()) {
-      errors.email = 'Email is required';
+      errors.email = MESSAGES.TEMPLATE.HIRE_DESIGNER.EMAIL_REQUIRED;
     } else if (!EMAIL_REGEX.test(formData.queryEmail.trim())) {
-      errors.email = 'Email is not valid';
+      errors.email =  MESSAGES.TEMPLATE.HIRE_DESIGNER.EMAIL_VALIDATION;
     }
 
     setFormErrors(errors);
@@ -300,7 +300,7 @@ const HireDesigner = (props: any) => {
       submitText="Next"
     >
       <div className="designerFormWrapper">
-        <Typography variant="h2">Custom Design Form</Typography>
+        <Typography variant="h2">{MESSAGES.TEMPLATE.HIRE_DESIGNER.TITLE}</Typography>
         <form className="designerForm">
           <Input
             type="text"
@@ -311,7 +311,7 @@ const HireDesigner = (props: any) => {
             error={formErrors.title}
           />
           <div className={`input-layout`}>
-            <label className="basic-label">Upload Design Files</label>
+            <label className="basic-label">{MESSAGES.TEMPLATE.HIRE_DESIGNER.UPLOAD_HEADING}</label>
             <div className="file-upload-wrapper">
               <input
                 type="file"
@@ -340,7 +340,7 @@ const HireDesigner = (props: any) => {
             )}
           {queryFile.length > 0 && (
             <div className="uploaded-files">
-              <h3>Uploaded</h3>
+              <h3>{MESSAGES.TEMPLATE.HIRE_DESIGNER.UPLOADED_TEXT}</h3>
               {queryFile.map((file: File, index: number) => (
                 <div className="file-item" key={index}>
                   <div className="file-icon">

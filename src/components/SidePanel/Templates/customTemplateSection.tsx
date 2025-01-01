@@ -292,6 +292,21 @@ const CustomTemplateSection: SideSection = {
         document.body.classList.remove('no-scroll');
       };
 
+      const closeHireDesignerModal = () => {
+        setHireDesignerModal(false);
+        let sideBar = document.getElementsByClassName('polotno-panel-container');
+        const firstSideBar = sideBar[0];
+        if (firstSideBar) {
+          //@ts-ignore
+          firstSideBar.style.display = 'block';
+        }
+        store.openSidePanel(selectedSection || 'text');
+        removeItem('currentTab');
+        removeItem('hireDesignerFormState');
+        removeItem('queryFiles');
+        document.body.classList.remove('no-scroll');
+      }
+
       const handleTabChange = (tab: any) => {
         setCurrentTemplateType(tab);
         setItem('currentTab', JSON.stringify(tab));
@@ -642,20 +657,7 @@ const CustomTemplateSection: SideSection = {
                 open={hireDesignerModal}
                 onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
                 productId={product?.id}
-                onClose={() => {
-                  setHireDesignerModal(false);
-                  let sideBar = document.getElementsByClassName('polotno-panel-container');
-                  const firstSideBar = sideBar[0];
-                  if (firstSideBar) {
-                    //@ts-ignore
-                    firstSideBar.style.display = 'block';
-                  }
-                  store.openSidePanel(selectedSection || 'text');
-                  removeItem('currentTab');
-                  removeItem('hireDesignerFormState');
-                  removeItem('queryFiles');
-                  document.body.classList.remove('no-scroll');
-                }}
+                onClose={closeHireDesignerModal}
               />
             )}
             {isShowDialog.open && isShowDialog.model === 'load-template' && (

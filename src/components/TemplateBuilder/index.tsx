@@ -170,6 +170,11 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   }, []);
 
   useEffect(() => {
+    removeItem('hireDesignerFormState');
+    removeItem('queryFiles');
+  }, [])
+
+  useEffect(() => {
     if (!product && !olcTemplate && !id && !designerTemplateQuery) {
       navigate(createTemplateRoute || '/create-template');
     }
@@ -220,8 +225,6 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
         off();
       };
     }
-    removeItem('hireDesignerFormState');
-    removeItem('queryFiles');
   }, []);
 
   useEffect(() => {
