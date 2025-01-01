@@ -59,6 +59,7 @@ const CustomQRCode = {
           text || 'no-data',
           {
             type: 'svg',
+            margin: 0,
             color: {
               dark: '#000000',
               light: '#0000',
@@ -84,6 +85,7 @@ const CustomQRCode = {
             y: 50,
             width: 100,
             height: 100,
+            blurRadius: 0,
             keepRatio: true,
             src,
             custom: {

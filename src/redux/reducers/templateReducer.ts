@@ -251,6 +251,11 @@ const initialState: TemplateState = {
       key: "{{C.PROPERTY_ZIP_CODE}}",
       defaultValue: "10008",
     },
+    {
+      value: "Property Offer",
+      key: "{{C.PROPERTY_OFFER}}",
+      defaultValue: "$0.03",
+    },
   ],
   products: Products,
   productDetailByTemplate: [],
