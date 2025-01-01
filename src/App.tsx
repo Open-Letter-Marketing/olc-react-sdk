@@ -27,6 +27,7 @@ interface AppProps {
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
+  designerTemplateQuery?: Record<string, any> | null; 
   allowSenderFields?: boolean;
   excludedFields?: string[] | null;
   allowPropertyFields?: boolean;
@@ -45,6 +46,7 @@ const App: React.FC<AppProps> = ({
   createTemplateRoute,
   templateBuilderRoute,
   olcTemplate,
+  designerTemplateQuery,
   allowSenderFields,
   excludedFields,
   allowPropertyFields,
@@ -62,7 +64,7 @@ const App: React.FC<AppProps> = ({
   useEffect(() => {
     if (
       currentPath === createTemplateRoute ||
-      currentPath === '/create-template'
+      currentPath === '/create-template' || designerTemplateQuery
     ) {
       const newStore = initializeStore(secretKey);
       setStore(newStore);
@@ -105,6 +107,7 @@ const App: React.FC<AppProps> = ({
             <TemplateBuilder
               store={store}
               olcTemplate={olcTemplate}
+              designerTemplateQuery={designerTemplateQuery}
               platformName={platformName}
               templateGalleryModal={templateGalleryModal}
               allowSenderFields={allowSenderFields}
