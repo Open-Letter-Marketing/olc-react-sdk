@@ -179,7 +179,7 @@ const HireDesigner = (props: any) => {
   const handleFileRemove = (file: any) => {
     const updatedFiles = queryFile.filter((f: any) => f.name !== file.name);
     setQueryFile(updatedFiles);
-    updateLocalStorage({ ...loadState(), queryFile: updatedFiles });
+    updatedFiles.length ? saveFilesToLocalStorage([...updatedFiles] as never[]) : removeItem('queryFiles');
   };
 
   const handleCommentsChange = (event: any) => {

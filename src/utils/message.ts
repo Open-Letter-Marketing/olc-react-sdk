@@ -90,7 +90,7 @@ export const MESSAGES = {
       UPLOAD_HEADING: 'Upload Design Files',
       UPLOADED_TEXT: 'Uploaded',
       FILE_VALLIDATION: 'One or more files have unsupported formats. Please upload only .png, .jpg, .jpeg, .pdf, .doc, or .docx files.',
-      FILE_NUMBER: '',
+      FILE_NUMBER: 'You can only upload up to 5 files.',
       TITLE_REQUIRED: 'Template Name is required',
       URL_REQUIRED: 'Video URL is required',
       URL_VAIDATION: 'Video URL is not valid',
