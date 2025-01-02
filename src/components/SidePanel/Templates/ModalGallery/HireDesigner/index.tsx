@@ -173,6 +173,7 @@ const HireDesigner = (props: any) => {
       setQueryFile((prevFiles: any) => [...prevFiles, ...validFiles] as never[]);
       saveFilesToLocalStorage([...queryFile, ...validFiles] as never[]);
     }
+    event.target.value = null;
   };
 
   const handleFileRemove = (file: any) => {
