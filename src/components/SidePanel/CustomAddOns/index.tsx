@@ -44,6 +44,7 @@ type SideSection = typeof TemplatesSection;
 type CustomAddOnsSectionProps = {
   store: StoreType;
   onClick: () => void;
+  allowedAddOns?: any;
 };
 
 const iconButtonStyles: CSSProperties = {
@@ -65,7 +66,7 @@ const CustomAddOns: SideSection = {
   ) as SideSection['Tab'],
 
   // we need observer to update component automatically on any store changes
-  Panel: observer(({ store }: CustomAddOnsSectionProps) => {
+  Panel: observer(({ store, allowedAddOns }: CustomAddOnsSectionProps) => {
     const dispatch: AppDispatch = useDispatch();
     const googleStreetViewSrc: string =
       (getIsSandbox() ? DEMO_S3_URL : PROD_S3_URL) +
@@ -136,39 +137,43 @@ const CustomAddOns: SideSection = {
             />
           </div>
         </div>
-        <div
-          className="addonBox"
-          onClick={(event: any) =>
-            handleAddElementOnScreen(event, 'GOOGLE_STREET_VIEW', 'gsv')
-          }
-        >
-          <GsvIcon />
-          <Typography>Street View Property Image</Typography>
-          <Typography>+$0.02 per mail piece</Typography>
-        </div>
-        <div>
+        {(!allowedAddOns || allowedAddOns?.includes('gsv')) && (
           <div
             className="addonBox"
             onClick={(event: any) =>
-              handleAddElementOnScreen(event, PropertyOfferfieldValue, 'rpo')
+              handleAddElementOnScreen(event, 'GOOGLE_STREET_VIEW', 'gsv')
             }
           >
-            <Button
-              style={iconButtonStyles}
-              onClick={copyPropertyOfferField}
-              backdrop={false}
-            >
-              <ContentCopyIcon className="copy" />
-            </Button>
-            <EpoIcon />
-            <Typography>Add an Offer</Typography>
-            <Typography className="no-margin">
-              (generated using Property Info)
-            </Typography>
-            <Typography>+$0.03 per mail piece</Typography>
+            <GsvIcon />
+            <Typography>Street View Property Image</Typography>
+            <Typography>+$0.02 per mail piece</Typography>
           </div>
-          <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
-        </div>
+        )}
+        {allowedAddOns?.includes('property_offer') && (
+          <div>
+            <div
+              className="addonBox"
+              onClick={(event: any) =>
+                handleAddElementOnScreen(event, PropertyOfferfieldValue, 'rpo')
+              }
+            >
+              <Button
+                style={iconButtonStyles}
+                onClick={copyPropertyOfferField}
+                backdrop={false}
+              >
+                <ContentCopyIcon className="copy" />
+              </Button>
+              <EpoIcon />
+              <Typography>Add an Offer</Typography>
+              <Typography className="no-margin">
+                (generated using Property Info)
+              </Typography>
+              <Typography>+$0.03 per mail piece</Typography>
+            </div>
+            <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
+          </div>
+        )}
       </div>
     );
   }) as unknown as SideSection['Panel'],
