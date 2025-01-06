@@ -98,6 +98,8 @@ export const MESSAGES = {
       EMAIL_REQUIRED: 'Email is required',
       EMAIL_VALIDATION: 'Email is not valid',
       SUBMIT_BUTTON: "'Next'",
+      SUCCESS: 'Custom Design Form submitted successfully',
+      ERROR: 'Failed to submit Custom Design Form',
     },
     DOWNLOAD_PROOF_BUTTON: "Download Proof",
     CANCEL_BUTTON: "Cancel",

@@ -19,6 +19,12 @@ export const SELECT_PRODUCT: string = 'SELECT_PRODUCT';
 export const SELECT_POSTCARD: string = 'SELECT_POSTCARD';
 
 
+// Hire Designer Actions
+export const UPDATE_FORM_FIELD = 'UPDATE_FORM_FIELD';
+export const SUBMIT_FORM_REQUEST = 'SUBMIT_FORM_REQUEST';
+export const SUBMIT_FORM_SUCCESS = 'SUBMIT_FORM_SUCCESS';
+export const SUBMIT_FORM_FAILURE = 'SUBMIT_FORM_FAILURE';
+
 // Custom Fields Actions
 export const SET_CUSTOM_FIELDS = 'SET_CUSTOM_FIELDS';
 
