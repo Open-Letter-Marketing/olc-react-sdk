@@ -166,7 +166,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   const handleViewProofWithLamda = async () => {
     try {
       setDownloaingProof(true);
-      const fields = [...defaultFields, ...customFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields, {value : "{{ROS.PROPERTY_OFFER}}",  key : "{{ROS.PROPERTY_OFFER}}", defaultValue: "0.03"}];
+      const fields = [...defaultFields, ...customFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields, {value : "{{ROS.PROPERTY_OFFER}}",  key : "{{ROS.PROPERTY_OFFER}}", defaultValue: "$123,456.00"}];
       let json = store.toJSON();
       if (product?.productType === "Real Penned Letter") {
         const removedUnsupportedBrackets = removeBracketsFromRPL(json);
