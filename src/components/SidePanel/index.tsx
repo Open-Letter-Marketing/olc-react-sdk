@@ -25,6 +25,7 @@ interface Props {
   excludedFields?: string[] | null;
   designerQueryAmount?: string | number;
   allowPropertyFields?: boolean;
+  allowedAddOns?: any;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -93,7 +94,7 @@ const SidePanel: React.FC<Props> = (props) => {
               {
                 ...customAddOns,
                 Panel: (panelProps: any) => (
-                  <customAddOns.Panel {...panelProps} />
+                  <customAddOns.Panel {...panelProps}  allowedAddOns={props.allowedAddOns} />
                 ),
               },
             ]
