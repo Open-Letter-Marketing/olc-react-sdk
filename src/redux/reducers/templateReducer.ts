@@ -254,7 +254,7 @@ const initialState: TemplateState = {
     {
       value: "Property Offer",
       key: "{{C.PROPERTY_OFFER}}",
-      defaultValue: "0.03",
+      defaultValue: "$123,456.00",
     },
   ],
   products: Products,
