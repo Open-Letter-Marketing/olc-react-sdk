@@ -15,6 +15,7 @@ import { failure } from '../../../redux/actions/snackbarActions';
 // Utils
 import { MESSAGES } from '../../../utils/message';
 import { validURL } from '../../../utils/helper';
+import { DISALLOWED_DOMAINS } from '../../../utils/constants';
 
 // UI Components
 import { Button } from '@blueprintjs/core';
@@ -52,6 +53,12 @@ const CustomQRCode = {
       setVal('');
     }
 
+    const containsDisallowedDomains = (str: string) => {
+      return DISALLOWED_DOMAINS.some(substring => 
+        str.includes(substring)
+      );
+    } 
+
     // create svg image for QR code for input text
     const getQR = (text: string) => {
       return new Promise((resolve) => {
@@ -74,7 +81,7 @@ const CustomQRCode = {
 
     const addNewQRCode = async () => {
       if (val) {
-        if (validURL(val)) {
+        if (validURL(val) && !containsDisallowedDomains(val)) {
           const randomizedId = Math.random().toString(36).substring(2, 7);
           const src = await getQR(val);
           store.activePage.addElement({
@@ -104,7 +111,7 @@ const CustomQRCode = {
     // if selection is changed we need to update input value
     const updateQRCode = async() => {
       if (el?.name === 'qr' && val) {
-        if (validURL(val)) {
+        if (validURL(val) && !containsDisallowedDomains(val)) {
           await getQR(val).then((src) => {
             el.set({
               src,
