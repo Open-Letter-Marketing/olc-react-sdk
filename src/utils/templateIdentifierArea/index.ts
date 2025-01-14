@@ -6,6 +6,7 @@ import { addIdentifierAreaToProfessionalWindow, addIdentifierAreaToProfessionalN
 import { addIdentifierAreaToPersonalLetter } from './personal'
 import { addIdentifierAreaToBiFold } from './biFold'
 import { addIdentifierAreaToTriFold } from './triFold'
+import { addIdentifierAreaToSnapPackMailer } from './snapPack'
 
 
 export const addIdentifiersForTemplates = (productId: string, store: StoreType) => {
@@ -26,5 +27,7 @@ export const addIdentifiersForTemplates = (productId: string, store: StoreType) 
         addIdentifierAreaToBiFold(store);
     } else if (+productId === 11) {
         addIdentifierAreaToTriFold(store);
+    } else if (+productId === 18) {
+        addIdentifierAreaToSnapPackMailer(store);
     }
 };

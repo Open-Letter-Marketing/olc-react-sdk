@@ -11,6 +11,7 @@ import { addAreaToProfessionalLetters } from './templateRestrictedArea/professio
 import { addAreaToNonWindowProfessionalLetters } from './templateRestrictedArea/nonWindowProfessional';
 import { addAreaToPersonalLetters } from './templateRestrictedArea/personal';
 import { addRestrictedAreaToTriFold } from './templateRestrictedArea/triFold';
+import { addRestrictedAreaToSnapPackMailer } from './templateRestrictedArea/snapPack';
 
 // Safety Borders Files
 import { addSafetyBordersForTemplates } from './templateSafetyBorders';
@@ -19,13 +20,15 @@ export const addressPrinting: { [key: string]: boolean } = {
   'Postcards-': true,
   'Tri-Fold Self-Mailers-': true,
   'Bi-Fold Self-Mailers-': true,
-  "Personal Letters-": true,
+  'Personal Letters-': true,
+  'Snap Pack Mailers-': true,
   'Professional Letters-#10 Double-Window': true,
   'Professional Letters-#10 Grey': true,
 };
 
 export const multiPageTemplates: string[] = [
   'Postcards',
+  'Snap Pack Mailers',
   'Tri-Fold Self-Mailers',
   'Bi-Fold Self-Mailers',
 ];
@@ -143,6 +146,8 @@ export const drawRestrictedAreaOnPage = (store: any, product: Product, envelopeT
       addRestrictedAreaToTriFold(store, [3.2835, 2.375], barcodeSrc);
     } else if (product.productType === multiPageLetters[2]) {
       addRestrictedAreaToBiFold(store, [3.2835, 2.375], barcodeSrc);
+    } else if (product.productType === multiPageLetters[3]) {
+      addRestrictedAreaToSnapPackMailer(store, barcodeSrc);
     }
     addSafetyBordersForTemplates(product?.id, store);
   }
@@ -173,6 +178,24 @@ export const removeBracketsFromRPL = (jsonData: any[]) => {
         if (child.type === 'text' && typeof child.text === 'string') {
           const cleanedText = cleanString(child.text);
           child.text = cleanedText.replace(/[{}\[\]]/g, '');
+        }
+        return child;
+      });
+    }
+    return obj;
+  });
+  clonedData.pages = updatedJson;
+  return clonedData;
+};
+
+export const changeColorOfBoxesForSnapPack = (jsonData: any[]) => {
+  let clonedData = JSON.parse(JSON.stringify(jsonData));
+  const updatedJson = clonedData.pages.map((obj: any) => {
+    if (obj.children) {
+      obj.children = obj.children.map((child: any) => {
+        if (child?.custom?.replaceBg) {
+          child.fill = 'white';
+          child.strokeWidth = 0;
         }
         return child;
       });

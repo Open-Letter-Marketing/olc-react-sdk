@@ -99,5 +99,16 @@ export const Products: Product[] = [
             }
         ],
         windowed: false
+    },
+    {
+        id: "18",
+        title: "Snap Pack Mailers",
+        productType: "Snap Pack Mailers",
+        size: [
+            {
+                id: "18",
+                size: "11x8.5"
+            }
+        ]
     }
 ];

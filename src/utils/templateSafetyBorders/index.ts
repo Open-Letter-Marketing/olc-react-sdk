@@ -6,6 +6,7 @@ import { addSafetyBordersToPersonalLetter } from './personal'
 import { addSafetyBordersToNonWindowProfessioanl, addSafetyBordersToWindowProfessioanl } from './professional'
 import { addSafetyBordersToBiFold } from './biFold'
 import { addSafetyBordersToTriFold } from './triFold'
+import { addSafetyBordersToSnapPackMailer } from './snapPack'
 
 
 export const addSafetyBordersForTemplates = (productId: string, store: StoreType) => {
@@ -26,5 +27,7 @@ export const addSafetyBordersForTemplates = (productId: string, store: StoreType
         addSafetyBordersToBiFold(store);
     } else if (+productId === 11) {
         addSafetyBordersToTriFold(store);
+    } else if (+productId === 18) {
+        addSafetyBordersToSnapPackMailer(store);
     }
 };

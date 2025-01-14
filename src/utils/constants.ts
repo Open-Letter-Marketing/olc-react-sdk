@@ -15,6 +15,7 @@ export const multiPageLetters: string[] = [
   "Postcards",
   "Tri-Fold Self-Mailers",
   "Bi-Fold Self-Mailers",
+  "Snap Pack Mailers",
 ];
 
 //@ts-ignore
@@ -42,6 +43,7 @@ export const sortOrderForTemplates: string[] = [
   "Postcards",
   "Personal Letters",
   "Professional Letters",
+  "Snap Pack Mailers",
   "Bi-Fold Self-Mailers",
   "Tri-Fold Self-Mailers",
   "Real Penned Letter",

@@ -19,7 +19,7 @@ import ConfirmNavigateDialog from './ConfirmNavigateDialog';
 import EditTemplateNameModel from './EditTemplateNameModel';
 
 // Utils
-import { downloadPDF, extractFontFamilies, isValidQR, multiPageTemplates, removeBracketsFromRPL, validateEmoji, validateGSV } from '../../utils/template-builder';
+import { changeColorOfBoxesForSnapPack, downloadPDF, extractFontFamilies, isValidQR, multiPageTemplates, removeBracketsFromRPL, validateEmoji, validateGSV } from '../../utils/template-builder';
 import { getItem, setItem } from '../../utils/local-storage';
 import { MESSAGES } from '../../utils/message';
 // @ts-ignore
@@ -176,6 +176,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
           .replace(/\)\)/g, "}}");
         json = JSON.parse(clonedJson);
       }
+      if (product.productType === 'Snap Pack Mailers') {
+        const updatedBoxes = changeColorOfBoxesForSnapPack(json);
+        json = updatedBoxes;
+      }
       let jsonString = JSON.stringify(json);
       fields.forEach(({ key, defaultValue, value }) => {
         const regex = new RegExp(key, 'g');
@@ -232,6 +236,11 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
             .replace(/\)\)/g, "}}");
           jsonData = JSON.parse(clonedJson);
           await store.loadJSON(jsonData);
+        }
+
+        if (product.productType === 'Snap Pack Mailers') {
+          const updatedBoxes = changeColorOfBoxesForSnapPack(jsonData);
+          jsonData = updatedBoxes;
         }
 
         // get all fonts family from json

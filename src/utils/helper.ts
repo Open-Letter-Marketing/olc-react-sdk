@@ -120,7 +120,8 @@ export const createSafetyTextElement = (
   y: number,
   width: number,
   text: string,
-  rotation: number = 0
+  rotation: number = 0,
+  fontSize: number = 9,
 ) => {
   return {
     id,
@@ -155,7 +156,7 @@ export const createSafetyTextElement = (
     contentEditable: false,
     styleEditable: false,
     text,
-    fontSize: 9,
+    fontSize,
     fontFamily: "Noto Sans JP",
     fontStyle: "italic",
     fontWeight: "normal",
