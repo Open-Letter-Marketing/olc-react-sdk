@@ -40,6 +40,9 @@ import RealPennedLetter from '../../assets/images/templates/real-penned-letters.
 import TriFoldSelfMailers from '../../assets/images/templates/tri-fold-self-mailers.tsx';
 //@ts-ignore
 import BiFoldSelfMailers from '../../assets/images/templates/bi-fold-self-mailers.tsx';
+//@ts-ignore
+import SnapPackMailers from '../../assets/images/templates/snap-pack.tsx';
+
 
 import SizeImage from '../../assets/images/templates/size-image';
 import SizeImageMid from '../../assets/images/templates/size-image-mid';
@@ -88,6 +91,7 @@ const Images: Record<string, ReactElement> = {
   'Real Penned Letter': <RealPennedLetter fill="var(--svg-color)" />,
   'Tri-Fold Self-Mailers': <TriFoldSelfMailers fill="var(--svg-color)" />,
   'Bi-Fold Self-Mailers': <BiFoldSelfMailers fill="var(--svg-color)" />,
+  'Snap Pack Mailers': <SnapPackMailers fill="var(--svg-color)" />
 };
 
 interface CreateTemplateProps {
@@ -112,12 +116,14 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
 
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  
 
   const sortedProducts = products?.sort((a, b) => {
     const indexA = sortOrderForTemplates.indexOf(a.productType);
     const indexB = sortOrderForTemplates.indexOf(b.productType);
     return indexA - indexB;
   });
+
 
   const handleNext = () => {
     const trimedTitle = title.trim();
