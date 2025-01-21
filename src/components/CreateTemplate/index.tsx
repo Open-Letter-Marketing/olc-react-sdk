@@ -179,6 +179,11 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
           dispatch(
             selectProduct(sortedProducts.find((item) => item.windowed === false))
           );
+        //@ts-ignore
+        } else if(envelopeType?.label === 'Windowed Envelope') {
+          dispatch(
+            selectProduct(sortedProducts.find((item) => item.windowed === true))
+          );
         }
       }
     }, [envelopeType]);
