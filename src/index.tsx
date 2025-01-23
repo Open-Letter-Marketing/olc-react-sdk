@@ -15,6 +15,7 @@ import '@fontsource/inter/700.css';
 // utils
 import { CustomCSSProperties } from './utils/customStyles';
 import { setIsSandbox, setPublicApiKey } from './utils/helper';
+import { AddOnTypes } from './utils/addOnTypes';
 
 interface TemplateBuilderProps {
   container: HTMLElement | null;
@@ -25,11 +26,15 @@ interface TemplateBuilderProps {
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
+  designerTemplateQuery?: Record<string, any> | null;
   sandbox?: boolean;
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
   excludedFields?: string[] | null;
+  designerQueryAmount?: string | number;
+  allowedAddOns?: AddOnTypes[] | string[] | null | undefined;
   onReturnAndNavigate?: () => void;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
@@ -48,11 +53,15 @@ const TemplateBuilder = ({
   createTemplateRoute,
   templateBuilderRoute,
   olcTemplate,
+  designerTemplateQuery,
   sandbox,
   allowSenderFields,
   allowPropertyFields,
   excludedFields,
+  designerQueryAmount,
+  allowedAddOns,
   onReturnAndNavigate,
+  onCreateCustomTemplateQuery,
   onGetOneTemplate,
   onGetTemplates,
   onGetCustomFields,
@@ -81,6 +90,7 @@ const TemplateBuilder = ({
             secretKey={secretKey}
             styles={styles}
             olcTemplate={olcTemplate}
+            designerTemplateQuery={designerTemplateQuery}
             platformName={platformName}
             templateGalleryModal={templateGalleryModal}
             createTemplateRoute={createTemplateRoute}
@@ -88,7 +98,10 @@ const TemplateBuilder = ({
             allowSenderFields={allowSenderFields}
             allowPropertyFields={allowPropertyFields}
             excludedFields={excludedFields}
+            designerQueryAmount={designerQueryAmount}
+            allowedAddOns={allowedAddOns}
             onReturnAndNavigate={onReturnAndNavigate}
+            onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
             onGetOneTemplate={onGetOneTemplate}
             onGetTemplates={onGetTemplates}
             onGetCustomFields={onGetCustomFields}
@@ -120,7 +133,9 @@ if (rootElement) {
     sandbox: true,
     allowSenderFields: true,
     allowPropertyFields: true,
-    templateGalleryModal: false,
+    templateGalleryModal: true,
+    designerQueryAmount: 175,
+    allowedAddOns: ['property_offer','gsv'],
     excludedFields: ['{{C.FIRST_NAME}}', '{{C.ADDRESS_1}}', '{{SPF.FIRST_NAME}}'],
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,

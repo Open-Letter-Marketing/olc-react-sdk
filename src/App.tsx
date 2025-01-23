@@ -27,11 +27,15 @@ interface AppProps {
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
   olcTemplate?: Record<string, any>;
+  designerTemplateQuery?: Record<string, any> | null; 
   allowSenderFields?: boolean;
   excludedFields?: string[] | null;
+  designerQueryAmount?: string | number;
   allowPropertyFields?: boolean;
+  allowedAddOns?: any;
   styles?: any;
   onReturnAndNavigate?: () => void;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
@@ -45,11 +49,15 @@ const App: React.FC<AppProps> = ({
   createTemplateRoute,
   templateBuilderRoute,
   olcTemplate,
+  designerTemplateQuery,
   allowSenderFields,
   excludedFields,
+  designerQueryAmount,
   allowPropertyFields,
+  allowedAddOns,
   styles,
   onReturnAndNavigate,
+  onCreateCustomTemplateQuery,
   onGetOneTemplate,
   onGetCustomFields,
   onGetTemplates,
@@ -62,7 +70,7 @@ const App: React.FC<AppProps> = ({
   useEffect(() => {
     if (
       currentPath === createTemplateRoute ||
-      currentPath === '/create-template'
+      currentPath === '/create-template' || designerTemplateQuery
     ) {
       const newStore = initializeStore(secretKey);
       setStore(newStore);
@@ -105,13 +113,17 @@ const App: React.FC<AppProps> = ({
             <TemplateBuilder
               store={store}
               olcTemplate={olcTemplate}
+              designerTemplateQuery={designerTemplateQuery}
               platformName={platformName}
               templateGalleryModal={templateGalleryModal}
               allowSenderFields={allowSenderFields}
               excludedFields={excludedFields}
+              designerQueryAmount={designerQueryAmount}
               allowPropertyFields={allowPropertyFields}
               createTemplateRoute={createTemplateRoute}
+              allowedAddOns={allowedAddOns}
               onReturnAndNavigate={onReturnAndNavigate}
+              onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
               onGetOneTemplate={onGetOneTemplate}
               onGetTemplates={onGetTemplates}
               onGetCustomFields={onGetCustomFields}

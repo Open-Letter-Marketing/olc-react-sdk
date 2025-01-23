@@ -15,21 +15,34 @@ import { AppDispatch } from '../../redux/store';
 import { StoreType } from 'polotno/model/store';
 
 // Actions
-import { GET_ONE_TEMPLATE, SET_CUSTOM_FIELDS, TEMPLATE_LOADING } from '../../redux/actions/action-types';
+import {
+  CLEAR_REDUX,
+  GET_ONE_TEMPLATE,
+  SET_CUSTOM_FIELDS,
+  TEMPLATE_LOADING,
+} from '../../redux/actions/action-types';
 import { failure } from '../../redux/actions/snackbarActions';
+import {
+  searchAndAdvanceChange,
+  selectProduct,
+} from '../../redux/actions/templateActions';
 
 // Utils
-import { drawRestrictedAreaOnPage, getFileAsBlob } from '../../utils/template-builder';
+import {
+  drawRestrictedAreaOnPage,
+  getFileAsBlob,
+} from '../../utils/template-builder';
 import { addIdentifiersForTemplates } from '../../utils/templateIdentifierArea';
 import { addElementsforRealPennedLetters } from '../../utils/templateRestrictedArea/realPenned';
 import { DPI, allowedImageTypes, multiPageLetters } from '../../utils/constants';
 import { addSafetyBordersForTemplates } from '../../utils/templateSafetyBorders';
 import { MESSAGES } from '../../utils/message';
+import { removeItem } from '../../utils/local-storage';
 
 // @ts-ignore
-import fonts from "../../utils/fonts.json";
+import fonts from '../../utils/fonts.json';
 // @ts-ignore
-import LexiRegularFont from "../../assets/Fonts/Lexi-Regular.ttf";
+import LexiRegularFont from '../../assets/Fonts/Lexi-Regular.ttf';
 
 // Components
 import TopNavigation from '../TopNavigation';
@@ -52,22 +65,44 @@ import './styles.scss';
  */
 
 interface TemplateBuilderProps {
-  store: StoreType,
+  store: StoreType;
   platformName?: string | null;
   templateGalleryModal?: boolean;
-  createTemplateRoute?: string | null,
+  createTemplateRoute?: string | null;
   olcTemplate?: Record<string, any>;
+  designerTemplateQuery?: Record<string, any> | null;
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
   excludedFields?: string[] | null;
+  designerQueryAmount?: string | number;
+  allowedAddOns?: any;
   onReturnAndNavigate?: () => void;
   onGetCustomFields?: () => Promise<any>;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onSubmit?: (payload: any) => Promise<any>;
 }
 
-const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNavigate, platformName, templateGalleryModal, createTemplateRoute, olcTemplate, allowSenderFields, excludedFields, allowPropertyFields, onGetOneTemplate, onGetCustomFields, onGetTemplates, onSubmit }) => {
+const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
+  store,
+  platformName,
+  templateGalleryModal,
+  createTemplateRoute,
+  designerTemplateQuery,
+  olcTemplate,
+  allowSenderFields,
+  excludedFields,
+  designerQueryAmount,
+  allowPropertyFields,
+  allowedAddOns,
+  onCreateCustomTemplateQuery,
+  onReturnAndNavigate,
+  onGetOneTemplate,
+  onGetCustomFields,
+  onGetTemplates,
+  onSubmit,
+}) => {
   const [isStoreUpdated, setIsStoreUpdated] = useState(false);
   const [switchTabCount, setSwitchTabCount] = useState(1);
   const [selectedSection, setSelectedSection] = useState('text');
@@ -76,26 +111,38 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const template = useSelector((state: RootState) => state.templates.template) as Record<string, any>;
-  const product = useSelector((state: RootState) => state.templates.product) as Record<string, any>;
+  const template = useSelector(
+    (state: RootState) => state.templates.template
+  ) as Record<string, any>;
+  const product = useSelector(
+    (state: RootState) => state.templates.product
+  ) as Record<string, any>;
   const envelopeType = useSelector(
     (state: RootState) => state.templates.envelopeType
   );
+  const allProducts = useSelector((state: RootState) => state.templates.products);
 
   const currentTemplateType = product?.productType;
 
-  const containerStyle =
-  {
+  const containerStyle = {
     width: '100vw',
     height: '90vh',
     position: 'relative',
-  }
-  
+  };
+
   useEffect(() => {
     if (olcTemplate) {
       handleLoadTemplate();
     }
   }, [olcTemplate]);
+
+  useEffect(() => {
+    if (designerTemplateQuery) {
+      setTimeout(() => {
+        handleLoadDesignerTemplate();
+      }, 100);
+    }
+  }, [designerTemplateQuery]);
 
   // Event listener for visibility change
   useEffect(() => {
@@ -106,22 +153,31 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
     };
 
     const handleClick = (event: MouseEvent) => {
-      if (event.target instanceof Element && event.target.closest('.polotno-side-tabs-container') && store?.openedSidePanel !== 'Templates') {
-        setSelectedSection(store?.openedSidePanel)
+      if (
+        event.target instanceof Element &&
+        event.target.closest('.polotno-side-tabs-container') &&
+        store?.openedSidePanel !== 'Templates'
+      ) {
+        setSelectedSection(store?.openedSidePanel);
       }
     };
 
     document.addEventListener('click', handleClick);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       document.removeEventListener('click', handleClick);
     };
   }, []);
 
   useEffect(() => {
-    if (!product && !olcTemplate && !id) {
+    removeItem('hireDesignerFormState');
+    removeItem('queryFiles');
+  }, [])
+
+  useEffect(() => {
+    if (!product && !olcTemplate && !id && !designerTemplateQuery) {
       navigate(createTemplateRoute || '/create-template');
     }
   }, []);
@@ -163,7 +219,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
         }
       };
 
-      const off = store.on("change", handleChange);
+      const off = store.on('change', handleChange);
 
       return () => {
         store.history.clear();
@@ -180,19 +236,19 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
   }, [product]);
 
   useEffect(() => {
-    const handleBeforeUnload = (event: { returnValue: string; }) => {
-      const message = "Are you sure you want to leave?";
+    const handleBeforeUnload = (event: { returnValue: string }) => {
+      const message = 'Are you sure you want to leave?';
       event.returnValue = message;
       return message;
     };
 
     const addBeforeUnloadListener = () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.addEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.addEventListener('beforeunload', handleBeforeUnload);
     };
 
     const removeBeforeUnloadListener = () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
 
     if (isStoreUpdated) {
@@ -204,26 +260,25 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
     };
   }, [isStoreUpdated]);
 
-
   const fetchCustomFields = async () => {
     if (onGetCustomFields) {
       const customFields: any = await onGetCustomFields();
       if (customFields?.length) {
         dispatch({
           type: SET_CUSTOM_FIELDS,
-          payload: customFields
-        })
+          payload: customFields,
+        });
       }
     }
-  }
+  };
 
   const createInitialPage = async () => {
     if (product) {
-
+      store.openSidePanel('text');
       store.addPage();
-      const paperSize = product?.selectedSize?.split("x");
+      const paperSize = product?.selectedSize?.split('x');
       store.setUnit({
-        unit: "in",
+        unit: 'in',
         dpi: DPI,
       });
       store.setSize(+paperSize[1] * DPI, +paperSize[0] * DPI);
@@ -234,7 +289,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
       //@ts-ignore
       drawRestrictedAreaOnPage(store, product, envelopeType);
       addIdentifiersForTemplates(product.id, store);
-      if (currentTemplateType === "Real Penned Letter") {
+      if (currentTemplateType === 'Real Penned Letter') {
         handleRealPennedLetters();
       }
 
@@ -248,7 +303,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
     try {
       // Load Lexi Regular Fonts Into Store
       store.addFont({
-        fontFamily: "lexi Regular",
+        fontFamily: 'lexi Regular',
         url: LexiRegularFont,
       });
       addElementsforRealPennedLetters(store);
@@ -260,14 +315,42 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
       // Load Lexi Regular Base64 into JSON
       reader.onloadend = () => {
         store.addFont({
-          fontFamily: "lexi Regular",
+          fontFamily: 'lexi Regular',
           url: reader.result,
         } as any);
       };
       reader.readAsDataURL(blob);
     } catch (error) {
-      console.error("Error loading the font file:", error);
+      console.error('Error loading the font file:', error);
     }
+  };
+
+  const handleLoadDesignerTemplate = async () => {
+    if (designerTemplateQuery?.title && designerTemplateQuery?.product) {
+      const flatProducts = allProducts.flatMap(product =>
+        product.size.map((sizeItem: any) => ({
+          id: sizeItem.id || product.id,
+          title: product.title,
+          productType: product.productType,
+          size: [{ id: sizeItem.id || product.id, size: sizeItem.size }],
+          ...(product.windowed !== undefined && { windowed: product.windowed })
+        }))
+      );
+      const selectedProduct = flatProducts.find((product) => product.id === designerTemplateQuery?.product?.id);
+      if (selectedProduct) {
+        dispatch({ type: CLEAR_REDUX });
+        store.clear();
+        store.history.clear();
+        dispatch(searchAndAdvanceChange('title', designerTemplateQuery?.title));
+        if (selectedProduct.productType === 'Professional Letters') {
+          let selectedEnvelope = selectedProduct.id == 2 ? '#10 Double-Window' : '#10 Grey'
+          dispatch(searchAndAdvanceChange('envelopeType', selectedEnvelope));
+        }
+        dispatch(selectProduct(selectedProduct));
+        return;
+      }
+    }
+    onReturnAndNavigate ? onReturnAndNavigate() : navigate(createTemplateRoute || '/');
   };
 
   const handleLoadTemplate = async () => {
@@ -275,21 +358,23 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
     if (existingTemplate) {
       dispatch({ type: GET_ONE_TEMPLATE, payload: { data: existingTemplate } });
       const workspaceElement = document.querySelector(
-        ".polotno-workspace-container"
+        '.polotno-workspace-container'
       );
       if (workspaceElement) {
-        workspaceElement.classList.add("show-loader");
+        workspaceElement.classList.add('show-loader');
       }
       // @ts-ignore
       const paperDimensions = existingTemplate?.product?.paperSize.split('x');
       store.setUnit({
-        unit: "in",
+        unit: 'in',
         dpi: 96,
       });
       store.setSize(+paperDimensions[1] * DPI, +paperDimensions[0] * DPI);
       let jsonData = await getFileAsBlob(existingTemplate?.templateUrl);
       if (existingTemplate?.product?.productType === 'Real Penned Letter') {
-        let clonedJson = JSON.stringify(jsonData).replace(/{{/g, "((").replace(/}}/g, "))");
+        let clonedJson = JSON.stringify(jsonData)
+          .replace(/{{/g, '((')
+          .replace(/}}/g, '))');
         jsonData = JSON.parse(clonedJson);
       }
       store.loadJSON(jsonData);
@@ -298,7 +383,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
       addSafetyBordersForTemplates(existingTemplate?.product?.id, store);
       dispatch({ type: TEMPLATE_LOADING, payload: false });
       if (workspaceElement) {
-        workspaceElement.classList.add("hide-loader");
+        workspaceElement.classList.add('hide-loader');
       }
     }
   };
@@ -331,10 +416,13 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
                 allowSenderFields={allowSenderFields}
                 allowPropertyFields={allowPropertyFields}
                 excludedFields={excludedFields}
+                designerQueryAmount={designerQueryAmount}
+                allowedAddOns={allowedAddOns}
                 onGetTemplates={onGetTemplates}
                 onGetOneTemplate={onGetOneTemplate}
                 onGetCustomFields={onGetCustomFields}
                 selectedSection={selectedSection}
+                onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
               />
               <WorkspaceWrap>
                 {currentTemplateType !== 'Real Penned Letter' && (
@@ -346,13 +434,13 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
                   <Workspace
                     store={store}
                     pageControlsEnabled={false}
-                    components={{Tooltip}}
+                    components={{ Tooltip }}
                   />
                 )}
                 <ZoomButtons store={store} />
               </WorkspaceWrap>
             </PolotnoContainer>
-            <GenericSnackbar/>
+            <GenericSnackbar />
           </div>
         )}
       </div>
@@ -361,5 +449,3 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({ store, onReturnAndNav
 };
 
 export default TemplateBuilder;
-
-

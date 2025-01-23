@@ -1,24 +1,30 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {ChangeEvent, FC, useState} from 'react';
 
 // components
 import Typography from '../Typography';
+import CustomTooltip from '../CustomTooltip';
+import Button from '../Button';
 
 // icon
 import Search from '../../../assets/images/input/search';
 import Cancel from '../../../assets/images/input/cancel';
+import VideoInfo from '../../../assets/images/modal-icons/info';
+import ToolCancel from '../../../assets/images/modal-icons/tool-cancel';
 
 // styles
 import './styles.scss';
 
 const errorStyles = {
   color: 'var(--error-color)',
-  fontWeight: "400"
+  fontWeight: '400',
+  fontSize: '14px',
+  margin: "0"
 };
 
 interface InputProps {
   variant?: keyof JSX.IntrinsicElements;
   type: any;
-  value: string;
+  value: string,
   onChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | any>
   ) => void;
@@ -31,7 +37,9 @@ interface InputProps {
   removeSearchInput?: () => void;
   onKeyDown?: () => void;
   builderInput?: boolean;
-  gellerySearch?:  boolean;
+  gellerySearch?: boolean;
+  videoTooltip?: boolean;
+  handleFileRemove?: () => void;
 }
 
 const Input: FC<InputProps> = ({
@@ -48,24 +56,86 @@ const Input: FC<InputProps> = ({
   removeSearchInput,
   onKeyDown,
   builderInput,
-  gellerySearch = false
+  gellerySearch = false,
+  videoTooltip = false,
+  handleFileRemove,
 }) => {
   const InputVariant = variant || 'input';
 
-  return (
-    <div className={`input-layout ${gellerySearch && "gallery-input-layout"}`}>
-      <label className="basic-label">{label ? label : ''}</label>
-      <div
-        className={`input-with-icon ${searchApplied && 'focused'} ${error ? 'errorBorder' : ''} ${gellerySearch && "galleryInput"}`}
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+  const loomButtonStyles = {
+    backgroundColor: 'var(--primary-color)',
+    fontSize: '12px',
+    padding: '10px 20px',
+    borderRadius: '4px',
+    maxHeight: '25px',
+  };
+
+  const URLTooltip = (
+    <div className="videoUrlTooltip">
+      <p>
+        You can use Loom to create this video. Create your free Loom account
+        now.
+      </p>
+      <Button
+        style={loomButtonStyles}
+        onClick={(e) => {
+          e.stopPropagation();
+          window.open('https://www.loom.com/','_blank');
+        }}
       >
-        <InputVariant
-          type={type}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className={`basic-input ${builderInput && 'builder-input'}`}
-          onKeyDown={onKeyDown}
-        />
+        Open Loom
+      </Button>
+      <ToolCancel onClick={()=>setShowTooltip(false)}/>
+    </div>
+  );
+
+  const handleClose = () => {
+    setShowTooltip(false);
+  };
+
+  return (
+    <div className={`input-layout ${gellerySearch && 'gallery-input-layout'}`}>
+      <label className="basic-label">
+        {label ? label : ''}
+        {videoTooltip && (
+          <>
+            <span className="urlTooltip" 
+            onMouseOver={()=>setShowTooltip(true)}
+            >
+              <VideoInfo />
+            </span>
+            <CustomTooltip
+              children={URLTooltip}
+              open={showTooltip}
+              handleClose={handleClose}
+              place="top"
+              />
+          </>
+        )}
+      </label>
+      <div
+        className={`input-with-icon ${searchApplied && 'focused'} ${error ? 'errorBorder' : ''} ${gellerySearch && 'galleryInput'}`}
+      >
+        {type === 'file' ? (
+          <input
+            type="file"
+            onChange={(e) => onChange(e)}
+            accept=".png, .jpg, .jpeg, .pdf, .doc, .docx"
+            multiple
+            className={`basic-input ${builderInput && 'builder-input'}`}
+          />
+        ) : (
+          <InputVariant
+            type={type}
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            className={`basic-input ${builderInput && 'builder-input'}`}
+            onKeyDown={onKeyDown}
+          />
+        )}
         {inputIcon && (
           <>
             {searchApplied && value?.length > 0 ? (

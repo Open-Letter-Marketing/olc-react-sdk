@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 // Polotno and third party libraries
 import { observer } from 'mobx-react-lite';
@@ -48,6 +48,7 @@ import ModalCross from '../../../assets/images/modal-icons/modal-cross';
 
 // styles
 import './styles.scss';
+import HireDesigner from './ModalGallery/HireDesigner';
 
 type SideSection = typeof TemplatesSection;
 
@@ -95,7 +96,11 @@ type CustomTemplateSectionProps = {
   platformName?: string | null;
   templateGalleryModal?: boolean;
   selectedSection?: string;
+  designerQueryAmount?: string | number;
+  hireDesignerModal?: any; 
+  setHireDesignerModal?: any;
   onClick: () => void;
+  onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: Payload) => Promise<any>;
 };
@@ -115,6 +120,10 @@ const CustomTemplateSection: SideSection = {
       platformName,
       templateGalleryModal,
       selectedSection,
+      designerQueryAmount,
+      hireDesignerModal,
+      setHireDesignerModal,
+      onCreateCustomTemplateQuery,
       onGetOneTemplate,
       onGetTemplates,
     }: CustomTemplateSectionProps) => {
@@ -282,6 +291,21 @@ const CustomTemplateSection: SideSection = {
         removeItem('currentTab');
         document.body.classList.remove('no-scroll');
       };
+
+      const closeHireDesignerModal = () => {
+        setHireDesignerModal(false);
+        let sideBar = document.getElementsByClassName('polotno-panel-container');
+        const firstSideBar = sideBar[0];
+        if (firstSideBar) {
+          //@ts-ignore
+          firstSideBar.style.display = 'block';
+        }
+        store.openSidePanel(selectedSection || 'text');
+        removeItem('currentTab');
+        removeItem('hireDesignerFormState');
+        removeItem('queryFiles');
+        document.body.classList.remove('no-scroll');
+      }
 
       const handleTabChange = (tab: any) => {
         setCurrentTemplateType(tab);
@@ -557,57 +581,60 @@ const CustomTemplateSection: SideSection = {
 
       return (
         <>
-          {
-            templateGalleryModal ?
-              <ModalGallery
-                product={product}
-                openGalleryModal={openGalleryModal}
-                pagination={pagination}
-                currentTemplateTypeRef={currentTemplateTypeRef}
-                selectedCategory={selectedCategory}
-                templateCategories={templateCategories}
-                currentTemplateType={currentTemplateType}
-                templateTypes={templateTypes}
-                search={search}
-                searchApplied={searchApplied}
-                loader={loader}
-                platformName={platformName}
-                myTemplates={myTemplates}
-                teamTemplates={teamTemplates}
-                olcTemplates={olcTemplates}
-                setSearch={setSearch}
-                handleSearch={handleSearch}
-                removeSearchInput={removeSearchInput}
-                searchKeyDown={searchKeyDown}
-                setCurrentTemplateType={setCurrentTemplateType}
-                setSelectedCategory={setSelectedCategory}
-                handleLoadTemplateModel={handleLoadTemplateModel}
-                handleDialogChange={handleDialogChange}
-                handleTabChange={handleTabChange}
-                closeGalleryModal={closeGalleryModal}
-              /> :
-              <SideBarGallery
-                selectedCategory={selectedCategory}
-                templateCategories={templateCategories}
-                currentTemplateType={currentTemplateType}
-                templateTypes={templateTypes}
-                search={search}
-                searchApplied={searchApplied}
-                loader={loader}
-                platformName={platformName}
-                myTemplates={myTemplates}
-                teamTemplates={teamTemplates}
-                olcTemplates={olcTemplates}
-                setSearch={setSearch}
-                handleSearch={handleSearch}
-                removeSearchInput={removeSearchInput}
-                searchKeyDown={searchKeyDown}
-                setCurrentTemplateType={setCurrentTemplateType}
-                setSelectedCategory={setSelectedCategory}
-                handleLoadTemplateModel={handleLoadTemplateModel}
-                handleDialogChange={handleDialogChange}
-              />
-          }
+          {templateGalleryModal && !hireDesignerModal ? (
+            <ModalGallery
+              product={product}
+              openGalleryModal={openGalleryModal}
+              pagination={pagination}
+              currentTemplateTypeRef={currentTemplateTypeRef}
+              selectedCategory={selectedCategory}
+              templateCategories={templateCategories}
+              currentTemplateType={currentTemplateType}
+              templateTypes={templateTypes}
+              search={search}
+              searchApplied={searchApplied}
+              loader={loader}
+              platformName={platformName}
+              myTemplates={myTemplates}
+              teamTemplates={teamTemplates}
+              olcTemplates={olcTemplates}
+              designerQueryAmount={designerQueryAmount}
+              setHireDesignerModal={setHireDesignerModal}
+              setSearch={setSearch}
+              handleSearch={handleSearch}
+              removeSearchInput={removeSearchInput}
+              searchKeyDown={searchKeyDown}
+              setCurrentTemplateType={setCurrentTemplateType}
+              setSelectedCategory={setSelectedCategory}
+              handleLoadTemplateModel={handleLoadTemplateModel}
+              handleDialogChange={handleDialogChange}
+              handleTabChange={handleTabChange}
+              closeGalleryModal={closeGalleryModal}
+              setOpenGalleryModal={setOpenGalleryModal}
+            />
+          ) : !hireDesignerModal && (
+            <SideBarGallery
+              selectedCategory={selectedCategory}
+              templateCategories={templateCategories}
+              currentTemplateType={currentTemplateType}
+              templateTypes={templateTypes}
+              search={search}
+              searchApplied={searchApplied}
+              loader={loader}
+              platformName={platformName}
+              myTemplates={myTemplates}
+              teamTemplates={teamTemplates}
+              olcTemplates={olcTemplates}
+              setSearch={setSearch}
+              handleSearch={handleSearch}
+              removeSearchInput={removeSearchInput}
+              searchKeyDown={searchKeyDown}
+              setCurrentTemplateType={setCurrentTemplateType}
+              setSelectedCategory={setSelectedCategory}
+              handleLoadTemplateModel={handleLoadTemplateModel}
+              handleDialogChange={handleDialogChange}
+            />
+          )}
 
           <div className="custom-template-section">
             {isShowDialog.open && isShowDialog.model === 'design-own' && (
@@ -623,6 +650,14 @@ const CustomTemplateSection: SideSection = {
                 customStyles={designDialogStyles}
                 cancelText="Cancel"
                 submitText="OK"
+              />
+            )}
+            {hireDesignerModal && (
+              <HireDesigner
+                open={hireDesignerModal}
+                onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
+                productId={product?.id}
+                onClose={closeHireDesignerModal}
               />
             )}
             {isShowDialog.open && isShowDialog.model === 'load-template' && (

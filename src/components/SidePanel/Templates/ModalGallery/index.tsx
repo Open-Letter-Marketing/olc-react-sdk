@@ -15,6 +15,7 @@ import Dialog from '../../../GenericUIBlocks/Dialog';
 
 // Icons
 import DesignIcon from '../../../../assets/images/templates/template-default-design';
+import Designer from '../../../../assets/images/templates/designer';
 
 const galleryDialogStyles = {
     maxWidth: '1090px',
@@ -28,6 +29,7 @@ type CustomTemplateSectionProps = {
     templateCategories: TemplateCategory[],
     currentTemplateType: TemplateType | undefined,
     templateTypes: [TemplateType] | null | undefined,
+    designerQueryAmount?: string | number;
     search: any,
     searchApplied: boolean,
     loader: boolean,
@@ -46,7 +48,9 @@ type CustomTemplateSectionProps = {
     handleLoadTemplateModel: any,
     handleTabChange: any,
     handleDialogChange: any,
-    closeGalleryModal: any
+    closeGalleryModal: any,
+    setOpenGalleryModal: any
+    setHireDesignerModal: any;
 };
 
 
@@ -59,6 +63,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
         templateCategories,
         currentTemplateType,
         templateTypes,
+        designerQueryAmount,
         search,
         searchApplied,
         loader,
@@ -77,6 +82,8 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
         handleTabChange,
         handleDialogChange,
         closeGalleryModal,
+        setOpenGalleryModal,
+        setHireDesignerModal,
     } = props;
 
     const primaryColorExtract = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
@@ -169,7 +176,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                         product?.size?.find((product: any) => product?.size === "4x6") || product?.paperSize === "4x6" ? "postcard-4x6"
                                         : product?.id === '15' && product?.size?.find((product: any) => product?.size === "6x11") || product?.paperSize === "6x11" ? "postcard-6x11"
                                             : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") || product?.paperSize === "6x9" ? "postcard-6x9"
-                                                : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
+                                                : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                                 onClick={() => handleDialogChange('design-own')}
                                 style={{
                                     boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`
@@ -179,6 +186,29 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                 <Typography>Design Your Own</Typography>
                             </div>
                             <Typography className='ownHeading'>Design Your Own</Typography>
+                        </div>
+                    )}
+                    {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '3' && designerQueryAmount && (
+                        <div>
+                            <div
+                                className={`defaultDesign 
+                      ${product?.id === '13' &&
+                                        product?.size?.find((product: any) => product?.size === "4x6") || product?.paperSize === "4x6" ? "postcard-4x6"
+                                        : product?.id === '15' && product?.size?.find((product: any) => product?.size === "6x11") || product?.paperSize === "6x11" ? "postcard-6x11"
+                                            : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") || product?.paperSize === "6x9" ? "postcard-6x9"
+                                                : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
+                                onClick={() => {
+                                    setOpenGalleryModal(false);
+                                    setHireDesignerModal(true);
+                                }}
+                                style={{
+                                    boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`
+                                }}
+                            >
+                                <Designer fill="var(--primary-color)" />
+                                <Typography>Hire a Designer</Typography>
+                            </div>
+                            <Typography className='ownHeading'>Hire a Designer +${designerQueryAmount}</Typography>
                         </div>
                     )}
                     <TempCard

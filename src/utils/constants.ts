@@ -1,8 +1,8 @@
-export const PROD_API_BASE_URL = 'https://api.openletterconnect.com/api/v1/sdk';
-export const DEMO_API_BASE_URL = 'https://demoapi.openletterconnect.com/api/v1/sdk';
+export const PROD_API_BASE_URL = 'https://qrforward.org/api/v1/sdk';
+export const DEMO_API_BASE_URL = 'https://demo.qrforward.org/api/v1/sdk';
 
-export const  DEMO_S3_URL = `https://demoapi.openletterconnect.com/api/v1/download/s3/openletterconnect`;
-export const  PROD_S3_URL = `https://api.openletterconnect.com/api/v1/download/s3/openletterconnect`;
+export const  DEMO_S3_URL = `https://demo.qrforward.org/api/v1/download/s3/sdk-images`;
+export const  PROD_S3_URL = `https://qrforward.org/api/v1/download/s3/sdk-images`;
 
 export const DPI: number = 96;
 
@@ -15,6 +15,7 @@ export const multiPageLetters: string[] = [
   "Postcards",
   "Tri-Fold Self-Mailers",
   "Bi-Fold Self-Mailers",
+  "Snap Pack Mailers",
 ];
 
 //@ts-ignore
@@ -42,8 +43,18 @@ export const sortOrderForTemplates: string[] = [
   "Postcards",
   "Personal Letters",
   "Professional Letters",
+  "Snap Pack Mailers",
   "Bi-Fold Self-Mailers",
   "Tri-Fold Self-Mailers",
   "Real Penned Letter",
 ];
 
+export const EMAIL_REGEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i;
+export const VIDEO_URL_REGEX = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?(\?[\w=&]*)?$/;
+
+
+export const DISALLOWED_DOMAINS = [
+  'qrforward.org',
+  'demo-qrforward.org',
+  'staging-qrforward.org',
+];

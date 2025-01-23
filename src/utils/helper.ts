@@ -120,7 +120,8 @@ export const createSafetyTextElement = (
   y: number,
   width: number,
   text: string,
-  rotation: number = 0
+  rotation: number = 0,
+  fontSize: number = 9,
 ) => {
   return {
     id,
@@ -155,7 +156,7 @@ export const createSafetyTextElement = (
     contentEditable: false,
     styleEditable: false,
     text,
-    fontSize: 9,
+    fontSize,
     fontFamily: "Noto Sans JP",
     fontStyle: "italic",
     fontWeight: "normal",
@@ -173,3 +174,23 @@ export const createSafetyTextElement = (
     backgroundPadding: 0.5,
   };
 }
+
+export const dataURLtoBlob = (dataURL: string, type: string): Blob => {
+  // Extract the Base64 data by removing the prefix
+  const base64Index = dataURL.indexOf(";base64,") + 8;
+  const base64String = dataURL.substring(base64Index);
+
+  try {
+    const byteString = atob(base64String);
+    const arrayBuffer = new Uint8Array(byteString.length);
+
+    for (let i = 0; i < byteString.length; i++) {
+      arrayBuffer[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([arrayBuffer], { type });
+  } catch (error) {
+    console.error("Failed to decode Base64 string:", error);
+    throw new Error("Invalid Base64 string");
+  }
+};
