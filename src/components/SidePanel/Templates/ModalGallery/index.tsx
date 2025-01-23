@@ -188,7 +188,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                             <Typography className='ownHeading'>Design Your Own</Typography>
                         </div>
                     )}
-                    {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '3' && designerQueryAmount && (
+                    {!loader && !searchApplied && currentTemplateTypeRef.current?.id !== '2' && designerQueryAmount && (
                         <div>
                             <div
                                 className={`defaultDesign 
