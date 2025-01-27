@@ -1,5 +1,6 @@
 export let publicApiKey: string = '';
 export let isSandbox: boolean = false;
+export let currentEnv: any = false;
 
 export const copyToClipboard = (text: string): void => {
   navigator.clipboard
@@ -22,8 +23,16 @@ export const getIsSandbox = () => {
   return isSandbox;
 };
 
+export const getEnv = () => {
+  return currentEnv;
+};
+
 export const setIsSandbox = (sandbox: boolean) => {
   isSandbox = sandbox;
+};
+
+export const setEnv = (env: string) => {
+  currentEnv = env;
 };
 
 export const removeSThroughOne = (input: string) => {

@@ -1,8 +1,8 @@
 /* eslint-disable no-useless-catch */
 
 // Utils
-import { multiPageLetters, BARCODE_IMAGE_URL, DEMO_S3_URL, PROD_S3_URL, emojiRegex } from './constants';
-import { cleanString, getIsSandbox } from './helper';
+import { multiPageLetters, BARCODE_IMAGE_URL, DEMO_S3_URL, PROD_S3_URL, emojiRegex, STAGE_S3_URL, LOCAL_S3_URL } from './constants';
+import { cleanString, getEnv, getIsSandbox } from './helper';
 
 // Restricted Area Files
 import { addRestrictedAreaToBiFold } from './templateRestrictedArea/biFold';
@@ -122,7 +122,12 @@ export interface Product {
 }
 
 export const drawRestrictedAreaOnPage = (store: any, product: Product, envelopeType: string) => {
-  const barcodeSrc = (getIsSandbox() ? DEMO_S3_URL : PROD_S3_URL) + BARCODE_IMAGE_URL;
+  const barcodeSrc =
+    (getEnv() === 'local' || getEnv() === 'staging'
+      ? STAGE_S3_URL
+      : getIsSandbox()
+        ? DEMO_S3_URL
+        : PROD_S3_URL) + BARCODE_IMAGE_URL;
   if (addressPrinting[`${product.productType}-${envelopeType}`]) {
     if (
       product.productType === "Professional Letters" &&
