@@ -205,7 +205,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         downloadPDF(title.substring(0, 20), url);
         dispatch(success('Download Proof generated successfully'));
       } else {
-        dispatch(failure(response?.data?.message || response?.message));
+        dispatch(failure(response?.data?.message || response?.message || MESSAGES.DOWNLOAD_ERROR));
       }
     } catch (error: any) {
       dispatch(

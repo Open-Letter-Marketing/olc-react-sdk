@@ -3,6 +3,7 @@
 export const MESSAGES = {
   TEMPLATE_MESSAGE_ON_SMALL_SCREEN: 'Template Builder is available on tablet and web view only.',
   GENERAL_ERROR: "Internal Server Error",
+  DOWNLOAD_ERROR: 'Something went wrong. Please try again.',
   TEMPLATE: {
     SEARCH_PLACE_HOLDER: "Search by template name or template ID",
     NAME_REQUIRED: "Template Name is required",
