@@ -85,19 +85,27 @@ const SidePanel: React.FC<Props> = (props) => {
           },
           ...(props.currentTemplateType !== 'Real Penned Letter'
             ? [
-              {
-                ...CustomQRCode,
-                Panel: (panelProps: any) => (
-                  <CustomQRCode.Panel {...panelProps} />
-                ),
-              },
-              {
-                ...customAddOns,
-                Panel: (panelProps: any) => (
-                  <customAddOns.Panel {...panelProps}  allowedAddOns={props.allowedAddOns} />
-                ),
-              },
-            ]
+                {
+                  ...CustomQRCode,
+                  Panel: (panelProps: any) => (
+                    <CustomQRCode.Panel
+                      {...panelProps}
+                      allowSenderFields={props.allowSenderFields}
+                      allowPropertyFields={props.allowPropertyFields}
+                      excludedFields={props.excludedFields}
+                    />
+                  ),
+                },
+                {
+                  ...customAddOns,
+                  Panel: (panelProps: any) => (
+                    <customAddOns.Panel
+                      {...panelProps}
+                      allowedAddOns={props.allowedAddOns}
+                    />
+                  ),
+                },
+              ]
             : []),
         ]}
         defaultSection="text"
