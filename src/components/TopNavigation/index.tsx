@@ -168,6 +168,11 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
       setDownloaingProof(true);
       const fields = [...defaultFields, ...customFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields, {value : "{{ROS.PROPERTY_OFFER}}",  key : "{{ROS.PROPERTY_OFFER}}", defaultValue: "$123,456.00"}];
       let json = store.toJSON();
+      const jsonSize = new Blob([JSON.stringify(json)]).size;
+      if (jsonSize > 5242880) {
+        dispatch(failure(MESSAGES.TEMPLATE.SIZE_LIMIT_EXCEED));
+        return;
+      }
       if (product?.productType === "Real Penned Letter") {
         const removedUnsupportedBrackets = removeBracketsFromRPL(json);
         json = removedUnsupportedBrackets;
@@ -227,6 +232,12 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
       let selectedFields: any = [];
       if (templateType === 'json') {
         let jsonData = store.toJSON();
+
+        const jsonSize = new Blob([JSON.stringify(jsonData)]).size;
+        if (jsonSize > 5242880) {
+          dispatch(failure(MESSAGES.TEMPLATE.SIZE_LIMIT_EXCEED));
+          return;
+        }
 
         if (product?.productType === "Real Penned Letter") {
           const removedUnsupportedBrackets = removeBracketsFromRPL(jsonData);
