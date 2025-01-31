@@ -33,6 +33,7 @@ interface AppProps {
   designerQueryAmount?: string | number;
   allowPropertyFields?: boolean;
   allowedAddOns?: any;
+  restrictedProducts?: any;
   styles?: any;
   onReturnAndNavigate?: () => void;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
@@ -55,6 +56,7 @@ const App: React.FC<AppProps> = ({
   designerQueryAmount,
   allowPropertyFields,
   allowedAddOns,
+  restrictedProducts,
   styles,
   onReturnAndNavigate,
   onCreateCustomTemplateQuery,
@@ -103,6 +105,7 @@ const App: React.FC<AppProps> = ({
             <CreateTemplate
               createTemplateRoute={createTemplateRoute}
               templateBuilderRoute={templateBuilderRoute}
+              restrictedProducts={restrictedProducts}
               onReturnAndNavigate={onReturnAndNavigate}
             />
           }
