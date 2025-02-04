@@ -14,8 +14,9 @@ import '@fontsource/inter/700.css';
 
 // utils
 import { CustomCSSProperties } from './utils/customStyles';
-import { setIsSandbox, setPublicApiKey } from './utils/helper';
+import { setEnv, setIsSandbox, setPublicApiKey } from './utils/helper';
 import { AddOnTypes } from './utils/addOnTypes';
+import { SDK_VERSION } from '../version';
 
 interface TemplateBuilderProps {
   container: HTMLElement | null;
@@ -33,6 +34,7 @@ interface TemplateBuilderProps {
   excludedFields?: string[] | null;
   designerQueryAmount?: string | number;
   allowedAddOns?: AddOnTypes[] | string[] | null | undefined;
+  env?: string;
   onReturnAndNavigate?: () => void;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -60,6 +62,7 @@ const TemplateBuilder = ({
   excludedFields,
   designerQueryAmount,
   allowedAddOns,
+  env,
   onReturnAndNavigate,
   onCreateCustomTemplateQuery,
   onGetOneTemplate,
@@ -79,6 +82,9 @@ const TemplateBuilder = ({
   }
   if (sandbox) {
     setIsSandbox(sandbox);
+  }
+  if (env && SDK_VERSION.includes('beta')) {
+    setEnv(env);
   }
   setPublicApiKey(publicApiKey);
   const root = ReactDOM.createRoot(container);
@@ -137,6 +143,7 @@ if (rootElement) {
     designerQueryAmount: 175,
     allowedAddOns: ['property_offer','gsv'],
     excludedFields: ['{{C.FIRST_NAME}}', '{{C.ADDRESS_1}}', '{{SPF.FIRST_NAME}}'],
+    env: 'staging',
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
     // onGetTemplates: getAllTemplatesByTab,

@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "webpack && tsc",
+    "build": "node update-version.js && webpack && tsc",
     "test": "jest --silent",
     "coverage": "npm run test -- --coverage",
     "prepare": "npm run build",

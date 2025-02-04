@@ -1,6 +1,10 @@
 export const PROD_API_BASE_URL = 'https://qrforward.org/api/v1/sdk';
 export const DEMO_API_BASE_URL = 'https://demo.qrforward.org/api/v1/sdk';
+export const STAGE_API_BASE_URL = 'https://staging.qrforward.org/api/v1/sdk';
+export const LOCAL_API_BASE_URL = 'http://localhost:8089/api/v1/sdk';
 
+export const  LOCAL_S3_URL = 'http://localhost:8089/api/v1/download/s3/sdk-images';
+export const  STAGE_S3_URL = `https://staging.qrforward.org/api/v1/download/s3/sdk-images`;
 export const  DEMO_S3_URL = `https://demo.qrforward.org/api/v1/download/s3/sdk-images`;
 export const  PROD_S3_URL = `https://qrforward.org/api/v1/download/s3/sdk-images`;
 
