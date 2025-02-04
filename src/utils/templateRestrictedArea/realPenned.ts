@@ -218,7 +218,7 @@ export const addElementsforRealPennedLetters = (store: Store): void => {
       resizable: false,
       contentEditable: true,
       styleEditable: false,
-      text: "Thanks!,, \n  ((SPF.FIRST_NAME))",
+      text: "Thanks! \n  ((SPF.FIRST_NAME))",
       fontSize: 20,
       fontFamily: 'lexi Regular',
       fontStyle: 'normal',
