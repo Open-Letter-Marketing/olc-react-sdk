@@ -80,6 +80,7 @@ const SidePanel: React.FC<Props> = (props) => {
                 allowSenderFields={props.allowSenderFields}
                 excludedFields={props.excludedFields}
                 allowPropertyFields={props.allowPropertyFields}
+                platformName={props.platformName}
               />
             ),
           },

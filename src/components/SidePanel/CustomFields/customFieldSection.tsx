@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from '../../../redux/store';
 
 // Actions
 import { failure, success } from '../../../redux/actions/snackbarActions';
-import { SET_CUSTOM_FIELDS } from '../../../redux/actions/action-types';
+import { SET_CUSTOM_FIELDS, SET_PLATFORM_FIELDS } from '../../../redux/actions/action-types';
 
 // Components
 import Button from '../../GenericUIBlocks/Button';
@@ -42,6 +42,7 @@ type CustomFieldsSectionProps = {
   allowSenderFields?: boolean;
   allowPropertyFields?: boolean;
   excludedFields?: string[] | null;
+  platformName?: string,
   onClick: () => void;
   onGetCustomFields?: () => Promise<any>;
 };
@@ -56,11 +57,17 @@ const CustomFieldSection: SideSection = {
     )
   ) as SideSection['Tab'],
 
-  Panel: observer(({ store, onGetCustomFields, allowSenderFields, excludedFields, allowPropertyFields }: CustomFieldsSectionProps) => {
+  Panel: observer(({ store, onGetCustomFields, allowSenderFields, excludedFields, allowPropertyFields, platformName }: CustomFieldsSectionProps) => {
     const [isShowDialog, setIsShowDialog] = useState(false);
+
     const dispatch = useDispatch<AppDispatch>();
+
     const customFields = useSelector(
       (state: RootState) => state.customFields.customFields
+    ) as Record<string, any>;
+
+    const platformFields = useSelector(
+      (state: RootState) => state.customFields.platformFields
     ) as Record<string, any>;
 
     const defaultDynamicFields = useSelector(
@@ -88,12 +95,24 @@ const CustomFieldSection: SideSection = {
 
     const fetchCustomFields = async () => {
       if (onGetCustomFields) {
-        const customFields: any = await onGetCustomFields();
-        if (customFields?.length >= 0) {
-          dispatch({
-            type: SET_CUSTOM_FIELDS,
-            payload: customFields,
-          });
+        const allCustomFields: any = await onGetCustomFields();
+        const platformFields: any = [];
+        const customFields: any = [];
+
+        for (const field of allCustomFields) {
+          (field.isPlatformField ? platformFields : customFields).push(field);
+        }
+
+        if (customFields.length) {
+          dispatch({ type: SET_CUSTOM_FIELDS, payload: customFields });
+        } else {
+          dispatch({ type: SET_CUSTOM_FIELDS, payload: [] });
+        }
+        
+        if (platformFields.length) {
+          dispatch({ type: SET_PLATFORM_FIELDS, payload: platformFields });
+        } else {
+          dispatch({ type: SET_PLATFORM_FIELDS, payload: [] });
         }
       }
     };
@@ -150,6 +169,7 @@ const CustomFieldSection: SideSection = {
             )
           )}
         {allowSenderFields && <>
+          <hr className="divider" />
           <div className="dynamic-content__top">
             <div>
               <span className="title">Sender Fields</span>
@@ -186,6 +206,46 @@ const CustomFieldSection: SideSection = {
             )}
         </>}
         <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
+        {onGetCustomFields && platformFields?.length > 0 &&(
+          <>
+            <hr className="divider" />
+            <div className="dynamic-content__top">
+              <div>
+                <span className="title">{platformName ? `${platformName} Fields` : 'OLC Fields'}</span>
+                <InfoIcon fill="var(--primary-color)" className="platform" />
+                <GeneralTootip
+                  anchorSelect=".platform"
+                  place="bottom"
+                  title={`You can add ${platformName ? `${platformName} Fields` : 'OLC Fields'} to your template.`}
+                />
+              </div>
+              <Button onClick={handleShowDialog}></Button>
+            </div>
+            {platformFields
+              ?.filter(({ key }: { key: string }) => !excludedFields?.includes(key))
+              ?.map(
+                ({ key, value }: { key: string; value: string }, i: number) => (
+                  <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_custom'}>
+                    <span
+                      className="contact-element"
+                      onClick={() =>
+                        copyCustomFieldText(key)
+                      }
+                    >
+                      {value}
+                    </span>
+                    <Button
+                      style={iconButtonStyles}
+                      onClick={() => copyCustomFieldText(key)}
+                      backdrop={false}
+                    >
+                      <ContentCopyIcon className="copy" />
+                    </Button>
+                  </div>
+                )
+              )}
+          </>
+        )}
         {onGetCustomFields && customFields?.length > 0 &&(
           <>
             <hr className="divider" />
