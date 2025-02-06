@@ -36,12 +36,13 @@ export const multiPageTemplates: string[] = [
 export interface EnvelopeType {
   id: number,
   label: string,
-  type: string
+  type: string,
+  productId: number
 }
 
 export const envelopeTypes: EnvelopeType[] = [
-  { id: 1, label: 'Windowed Envelope', type: '#10 Double-Window' },
-  { id: 2, label: 'Non-Windowed Envelope', type: '#10 Grey' },
+  { id: 1, label: 'Windowed Envelope', type: '#10 Double-Window', productId: 2 },
+  { id: 2, label: 'Non-Windowed Envelope', type: '#10 Grey', productId: 4 },
 ];
 
 export const getFileAsBlob = async (url: string, returnType: string = 'json'): Promise<any> => {

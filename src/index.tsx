@@ -35,6 +35,7 @@ interface TemplateBuilderProps {
   designerQueryAmount?: string | number;
   allowedAddOns?: AddOnTypes[] | string[] | null | undefined;
   env?: string;
+  restrictedProducts?: number[] | null | undefined;
   onReturnAndNavigate?: () => void;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -63,6 +64,7 @@ const TemplateBuilder = ({
   designerQueryAmount,
   allowedAddOns,
   env,
+  restrictedProducts,
   onReturnAndNavigate,
   onCreateCustomTemplateQuery,
   onGetOneTemplate,
@@ -106,6 +108,7 @@ const TemplateBuilder = ({
             excludedFields={excludedFields}
             designerQueryAmount={designerQueryAmount}
             allowedAddOns={allowedAddOns}
+            restrictedProducts={restrictedProducts}
             onReturnAndNavigate={onReturnAndNavigate}
             onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
             onGetOneTemplate={onGetOneTemplate}
@@ -144,6 +147,7 @@ if (rootElement) {
     allowedAddOns: ['property_offer','gsv'],
     excludedFields: ['{{C.FIRST_NAME}}', '{{C.ADDRESS_1}}', '{{SPF.FIRST_NAME}}'],
     env: 'staging',
+    restrictedProducts: [9, 11, 13],
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
     // onGetTemplates: getAllTemplatesByTab,

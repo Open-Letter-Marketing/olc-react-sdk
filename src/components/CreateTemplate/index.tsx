@@ -98,9 +98,15 @@ interface CreateTemplateProps {
   onReturnAndNavigate?: () => void;
   createTemplateRoute?: string | null;
   templateBuilderRoute?: string | null;
+  restrictedProducts?: any;
 }
 
-const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, createTemplateRoute, templateBuilderRoute }) => {
+const CreateTemplate: React.FC<CreateTemplateProps> = ({
+  onReturnAndNavigate,
+  createTemplateRoute,
+  templateBuilderRoute,
+  restrictedProducts,
+}) => {
   const [isError, setIsError] = useState<boolean>(false);
   const [envelopeType, setEnvelopeType] = useState<[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -116,14 +122,24 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
 
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  
 
-  const sortedProducts = products?.sort((a, b) => {
-    const indexA = sortOrderForTemplates.indexOf(a.productType);
-    const indexB = sortOrderForTemplates.indexOf(b.productType);
-    return indexA - indexB;
+  const restrictedSet = new Set(
+    (restrictedProducts ?? []).map((id: any) => String(id))
+  );
+
+  const sortedProducts = products
+    ?.sort((a, b) => {
+      const indexA = sortOrderForTemplates.indexOf(a.productType);
+      const indexB = sortOrderForTemplates.indexOf(b.productType);
+      return indexA - indexB;
+    })
+    .filter((product) => {
+      return !restrictedSet.has(String(product.id)); // Convert product.id to string before checking
+    });
+
+  const filteredEnvelopeTypes = envelopeTypes.filter((type) => {
+    return !restrictedProducts.includes(type.productId);
   });
-
 
   const handleNext = () => {
     const trimedTitle = title.trim();
@@ -163,11 +179,11 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
       dispatch({ type: CLEAR_TEMPLATE });
     }, []);
 
-    useEffect(() => {
-      if (products?.length) {
-        dispatch(selectProduct(products[0]));
-      }
-    }, [products]);
+  useEffect(() => {
+    if (sortedProducts?.length) {
+      dispatch(selectProduct(sortedProducts[0]));
+    }
+  }, [products]);
 
     useEffect(() => {
       if (product && product?.productType === 'Professional Letters') {
@@ -253,7 +269,13 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
                 >
                   {sortedProducts &&
                     sortedProducts
-                      ?.filter((prod) => prod.windowed !== false)
+                      ?.filter((prod) => {
+                        if (restrictedSet.has('2') || restrictedSet.has('4')) {
+                          return true;
+                        } else {
+                          return prod.windowed !== false;
+                        }
+                      })
                       .map((prod, index) => {
                         return (
                           <div
@@ -280,7 +302,7 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
             </GridItem>
           </GridContainer>
           {product?.productType?.includes('Postcards') ||
-          product?.productType?.includes('Professional Letters') ? (
+            product?.productType?.includes('Professional Letters') ? (
             <Divider />
           ) : null}
           {product && product.productType === 'Professional Letters' && (
@@ -294,7 +316,7 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
                     //@ts-ignore
                     setSelectedValue={setEnvelopeType}
                     //@ts-ignore
-                    options={envelopeTypes}
+                    options={filteredEnvelopeTypes}
                     placeholder="Envelope Type"
                     error={MESSAGES.TEMPLATE.ENVELOPE_TYPE_REQUIRED}
                     isError={isError && !Object.keys(envelopeType).length}
@@ -390,7 +412,9 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
                 border: '0.5px solid var(--border-color)',
               }}
               onClick={() =>
-                onReturnAndNavigate ? onReturnAndNavigate() :  navigate(createTemplateRoute || '/create-template')
+                onReturnAndNavigate
+                  ? onReturnAndNavigate()
+                  : navigate(createTemplateRoute || '/create-template')
               }
             >
               {MESSAGES.TEMPLATE.CREATE.CANCEL_BUTTON}
@@ -407,7 +431,7 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({ onReturnAndNavigate, cr
             </Button>
           </div>
         </div>
-        <GenericSnackbar/>
+        <GenericSnackbar />
       </div>
     </>
   );
