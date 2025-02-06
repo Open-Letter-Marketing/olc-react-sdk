@@ -1,14 +1,17 @@
 import {
   SET_CUSTOM_FIELDS,
+  SET_PLATFORM_FIELDS,
 } from '../actions/action-types';
 
 export interface CustomFieldState {
   customFields: any[];
+  platformFields: any[];
   defaultDynamicFields: any[];
 }
 
 const initialState: CustomFieldState = {
   customFields: [],
+  platformFields: [],
   defaultDynamicFields: [
     {
       value: "First Name",
@@ -74,6 +77,11 @@ const customFieldReducer = (state = initialState, action: any): CustomFieldState
       return {
         ...state,
         customFields: action.payload,
+      };
+    case SET_PLATFORM_FIELDS:
+      return {
+        ...state,
+        platformFields: action.payload,
       };
     default:
       return state;

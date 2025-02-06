@@ -21,6 +21,7 @@ export const SELECT_POSTCARD: string = 'SELECT_POSTCARD';
 
 // Custom Fields Actions
 export const SET_CUSTOM_FIELDS = 'SET_CUSTOM_FIELDS';
+export const SET_PLATFORM_FIELDS = 'SET_PLATFORM_FIELDS';
 
 // Clear Redux
 export const CLEAR_REDUX: string = 'CLEAR_REDUX';
