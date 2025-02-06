@@ -8,14 +8,17 @@ import type { StoreType } from 'polotno/model/store';
 import * as svg from 'polotno/utils/svg';
 
 // Hooks
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../redux/store';
 import { failure } from '../../../redux/actions/snackbarActions';
 
 // Utils
 import { MESSAGES } from '../../../utils/message';
 import { validURL } from '../../../utils/helper';
-import { DISALLOWED_DOMAINS } from '../../../utils/constants';
+import { DISALLOWED_DOMAINS, emojiRegex } from '../../../utils/constants';
+
+//Components
+import GeneralSelect from '../../../components/GenericUIBlocks/GeneralSelect';
 
 // UI Components
 import { Button } from '@blueprintjs/core';
@@ -24,11 +27,12 @@ import Input from '../../../components/GenericUIBlocks/Input';
 // Icons
 import CustomQRIcon from '../../../assets/images/templates/custom-qr-section-icon'
 
-
 interface CustomQRProps {
   store: StoreType;
+  allowSenderFields: any;
+  allowPropertyFields: any;
+  excludedFields: any;
 }
-
 
 // define the new custom section
 const CustomQRCode = {
@@ -40,18 +44,85 @@ const CustomQRCode = {
   ),
 
   // we need observer to update component automatically on any store changes
-  Panel: observer(({ store }: CustomQRProps) => {
-    const [val, setVal] = useState('');
+  Panel: observer(({ store, allowSenderFields, allowPropertyFields, excludedFields }: CustomQRProps) => {
+    const [url, setUrl] = useState('');
+    const [utmSource, setUtmSource] = useState('direct mail');
+    const [utmMedium, setUtmMedium] = useState('QR Code');
+    const [utmCampaignName, setUtmCampaignName] = useState('');
+    const [customUtms, setCustomUtms] = useState<Record<string, any>>({});
+
+    const dispatch: AppDispatch = useDispatch();
+
+    const defaultFields = useSelector(
+      (state: RootState) => state.templates.defaultDynamicFields
+    );
+
+    const defaultSenderFields = useSelector(
+      (state: RootState) => state.templates.defaultSenderFields
+    );
+
+    const customFields = useSelector(
+      (state: RootState) => state.customFields.customFields
+    );
+
+    const defaultPropertyFields = useSelector(
+      (state: RootState) => state.templates.defaultPropertyFields
+    );
+
+    const excludedLabels = ['utm_c_first_name c_last_name'];
+    
+    const allFields = [
+      ...defaultFields,
+      ...customFields,
+      ...(allowSenderFields ? defaultSenderFields : []),
+      ...(allowPropertyFields ? defaultPropertyFields : []),
+      ...(allowPropertyFields ? [{ value: "ROS.PROPERTY_OFFER", key: "ROS.PROPERTY_OFFER", defaultValue: "$123,456.00" }] : []),
+    ].filter(({ key }) => !excludedFields?.includes(key));
+
+
+    const utmFields = allFields.map(({ key }) => ({
+      label: `utm_${key.toLowerCase().replaceAll('.', '_').replaceAll(/[{}]/g, '')}`
+    })).filter((utmField) => !excludedLabels.includes(utmField.label));
+
+    const utms = [
+      'custom_utm_1',
+      'custom_utm_2',
+      'custom_utm_3',
+    ]
 
     const el = store.selectedElements[0];
     const isQR = el?.name === 'qr';
 
-    const dispatch: AppDispatch = useDispatch();
 
     const clearQRFields = () => {
       store.selectElements([]);
-      setVal('');
+      setUrl('');
+      setUtmSource('direct mail');
+      setUtmMedium('QR Code');
+      setUtmCampaignName('');
+      setCustomUtms({});
     }
+
+    const validateQRCode = () => {
+      const validations = [
+        { value: utmSource, label: "UTM Source" },
+        { value: utmMedium, label: "UTM Medium" },
+        { value: utmCampaignName, label: "UTM Campaign" },
+      ];
+    
+      for (const { value, label } of validations) {
+        if (value.length >= 150) {
+          dispatch(failure(`${label} must be less than 150 characters`));
+          return false;
+        }
+        if (emojiRegex.test(value)) {
+          dispatch(failure(`Emoji are not allowed in ${label}`));
+          return false;
+        }
+      }
+    
+      return true;
+    };
 
     const containsDisallowedDomains = (str: string) => {
       return DISALLOWED_DOMAINS.some(substring => 
@@ -80,10 +151,12 @@ const CustomQRCode = {
     }
 
     const addNewQRCode = async () => {
-      if (val) {
-        if (validURL(val) && !containsDisallowedDomains(val)) {
+      if (url) {
+        if (validURL(url) && !containsDisallowedDomains(url)) {
+          const isValidQR = validateQRCode();
+          if (!isValidQR) return false;
           const randomizedId = Math.random().toString(36).substring(2, 7);
-          const src = await getQR(val);
+          const src = await getQR(url);
           store.activePage.addElement({
             id: `qr-${randomizedId}`,
             type: 'svg',
@@ -96,7 +169,11 @@ const CustomQRCode = {
             keepRatio: true,
             src,
             custom: {
-              value: val,
+              url,
+              utm_source: utmSource,
+              utm_medium: utmMedium,
+              utm_campaign_name: utmCampaignName,
+              custom_utms: customUtms
             },
           });
           clearQRFields();
@@ -109,14 +186,20 @@ const CustomQRCode = {
     }
 
     // if selection is changed we need to update input value
-    const updateQRCode = async() => {
-      if (el?.name === 'qr' && val) {
-        if (validURL(val) && !containsDisallowedDomains(val)) {
-          await getQR(val).then((src) => {
+    const updateQRCode = async () => {
+      if (el?.name === 'qr' && url) {
+        if (validURL(url) && !containsDisallowedDomains(url)) {
+          const isValidQR = validateQRCode();
+          if (!isValidQR) return false;
+          await getQR(url).then((src) => {
             el.set({
               src,
               custom: {
-                value: val,
+                url,
+                utm_source: utmSource,
+                utm_medium: utmMedium,
+                utm_campaign_name: utmCampaignName,
+                custom_utms: customUtms
               },
             });
           });
@@ -129,32 +212,119 @@ const CustomQRCode = {
       }
     }
 
-      // if selection is changed we need to update input value
-      useEffect(() => {
-        if (el?.name === 'qr') {
-          setVal(el?.custom.value);
-        } else {
-          setVal('');
+    // Handler to update dropdown values
+    const handleSelect = (utmKey: string, value: any) => {
+      setCustomUtms((prev) => {
+        if (value === null) {
+          const updatedUtms = { ...prev };
+          delete updatedUtms[utmKey];
+          return updatedUtms;
         }
-      }, [isQR, el]);
+        return { ...prev, [utmKey]: value };
+      });
+    };
+
+    // if selection is changed we need to update input value
+    useEffect(() => {
+      if (el?.name === 'qr') {
+        setUrl(el?.custom.url);
+        setUtmSource(el?.custom.utm_source);
+        setUtmMedium(el?.custom.utm_medium);
+        setUtmCampaignName(el?.custom.utm_campaign_name);
+        setCustomUtms(el?.custom.custom_utms);
+      } else {
+        setUrl('');
+        setUtmSource('direct mail');
+        setUtmMedium('QR Code');
+        setUtmCampaignName('');
+        setCustomUtms({});
+      }
+    }, [isQR, el]);
 
     return (
-      <div>
-        <Input
-          type="text"
-          onChange={(e) => {
-            setVal(e.target.value);
-          }}
-          placeholder={MESSAGES.TEMPLATE.QR_SECTION.QR_PLACEHOLDER}
-          value={val}
-        />
+      <>
+        <div>
+          <label>QR URL:</label>
+          <Input
+            type="text"
+            onChange={(e) => {
+              setUrl(e.target.value);
+            }}
+            placeholder={MESSAGES.TEMPLATE.QR_SECTION.QR_PLACEHOLDER}
+            value={url}
+          />
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <label>UTM Source:</label>
+          <Input
+            type="text"
+            onChange={(e) => {
+              setUtmSource(e.target.value);
+            }}
+            placeholder={'UTM Source'}
+            value={utmSource}
+          />
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <label>UTM Medium:</label>
+          <Input
+            type="text"
+            onChange={(e) => {
+              setUtmMedium(e.target.value);
+            }}
+            placeholder={'UTM MEDIUM'}
+            value={utmMedium}
+          />
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <label>UTM Campaign Name:</label>
+          <Input
+            type="text"
+            onChange={(e) => {
+              setUtmCampaignName(e.target.value);
+            }}
+            placeholder={'UTM Campaign Name'}
+            value={utmCampaignName}
+          />
+        </div>
+        {utms.map((utm) => {
+          return (
+            <div style={{ marginTop: '20px' }}>
+              <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>
+              <GeneralSelect
+                placeholder={utm}
+                options={utmFields as any}
+                setSelectedValue={(value: any) => handleSelect(utm, value)}
+                selectedValue={customUtms[utm] || null as any}
+                builderSelect={true}
+                clearField={true}
+                // @ts-ignore
+                search={(() => { }) as any}
+                updateErrors={() => { }}
+                disableClearable={false}
+                templateBuilder={true}
+              />
+            </div>
+          );
+        })}
+
         <Button
           onClick={isQR ? updateQRCode : addNewQRCode}
-          style={{ width: '100%', padding: '5px', marginTop: '10px', backgroundColor: '#f6f7f9', boxShadow: 'inset 0 0 0 1px #11141833,0 1px 2px #1114181a', color: '#1c2127' }}
+          style={{
+            width: '100%',
+            padding: '5px',
+            marginTop: '30px',
+            backgroundColor: '#f6f7f9',
+            boxShadow: 'inset 0 0 0 1px #11141833,0 1px 2px #1114181a',
+            color: '#1c2127',
+          }}
         >
-          {isQR ? MESSAGES.TEMPLATE.QR_SECTION.UPDATE_BUTTON : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
+          {isQR
+            ? MESSAGES.TEMPLATE.QR_SECTION.UPDATE_BUTTON
+            : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
         </Button>
-      </div>
+
+      </>
     );
   }),
 };
