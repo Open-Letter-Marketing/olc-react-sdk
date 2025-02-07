@@ -138,7 +138,7 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({
     });
 
   const filteredEnvelopeTypes = envelopeTypes.filter((type) => {
-    return !restrictedProducts.includes(type.productId);
+    return !restrictedProducts?.includes(type.productId);
   });
 
   const handleNext = () => {
