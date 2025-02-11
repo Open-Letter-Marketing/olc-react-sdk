@@ -226,11 +226,11 @@ const CustomQRCode = {
     // if selection is changed we need to update input value
     useEffect(() => {
       if (el?.name === 'qr') {
-        setUrl(el?.custom.url);
-        setUtmSource(el?.custom.utm_source);
-        setUtmMedium(el?.custom.utm_medium);
-        setUtmCampaignName(el?.custom.utm_campaign_name);
-        setCustomUtms(el?.custom.custom_utms);
+        setUrl(el?.custom?.url || el?.custom?.value || '');
+        setUtmSource(el?.custom?.utm_source || 'direct mail');
+        setUtmMedium(el?.custom?.utm_medium || 'QR Code');
+        setUtmCampaignName(el?.custom?.utm_campaign_name || ''); 
+        Object.values(el?.custom?.custom_utms || {}).length ? setCustomUtms(el?.custom?.custom_utms) : setCustomUtms({}) ;
       } else {
         setUrl('');
         setUtmSource('direct mail');
@@ -286,7 +286,7 @@ const CustomQRCode = {
             value={utmCampaignName}
           />
         </div>
-        {utms.map((utm, idx) => {
+        {utms?.map((utm, idx) => {
           return (
             <div style={{marginTop: '15px'}} key={idx}>
               <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>
