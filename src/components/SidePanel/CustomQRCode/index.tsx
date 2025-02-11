@@ -311,7 +311,7 @@ const CustomQRCode = {
           onClick={isQR ? updateQRCode : addNewQRCode}
           style={{
             width: '100%',
-            padding: '5px',
+            padding: '10px',
             marginTop: '20px',
             marginBottom: '10px',
             backgroundColor: '#f6f7f9',
