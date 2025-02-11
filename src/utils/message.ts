@@ -20,6 +20,7 @@ export const MESSAGES = {
     GSV_RESTRICT_ONE_PER_PAGE: 'Only one GSV image is allowed per page.',
     EMOJI_NOT_ALLOWED: 'Emojis are not allowed in the template. Please remove them before saving.',
     EMPTY_QR_NOT_ALLOWED: 'Please add a URL to your QR code in order to save the template.',
+    SIZE_LIMIT_EXCEED: 'Template size should be less than 5MB. Please remove custom fonts or unnecessary assets.',
     CREATE: {
       TITLE: 'Create New Template',
       TEMPLATE_LABEL: 'Template Name*',

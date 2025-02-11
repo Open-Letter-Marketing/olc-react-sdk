@@ -1,5 +1,5 @@
-import { PROD_API_BASE_URL, DEMO_API_BASE_URL } from "./constants";
-import { getPublicApiKey, getIsSandbox } from "./helper";
+import { PROD_API_BASE_URL, DEMO_API_BASE_URL, LOCAL_API_BASE_URL, STAGE_API_BASE_URL } from "./constants";
+import { getPublicApiKey, getIsSandbox, getEnv } from "./helper";
 
 const getHeaders = (additionalHeaders: Record<string, string> = {}) => ({
   'Content-Type': 'application/json',
@@ -17,7 +17,12 @@ export interface RequestOptions {
 
 
 const fetchWrapper = async (endpoint: string, options: RequestOptions) => {
-  const baseUrl = getIsSandbox() ? DEMO_API_BASE_URL : PROD_API_BASE_URL;
+  const baseUrl = (() => {
+    const env = getEnv();
+    if (env === 'local') return LOCAL_API_BASE_URL;
+    if (env === 'staging') return STAGE_API_BASE_URL;
+    return getIsSandbox() ? DEMO_API_BASE_URL : PROD_API_BASE_URL;
+  })();
   const url = new URL(`${baseUrl}${endpoint}`);
   if (options.method === 'GET' && options.params) {
     Object.entries(options.params).forEach(([key, value]) => {

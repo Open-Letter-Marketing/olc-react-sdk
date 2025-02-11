@@ -15,7 +15,7 @@ import { failure, success } from '../../../redux/actions/snackbarActions';
 
 // Utils
 import { MESSAGES } from '../../../utils/message';
-import { copyToClipboard, getIsSandbox } from '../../../utils/helper';
+import { copyToClipboard, getEnv, getIsSandbox } from '../../../utils/helper';
 
 // MUI Components
 import GeneralTootip from '../../GenericUIBlocks/GeneralTooltip';
@@ -26,7 +26,9 @@ import Button from '../../../components/GenericUIBlocks/Button';
 import {
   DEMO_S3_URL,
   GOOGLE_STREET_VIEW_IMAGE_URL,
+  LOCAL_S3_URL,
   PROD_S3_URL,
+  STAGE_S3_URL,
 } from '../../../utils/constants';
 
 // Icons
@@ -69,8 +71,11 @@ const CustomAddOns: SideSection = {
   Panel: observer(({ store, allowedAddOns }: CustomAddOnsSectionProps) => {
     const dispatch: AppDispatch = useDispatch();
     const googleStreetViewSrc: string =
-      (getIsSandbox() ? DEMO_S3_URL : PROD_S3_URL) +
-      GOOGLE_STREET_VIEW_IMAGE_URL;
+      (getEnv() === 'local' || getEnv() === 'staging'
+        ? STAGE_S3_URL
+        : getIsSandbox()
+          ? DEMO_S3_URL
+          : PROD_S3_URL) + GOOGLE_STREET_VIEW_IMAGE_URL;
 
     const PropertyOfferfieldValue = '{{ROS.PROPERTY_OFFER}}';
 
