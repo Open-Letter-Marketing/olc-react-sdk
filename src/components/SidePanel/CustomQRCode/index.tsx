@@ -21,7 +21,6 @@ import { DISALLOWED_DOMAINS, emojiRegex } from '../../../utils/constants';
 import GeneralSelect from '../../../components/GenericUIBlocks/GeneralSelect';
 
 // UI Components
-import { Button } from '@blueprintjs/core';
 import Input from '../../../components/GenericUIBlocks/Input';
 
 // Icons
@@ -254,7 +253,7 @@ const CustomQRCode = {
             value={url}
           />
         </div>
-        <div style={{ marginTop: '20px' }}>
+        <div style={{marginTop: '15px'}}>
           <label>UTM Source:</label>
           <Input
             type="text"
@@ -265,7 +264,7 @@ const CustomQRCode = {
             value={utmSource}
           />
         </div>
-        <div style={{ marginTop: '20px' }}>
+        <div style={{marginTop: '15px'}}>
           <label>UTM Medium:</label>
           <Input
             type="text"
@@ -276,7 +275,7 @@ const CustomQRCode = {
             value={utmMedium}
           />
         </div>
-        <div style={{ marginTop: '20px' }}>
+        <div style={{marginTop: '15px'}}>
           <label>UTM Campaign Name:</label>
           <Input
             type="text"
@@ -287,20 +286,20 @@ const CustomQRCode = {
             value={utmCampaignName}
           />
         </div>
-        {utms.map((utm) => {
+        {utms.map((utm, idx) => {
           return (
-            <div style={{ marginTop: '20px' }}>
+            <div style={{marginTop: '15px'}} key={idx}>
               <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>
               <GeneralSelect
                 placeholder={utm}
                 options={utmFields as any}
                 setSelectedValue={(value: any) => handleSelect(utm, value)}
-                selectedValue={customUtms[utm] || null as any}
+                selectedValue={customUtms[utm] || (null as any)}
                 builderSelect={true}
                 clearField={true}
                 // @ts-ignore
-                search={(() => { }) as any}
-                updateErrors={() => { }}
+                search={(() => {}) as any}
+                updateErrors={() => {}}
                 disableClearable={false}
                 templateBuilder={true}
               />
@@ -308,22 +307,23 @@ const CustomQRCode = {
           );
         })}
 
-        <Button
+        <button
           onClick={isQR ? updateQRCode : addNewQRCode}
           style={{
             width: '100%',
             padding: '5px',
-            marginTop: '30px',
+            marginTop: '20px',
+            marginBottom: '10px',
             backgroundColor: '#f6f7f9',
             boxShadow: 'inset 0 0 0 1px #11141833,0 1px 2px #1114181a',
             color: '#1c2127',
+            border: 'none',
           }}
         >
           {isQR
             ? MESSAGES.TEMPLATE.QR_SECTION.UPDATE_BUTTON
             : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
-        </Button>
-
+        </button>
       </>
     );
   }),
