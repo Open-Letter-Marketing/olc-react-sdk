@@ -156,13 +156,13 @@ const CustomFieldSection: SideSection = {
       }
     };
 
-    const copyCustomFieldText = (value: string) => {
+    const copyCustomFieldText = (key: string, value: string = '') => {
       if (currentTemplateType === 'Real Penned Letter') {
-        let modifiedString = value.replace(/{{/g, '((').replace(/}}/g, '))');
+        let modifiedString = key.replace(/{{/g, '((').replace(/}}/g, '))');
         copyToClipboard(modifiedString);
-        dispatch(success(`${modifiedString} Copied`));
+        dispatch(success(`${value} Copied`));
       } else {
-        copyToClipboard(value);
+        copyToClipboard(key);
         dispatch(success(`${value} Copied`));
       }
     };
@@ -253,14 +253,14 @@ const CustomFieldSection: SideSection = {
                     <span
                       className="contact-element"
                       onClick={() =>
-                        copyCustomFieldText(key)
+                        copyCustomFieldText(key, value)
                       }
                     >
                       {value}
                     </span>
                     <Button
                       style={iconButtonStyles}
-                      onClick={() => copyCustomFieldText(key)}
+                      onClick={() => copyCustomFieldText(key, value)}
                       backdrop={false}
                     >
                       <ContentCopyIcon className="copy" />
@@ -290,14 +290,14 @@ const CustomFieldSection: SideSection = {
                   <span
                     className="contact-element"
                     onClick={() =>
-                      copyCustomFieldText(key)
+                      copyCustomFieldText(key, value)
                     }
                   >
                     {value}
                   </span>
                   <Button
                     style={iconButtonStyles}
-                    onClick={() => copyCustomFieldText(key)}
+                    onClick={() =>  copyCustomFieldText(key, value)}
                     backdrop={false}
                   >
                     <ContentCopyIcon className="copy" />
@@ -327,14 +327,14 @@ const CustomFieldSection: SideSection = {
                   <span
                     className="contact-element"
                     onClick={() =>
-                      copyCustomFieldText(key)
+                      copyCustomFieldText(key, value)
                     }
                   >
                     {value}
                   </span>
                   <Button
                     style={iconButtonStyles}
-                    onClick={() => copyCustomFieldText(key)}
+                    onClick={() => copyCustomFieldText(key, value)}
                     backdrop={false}
                   >
                     <ContentCopyIcon className="copy" />
@@ -367,14 +367,14 @@ const CustomFieldSection: SideSection = {
                     <span
                       className="contact-element"
                       onClick={() =>
-                        copyCustomFieldText(key)
+                        copyCustomFieldText(key, value)
                       }
                     >
                       {value}
                     </span>
                     <Button
                       style={iconButtonStyles}
-                      onClick={() => copyCustomFieldText(key)}
+                      onClick={() => copyCustomFieldText(key, value)}
                       backdrop={false}
                     >
                       <ContentCopyIcon className="copy" />
@@ -415,14 +415,14 @@ const CustomFieldSection: SideSection = {
                   <span
                     className="contact-element"
                     onClick={() =>
-                      copyCustomFieldText(key)
+                      copyCustomFieldText(key, value)
                     }
                   >
                     {value}
                   </span>
                   <Button
                     style={iconButtonStyles}
-                    onClick={() => copyCustomFieldText(key)}
+                    onClick={() => copyCustomFieldText(key, value)}
                     backdrop={false}
                   >
                     <ContentCopyIcon className="copy" />
@@ -454,14 +454,14 @@ const CustomFieldSection: SideSection = {
                       <span
                         className="contact-element"
                         onClick={() =>
-                          copyCustomFieldText(key)
+                          copyCustomFieldText(key, value)
                         }
                       >
                         {value}
                       </span>
                       <Button
                         style={iconButtonStyles}
-                        onClick={() => copyCustomFieldText(key)}
+                        onClick={() => copyCustomFieldText(key, value)}
                         backdrop={false}
                       >
                         <ContentCopyIcon className="copy" />
