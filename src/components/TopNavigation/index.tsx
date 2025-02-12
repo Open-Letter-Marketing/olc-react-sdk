@@ -239,6 +239,13 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
           return;
         }
 
+        const hasEmoji = validateEmoji(jsonData.pages);
+
+        if (hasEmoji) {
+          dispatch(failure(MESSAGES.TEMPLATE.EMOJI_NOT_ALLOWED));
+          return;
+        }
+
         if (product?.productType === "Real Penned Letter") {
           const removedUnsupportedBrackets = removeBracketsFromRPL(jsonData);
           jsonData = removedUnsupportedBrackets;
@@ -273,13 +280,6 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
 
         if (!isGsvValid) {
           dispatch(failure(MESSAGES.TEMPLATE.GSV_RESTRICT_ONE_PER_PAGE));
-          return;
-        }
-
-        const hasEmoji = validateEmoji(jsonData.pages);
-
-        if (hasEmoji) {
-          dispatch(failure(MESSAGES.TEMPLATE.EMOJI_NOT_ALLOWED));
           return;
         }
 
