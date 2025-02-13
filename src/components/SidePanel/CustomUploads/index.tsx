@@ -59,7 +59,7 @@ export const UploadPanel = observer(({store}: UploadPanelProps) => {
       );
       return false;
     }
-    if (file.size >= 5200000) {
+    if (file.size >= 7300000) {
       // 5MB limit
       dispatch(
         failure(MESSAGES.TEMPLATE.CUSTOM_UPLOAD_SECTION.SIZE_VALIDATION)
