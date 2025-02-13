@@ -1,16 +1,19 @@
 import {
   SET_CUSTOM_FIELDS,
   SET_PLATFORM_FIELDS,
+  SET_CUSTOM_FIELDS_V2,
 } from '../actions/action-types';
 
 export interface CustomFieldState {
   customFields: any[];
+  customFieldsV2: any[];
   platformFields: any[];
   defaultDynamicFields: any[];
 }
 
 const initialState: CustomFieldState = {
   customFields: [],
+  customFieldsV2: [],
   platformFields: [],
   defaultDynamicFields: [
     {
@@ -77,6 +80,11 @@ const customFieldReducer = (state = initialState, action: any): CustomFieldState
       return {
         ...state,
         customFields: action.payload,
+      };
+    case SET_CUSTOM_FIELDS_V2:
+      return {
+        ...state,
+        customFieldsV2: action.payload,
       };
     case SET_PLATFORM_FIELDS:
       return {
