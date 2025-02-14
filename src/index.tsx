@@ -147,7 +147,7 @@ if (rootElement) {
     allowedAddOns: ['property_offer','gsv'],
     excludedFields: ['{{C.FIRST_NAME}}', '{{C.ADDRESS_1}}', '{{SPF.FIRST_NAME}}'],
     env: 'staging',
-    restrictedProducts: [9, 11, 13],
+    // restrictedProducts: [9, 11, 13],
     // onGetOneTemplate: getOneTemplate,
     // olcTemplate: olcTemplateData,
     // onGetTemplates: getAllTemplatesByTab,
