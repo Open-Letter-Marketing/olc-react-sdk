@@ -82,10 +82,6 @@ const CustomFieldSection: SideSection = {
       (state: RootState) => state.templates.defaultPropertyFields
     )
 
-    const defeultDynamicFieldsWithPropertyFields = allowPropertyFields
-      ? [...defaultDynamicFields, ...defaultPropertyFields]
-      : defaultDynamicFields;
-
     const product = useSelector((state: RootState) => state.templates.product);
     const currentTemplateType = product?.productType;
 
@@ -145,7 +141,7 @@ const CustomFieldSection: SideSection = {
             />
           </div>
         </div>
-        {defeultDynamicFieldsWithPropertyFields
+        {defaultDynamicFields
           ?.filter(({ key }) => !excludedFields?.includes(key))
           ?.map(
             ({ key, value }: { key: string; value: string }, i: number) => (
@@ -168,6 +164,43 @@ const CustomFieldSection: SideSection = {
               </div>
             )
           )}
+        {allowPropertyFields && <>
+          <hr className="divider" />
+          <div className="dynamic-content__top">
+            <div>
+              <span className="title">Property Address</span>
+              <InfoIcon fill="var(--primary-color)" className="property" />
+              <GeneralTootip
+                anchorSelect=".property"
+                place="bottom"
+                title="You can add property fields to your template."
+              />
+            </div>
+          </div>
+          {defaultPropertyFields
+            ?.filter(({ key }) => !excludedFields?.includes(key))
+            ?.map(
+              ({ key, value }: { key: string; value: string }, i: number) => (
+                <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_property'}>
+                  <span
+                    className="contact-element"
+                    onClick={() =>
+                      copyCustomFieldText(key)
+                    }
+                  >
+                    {value}
+                  </span>
+                  <Button
+                    style={iconButtonStyles}
+                    onClick={() => copyCustomFieldText(key)}
+                    backdrop={false}
+                  >
+                    <ContentCopyIcon className="copy" />
+                  </Button>
+                </div>
+              )
+            )}
+        </>}
         {allowSenderFields && <>
           <hr className="divider" />
           <div className="dynamic-content__top">
@@ -206,7 +239,7 @@ const CustomFieldSection: SideSection = {
             )}
         </>}
         <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
-        {onGetCustomFields && platformFields?.length > 0 &&(
+        {onGetCustomFields && platformFields?.length > 0 && (
           <>
             <hr className="divider" />
             <div className="dynamic-content__top">
@@ -246,7 +279,7 @@ const CustomFieldSection: SideSection = {
               )}
           </>
         )}
-        {onGetCustomFields && customFields?.length > 0 &&(
+        {onGetCustomFields && customFields?.length > 0 && (
           <>
             <hr className="divider" />
             <div className="dynamic-content__top">
