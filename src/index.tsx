@@ -15,7 +15,7 @@ import '@fontsource/inter/700.css';
 // utils
 import { CustomCSSProperties } from './utils/customStyles';
 import { setEnv, setIsSandbox, setPublicApiKey } from './utils/helper';
-import { AddOnTypes } from './utils/addOnTypes';
+import { AddOnTypes, TemplateTypes } from './utils/types';
 import { SDK_VERSION } from '../version';
 
 interface TemplateBuilderProps {
@@ -34,6 +34,7 @@ interface TemplateBuilderProps {
   excludedFields?: string[] | null;
   designerQueryAmount?: string | number;
   allowedAddOns?: AddOnTypes[] | string[] | null | undefined;
+  allowedTemplateSections?: TemplateTypes[] | string[] | null | undefined;
   env?: string;
   restrictedProducts?: number[] | null | undefined;
   onReturnAndNavigate?: () => void;
@@ -63,6 +64,7 @@ const TemplateBuilder = ({
   excludedFields,
   designerQueryAmount,
   allowedAddOns,
+  allowedTemplateSections,
   env,
   restrictedProducts,
   onReturnAndNavigate,
@@ -108,6 +110,7 @@ const TemplateBuilder = ({
             excludedFields={excludedFields}
             designerQueryAmount={designerQueryAmount}
             allowedAddOns={allowedAddOns}
+            allowedTemplateSections={allowedTemplateSections}
             restrictedProducts={restrictedProducts}
             onReturnAndNavigate={onReturnAndNavigate}
             onCreateCustomTemplateQuery={onCreateCustomTemplateQuery}
@@ -145,6 +148,7 @@ if (rootElement) {
     templateGalleryModal: true,
     designerQueryAmount: 175,
     allowedAddOns: ['property_offer','gsv'],
+    allowedTemplateSections: ['my_templates'],
     excludedFields: ['{{C.FIRST_NAME}}', '{{C.ADDRESS_1}}', '{{SPF.FIRST_NAME}}'],
     env: 'staging',
     // restrictedProducts: [9, 11, 13],
