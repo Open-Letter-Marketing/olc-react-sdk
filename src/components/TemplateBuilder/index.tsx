@@ -76,6 +76,7 @@ interface TemplateBuilderProps {
   excludedFields?: string[] | null;
   designerQueryAmount?: string | number;
   allowedAddOns?: any;
+  allowedTemplateSections?: any;
   onReturnAndNavigate?: () => void;
   onGetCustomFields?: () => Promise<any>;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
@@ -96,6 +97,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   designerQueryAmount,
   allowPropertyFields,
   allowedAddOns,
+  allowedTemplateSections,
   onCreateCustomTemplateQuery,
   onReturnAndNavigate,
   onGetOneTemplate,
@@ -418,6 +420,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
                 excludedFields={excludedFields}
                 designerQueryAmount={designerQueryAmount}
                 allowedAddOns={allowedAddOns}
+                allowedTemplateSections={allowedTemplateSections}
                 onGetTemplates={onGetTemplates}
                 onGetOneTemplate={onGetOneTemplate}
                 onGetCustomFields={onGetCustomFields}

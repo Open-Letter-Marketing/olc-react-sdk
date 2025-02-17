@@ -75,6 +75,7 @@ export type Payload = {
 export type TemplateType = {
   id: string;
   label: string;
+  value: string;
 };
 
 export type TemplateCategory = {
@@ -99,6 +100,7 @@ type CustomTemplateSectionProps = {
   designerQueryAmount?: string | number;
   hireDesignerModal?: any; 
   setHireDesignerModal?: any;
+  allowedTemplateSections?: any;
   onClick: () => void;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
@@ -123,6 +125,7 @@ const CustomTemplateSection: SideSection = {
       designerQueryAmount,
       hireDesignerModal,
       setHireDesignerModal,
+      allowedTemplateSections,
       onCreateCustomTemplateQuery,
       onGetOneTemplate,
       onGetTemplates,
@@ -131,7 +134,7 @@ const CustomTemplateSection: SideSection = {
 
       const [openGalleryModal, setOpenGalleryModal] = useState(false);
       const [templateTypes, setTemplateTypes] = useState<
-        [TemplateType] | null
+      TemplateType[] | null
       >();
       const [currentTemplateType, setCurrentTemplateType] =
         useState<TemplateType>();
@@ -520,13 +523,17 @@ const CustomTemplateSection: SideSection = {
       }, [pagination]);
 
       useEffect(() => {
-        const newTemplateType = {
+        const newTemplateType: TemplateType = {
           id: '3',
           label: platformName ? `${platformName} Templates` : 'OLC Templates',
+          value: 'olc-templates'
         };
         if (onGetTemplates) {
-          //@ts-ignore
-          setTemplateTypes([...defaultTemplateTypes, newTemplateType]);
+          let filteredTemplateTypes: TemplateType[] = [...defaultTemplateTypes, newTemplateType];
+          if (Array.isArray(allowedTemplateSections) && allowedTemplateSections.length > 0) {
+            filteredTemplateTypes = filteredTemplateTypes.filter((type) => allowedTemplateSections.includes(type.value));
+          }
+          setTemplateTypes(filteredTemplateTypes);
           const lastSelectedTab = getItem('currentTab');
           if (lastSelectedTab) {
             setCurrentTemplateType(JSON.parse(lastSelectedTab));

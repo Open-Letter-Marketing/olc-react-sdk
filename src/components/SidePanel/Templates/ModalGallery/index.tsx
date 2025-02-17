@@ -28,7 +28,7 @@ type CustomTemplateSectionProps = {
     selectedCategory: TemplateCategory | null,
     templateCategories: TemplateCategory[],
     currentTemplateType: TemplateType | undefined,
-    templateTypes: [TemplateType] | null | undefined,
+    templateTypes: TemplateType[] | null | undefined,
     designerQueryAmount?: string | number;
     search: any,
     searchApplied: boolean,

@@ -31,7 +31,7 @@ type CustomTemplateSectionProps = {
     selectedCategory: TemplateCategory | null,
     templateCategories: TemplateCategory[],
     currentTemplateType: TemplateType | undefined,
-    templateTypes: [TemplateType] | null | undefined,
+    templateTypes: TemplateType[] | null | undefined,
     search: any,
     searchApplied: boolean,
     loader: boolean,
