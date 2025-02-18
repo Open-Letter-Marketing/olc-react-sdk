@@ -168,4 +168,11 @@
       }
     }
   }
+
+  .qr-select{
+    .generic-select__control{
+      min-height: 35px !important;
+      border-radius: 3px !important;
+    }
+  }
 }

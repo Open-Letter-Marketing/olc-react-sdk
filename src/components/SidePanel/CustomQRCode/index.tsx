@@ -251,6 +251,7 @@ const CustomQRCode = {
             }}
             placeholder={MESSAGES.TEMPLATE.QR_SECTION.QR_PLACEHOLDER}
             value={url}
+            qrField={true}
           />
         </div>
         <div className='qr-input-wrapper'>
@@ -262,6 +263,7 @@ const CustomQRCode = {
             }}
             placeholder={'UTM Source'}
             value={utmSource}
+            qrField={true}
           />
         </div>
         <div className='qr-input-wrapper'>
@@ -273,6 +275,7 @@ const CustomQRCode = {
             }}
             placeholder={'UTM MEDIUM'}
             value={utmMedium}
+            qrField={true}
           />
         </div>
         <div className='qr-input-wrapper'>
@@ -284,6 +287,7 @@ const CustomQRCode = {
             }}
             placeholder={'UTM Campaign Name'}
             value={utmCampaignName}
+            qrField={true}
           />
         </div>
         {utms?.map((utm, idx) => {
@@ -302,6 +306,7 @@ const CustomQRCode = {
                 updateErrors={() => {}}
                 disableClearable={false}
                 templateBuilder={true}
+                qrField={true}
               />
             </div>
           );
