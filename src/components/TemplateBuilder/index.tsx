@@ -19,6 +19,8 @@ import {
   CLEAR_REDUX,
   GET_ONE_TEMPLATE,
   SET_CUSTOM_FIELDS,
+  SET_CUSTOM_FIELDS_V2,
+  SET_PLATFORM_FIELDS,
   TEMPLATE_LOADING,
 } from '../../redux/actions/action-types';
 import { failure } from '../../redux/actions/snackbarActions';
@@ -264,12 +266,55 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
 
   const fetchCustomFields = async () => {
     if (onGetCustomFields) {
-      const customFields: any = await onGetCustomFields();
-      if (customFields?.length) {
-        dispatch({
-          type: SET_CUSTOM_FIELDS,
-          payload: customFields,
-        });
+      const allCustomFields: any = await onGetCustomFields();
+      const platformFields: any = [];
+      const customFields: any = [];
+
+
+      if (allCustomFields?.version === 'v2') {
+        const flattenedFields = allCustomFields.customFields.flatMap((section: { fields: any; }) => section.fields);
+
+        for (const field of flattenedFields) {
+          (field.isPlatformField ? platformFields : customFields).push(field);
+        }
+        const filteredCustomFields = allCustomFields?.customFields
+          .map((customField: any) => ({
+            ...customField,
+            fields: customField.fields.filter((field: any) => customFields.includes(field))
+          }))
+          .filter((section: { fields: any[] }) => section.fields.length > 0);
+
+        if (allCustomFields?.customFields?.length) {
+          dispatch({ type: SET_CUSTOM_FIELDS, payload: [] });
+          dispatch({ type: SET_CUSTOM_FIELDS_V2, payload: filteredCustomFields });
+        } else {
+          dispatch({ type: SET_CUSTOM_FIELDS, payload: [] });
+          dispatch({ type: SET_CUSTOM_FIELDS_V2, payload: [] });
+        }
+
+        if (platformFields.length) {
+          dispatch({ type: SET_PLATFORM_FIELDS, payload: platformFields });
+        } else {
+          dispatch({ type: SET_PLATFORM_FIELDS, payload: [] });
+        }
+
+      } else {
+
+        for (const field of allCustomFields) {
+          (field.isPlatformField ? platformFields : customFields).push(field);
+        }
+
+        if (customFields.length) {
+          dispatch({ type: SET_CUSTOM_FIELDS, payload: customFields });
+        } else {
+          dispatch({ type: SET_CUSTOM_FIELDS, payload: [] });
+        }
+
+        if (platformFields.length) {
+          dispatch({ type: SET_PLATFORM_FIELDS, payload: platformFields });
+        } else {
+          dispatch({ type: SET_PLATFORM_FIELDS, payload: [] });
+        }
       }
     }
   };
