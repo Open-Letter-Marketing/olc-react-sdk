@@ -64,15 +64,25 @@ const CustomQRCode = {
       (state: RootState) => state.customFields.customFields
     );
 
+    const customFieldsV2 = useSelector(
+      (state: RootState) => state.customFields.customFieldsV2
+    ) as Record<string, any>;
+
     const defaultPropertyFields = useSelector(
       (state: RootState) => state.templates.defaultPropertyFields
     );
 
     const excludedLabels = ['utm_c_first_name c_last_name'];
+
+    let flattenedFieldsV2 = []; 
+    if (customFieldsV2.length > 0) {
+      flattenedFieldsV2 = customFieldsV2?.flatMap((section: { fields: any; }) => section.fields);
+    }
     
     const allFields = [
       ...defaultFields,
       ...customFields,
+      ...flattenedFieldsV2,
       ...(allowSenderFields ? defaultSenderFields : []),
       ...(allowPropertyFields ? defaultPropertyFields : []),
       ...(allowPropertyFields ? [{ value: "ROS.PROPERTY_OFFER", key: "ROS.PROPERTY_OFFER", defaultValue: "$123,456.00" }] : []),
