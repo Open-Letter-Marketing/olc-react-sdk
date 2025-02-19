@@ -30,16 +30,19 @@ export const allowedImageTypes = ['image/jpeg', 'image/png', 'image/svg+xml'];
 interface TemplateTypes {
   id: string;
   label: string;
+  value: string;
 }
 
 export const defaultTemplateTypes: TemplateTypes [] = [
   {
     id: "1",
     label: "My Templates",
+    value: "my_templates"
   },
   {
     id: "2",
     label: "Team Templates",
+    value: "team_templates"
   }
 ];
 

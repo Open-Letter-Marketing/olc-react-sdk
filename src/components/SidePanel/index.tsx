@@ -26,6 +26,7 @@ interface Props {
   designerQueryAmount?: string | number;
   allowPropertyFields?: boolean;
   allowedAddOns?: any;
+  allowedTemplateSections?: any;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -59,6 +60,7 @@ const SidePanel: React.FC<Props> = (props) => {
                     templateGalleryModal={props.templateGalleryModal}
                     designerQueryAmount={props.designerQueryAmount}
                     selectedSection={props.selectedSection}
+                    allowedTemplateSections={props.allowedTemplateSections}
                     hireDesignerModal={hireDesignerModal}
                     setHireDesignerModal={setHireDesignerModal}
                     onCreateCustomTemplateQuery={props.onCreateCustomTemplateQuery}
