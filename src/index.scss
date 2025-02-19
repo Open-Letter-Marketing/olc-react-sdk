@@ -93,14 +93,30 @@
     overflow: hidden;
   }
 
-  .dynamic-content{
-    position: relative;
-    .fields-search{
+  .fields-search{
     position: sticky;
-    top: 0px;
+    top: 0;
     background-color: #fff;
+    padding: 10px 0;
     height: 100%;
-    max-height: 35px;
+    max-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9;
+    margin: 0 !important;
+    span{
+      position: absolute;
+      left: 0px;
+      top: 5px;
     }
+    input{
+      margin: 0 !important;
+    }
+  }  
+  .dynamic-content{
+    margin-top: 10px !important;
+      overflow: auto !important;
+    }
+
   }
-}
