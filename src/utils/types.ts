@@ -8,5 +8,5 @@ export type AddOnTypes = {
 };
 
 export type TemplateTypes = {
-    [key in AddOnValue]?: string;
+    [key in TemplateTypesValue]?: string;
 };

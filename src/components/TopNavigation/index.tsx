@@ -118,6 +118,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
     (state: RootState) => state.customFields.customFields
   );
 
+  const customFieldsV2 = useSelector(
+    (state: RootState) => state.customFields.customFieldsV2
+  ) as Record<string, any>;
+
   const defaultPropertyFields = useSelector(
     (state: RootState) => state.templates.defaultPropertyFields
   );
@@ -166,7 +170,11 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   const handleViewProofWithLamda = async () => {
     try {
       setDownloaingProof(true);
-      const fields = [...defaultFields, ...customFields, ...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields, {value : "{{ROS.PROPERTY_OFFER}}",  key : "{{ROS.PROPERTY_OFFER}}", defaultValue: "$123,456.00"}];
+      let flattenedFieldsV2 = []; 
+      if (customFieldsV2.length > 0) {
+        flattenedFieldsV2 = customFieldsV2?.flatMap((section: { fields: any; }) => section.fields);
+      }
+      const fields = [...defaultFields, ...customFields, ...flattenedFieldsV2 ,...Object.values(dynamicFields), ...defaultSenderFields, ...defaultPropertyFields, {value : "{{ROS.PROPERTY_OFFER}}",  key : "{{ROS.PROPERTY_OFFER}}", defaultValue: "$123,456.00"}];
       let json = store.toJSON();
       const jsonSize = new Blob([JSON.stringify(json)]).size;
       if (jsonSize > 5242880) {
