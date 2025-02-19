@@ -220,18 +220,23 @@ const CustomFieldSection: SideSection = {
     }, [search, defaultSenderFields, platformFields, customFields, defaultDynamicFields, customFieldsV2]);
 
     return (
-      <div className="dynamic-content">
-        <div className="bp5-input-group fields-search">
+      <div style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column"
+      }}>
+      <div className="bp5-input-group fields-search">
           <span aria-hidden="true" className="bp5-icon bp5-icon-search">
             <svg data-icon="search" height="16" role="img" viewBox="0 0 16 16" width="16">
               <path d="M15.55 13.43l-2.67-2.68a6.94 6.94 0 001.11-3.76c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7c1.39 0 2.68-.42 3.76-1.11l2.68 2.67a1.498 1.498 0 102.12-2.12zm-8.56-1.44c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" fillRule="evenodd"></path>
             </svg>
           </span>
-          <input type="search" placeholder="Search..." className="bp5-input" style={{ marginBottom: '20px' }}
+          <input type="search" placeholder="Search..." className="bp5-input"
             onChange={(e) => setSearch(e.target.value)}
             value={search}
           />
         </div>
+      <div className="dynamic-content">
         {filteredDynamicFields.length > 0 &&
           <>
             <div className="dynamic-content__top">
@@ -476,6 +481,7 @@ const CustomFieldSection: SideSection = {
           <div className="no-result">No results</div>
         }
       </div >
+      </div>
     );
   }) as unknown as SideSection['Panel'],
 };
