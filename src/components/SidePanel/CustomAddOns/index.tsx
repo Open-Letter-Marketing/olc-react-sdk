@@ -126,7 +126,7 @@ const CustomAddOns: SideSection = {
     const copyPropertyOfferField = (e: React.MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
       copyToClipboard(PropertyOfferfieldValue);
-      dispatch(success(`${PropertyOfferfieldValue} Copied`));
+      dispatch(success(`ROS Property Offer Copied`));
     };
 
     return (
