@@ -61,6 +61,7 @@ const CustomFieldSection: SideSection = {
     const [isShowDialog, setIsShowDialog] = useState(false);
     const [search, setSearch] = useState('');
     const [filteredDynamicFields, setFilteredDynamicFields] = useState([]);
+    const [filteredPropertyFields, setFilteredPropertyFields] = useState([]);
     const [filteredCustomFieldsV2, setFilteredCustomFieldsV2] = useState([]);
     const [filteredSenderFields, setFilteredSenderFields] = useState([]);
     const [filteredPlatformFields, setFilteredPlatformFields] = useState([]);
@@ -113,7 +114,6 @@ const CustomFieldSection: SideSection = {
           for (const field of flattenedFields) {
             (field.isPlatformField ? platformFields : customFields).push(field);
           }
-
           const filteredCustomFields = allCustomFields?.customFields
             .map((customField: any) => ({
               ...customField,
@@ -175,6 +175,14 @@ const CustomFieldSection: SideSection = {
       setFilteredDynamicFields(defaultDynamicFields.filter(({ value }: any) =>
         value.toLowerCase().includes(search.toLowerCase())
       ));
+
+      setFilteredPropertyFields(
+        allowPropertyFields
+          ? defaultPropertyFields.filter(({ value }: any) =>
+            value.toLowerCase().includes(search.toLowerCase())
+          )
+          : []
+      );
 
       setFilteredSenderFields(
         allowSenderFields
@@ -261,6 +269,43 @@ const CustomFieldSection: SideSection = {
                 )
               )}
           </>}
+        {allowPropertyFields && filteredPropertyFields.length > 0 && <>
+          <hr className="divider" />
+          <div className="dynamic-content__top">
+            <div>
+              <span className="title">Property Address</span>
+              <InfoIcon fill="var(--primary-color)" className="property" />
+              <GeneralTootip
+                anchorSelect=".property"
+                place="bottom"
+                title="You can add property fields to your template."
+              />
+            </div>
+          </div>
+          {filteredPropertyFields
+            ?.filter(({ key }) => !excludedFields?.includes(key))
+            ?.map(
+              ({ key, value }: { key: string; value: string }, i: number) => (
+                <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_property'}>
+                  <span
+                    className="contact-element"
+                    onClick={() =>
+                      copyCustomFieldText(key)
+                    }
+                  >
+                    {value}
+                  </span>
+                  <Button
+                    style={iconButtonStyles}
+                    onClick={() => copyCustomFieldText(key)}
+                    backdrop={false}
+                  >
+                    <ContentCopyIcon className="copy" />
+                  </Button>
+                </div>
+              )
+            )}
+        </>}
         {allowSenderFields && filteredSenderFields.length > 0 && <>
           <hr className="divider" />
           <div className="dynamic-content__top">
@@ -342,7 +387,7 @@ const CustomFieldSection: SideSection = {
         {onGetCustomFields && filteredCustomFieldsV2.length > 0 ?
           filteredCustomFieldsV2.map((section: any, index: number): any => (
             <div key={index + 'custom-section'}>
-              <hr className="divider"/>
+              <hr className="divider" />
               <div className="dynamic-content__top">
                 <div>
                   <span className="title">{section?.section}</span>
@@ -427,7 +472,7 @@ const CustomFieldSection: SideSection = {
             </>
           )
         }
-        {filteredDynamicFields.length <= 0 && filteredCustomFieldsV2.length <= 0 && filteredSenderFields.length <= 0 && filteredPlatformFields.length <= 0 && filteredCustomFields.length <= 0 &&
+        {filteredDynamicFields.length <= 0 && filteredCustomFieldsV2.length <= 0 && filteredPropertyFields.length <= 0 && filteredSenderFields.length <= 0 && filteredPlatformFields.length <= 0 && filteredCustomFields.length <= 0 &&
           <div className="no-result">No results</div>
         }
       </div >
