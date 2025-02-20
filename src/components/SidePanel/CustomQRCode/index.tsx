@@ -242,6 +242,13 @@ const CustomQRCode = {
 
     return (
       <>
+       <button
+          className='qr-submit-btn'
+          onClick={isQR ? updateQRCode : addNewQRCode}>
+          {isQR
+            ? MESSAGES.TEMPLATE.QR_SECTION.UPDATE_BUTTON
+            : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
+        </button>
         <div className='qr-input-wrapper'>
           <label>QR URL:</label>
           <Input
@@ -261,7 +268,7 @@ const CustomQRCode = {
             onChange={(e) => {
               setUtmSource(e.target.value);
             }}
-            placeholder={'UTM Source'}
+            placeholder={'Enter UTM Source'}
             value={utmSource}
             qrField={true}
           />
@@ -273,7 +280,7 @@ const CustomQRCode = {
             onChange={(e) => {
               setUtmMedium(e.target.value);
             }}
-            placeholder={'UTM MEDIUM'}
+            placeholder={'Enter UTM Medium'}
             value={utmMedium}
             qrField={true}
           />
@@ -285,7 +292,7 @@ const CustomQRCode = {
             onChange={(e) => {
               setUtmCampaignName(e.target.value);
             }}
-            placeholder={'UTM Campaign Name'}
+            placeholder={'Enter UTM Campaign Name'}
             value={utmCampaignName}
             qrField={true}
           />
@@ -295,7 +302,7 @@ const CustomQRCode = {
             <div className='qr-input-wrapper' key={idx}>
               <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>
               <GeneralSelect
-                placeholder={utm}
+                placeholder={`Select Custom UTM ${idx+1}`}
                 options={utmFields as any}
                 setSelectedValue={(value: any) => handleSelect(utm, value)}
                 selectedValue={customUtms[utm] || (null as any)}
@@ -311,14 +318,6 @@ const CustomQRCode = {
             </div>
           );
         })}
-
-        <button
-          className='qr-submit-btn'
-          onClick={isQR ? updateQRCode : addNewQRCode}>
-          {isQR
-            ? MESSAGES.TEMPLATE.QR_SECTION.UPDATE_BUTTON
-            : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
-        </button>
       </>
     );
   }),
