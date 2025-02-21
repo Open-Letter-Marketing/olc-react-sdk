@@ -91,7 +91,8 @@
     // QR Code Fields Styles
     .qr-input-wrapper{
       label{
-        font-weight: 700;
+        font-weight: 600;
+        line-height: 19px;
       }
       &:not(:first-child){
         margin-top: 15px;
