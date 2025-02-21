@@ -40,6 +40,7 @@ interface InputProps {
   gellerySearch?: boolean;
   videoTooltip?: boolean;
   handleFileRemove?: () => void;
+  qrField?: boolean;
 }
 
 const Input: FC<InputProps> = ({
@@ -59,6 +60,7 @@ const Input: FC<InputProps> = ({
   gellerySearch = false,
   videoTooltip = false,
   handleFileRemove,
+  qrField = false
 }) => {
   const InputVariant = variant || 'input';
 
@@ -96,7 +98,7 @@ const Input: FC<InputProps> = ({
   };
 
   return (
-    <div className={`input-layout ${gellerySearch && 'gallery-input-layout'}`}>
+    <div className={`input-layout ${gellerySearch && 'gallery-input-layout'} ${qrField && 'qr-input-layout'}`}>
       <label className="basic-label">
         {label ? label : ''}
         {videoTooltip && (
@@ -116,7 +118,7 @@ const Input: FC<InputProps> = ({
         )}
       </label>
       <div
-        className={`input-with-icon ${searchApplied && 'focused'} ${error ? 'errorBorder' : ''} ${gellerySearch && 'galleryInput'}`}
+        className={`input-with-icon ${searchApplied && 'focused'} ${error ? 'errorBorder' : ''} ${gellerySearch && 'galleryInput'} ${qrField && 'qrInputDiv'}`}
       >
         {type === 'file' ? (
           <input

@@ -29,6 +29,7 @@ interface GeneralSelectProps {
   builderSelect: boolean;
   gallerySelect: boolean;
   clearField: boolean;
+  qrField?: boolean;
 }
 
 const colourStyles: StylesConfig<Option, false> = {
@@ -76,6 +77,7 @@ const GeneralSelect: React.FC<GeneralSelectProps> = ({
   builderSelect,
   gallerySelect=false,
   clearField,
+  qrField = false
 }) => {
   return (
     <div className="select-layout" style={{
@@ -87,7 +89,7 @@ const GeneralSelect: React.FC<GeneralSelectProps> = ({
         options={options}
         onChange={setSelectedValue}
         styles={colourStyles}
-        className={`generic-select-container ${builderSelect && 'template-select'} ${gallerySelect && 'gallery-select'}`}
+        className={`generic-select-container ${builderSelect && 'template-select'} ${gallerySelect && 'gallery-select'} ${qrField && 'qr-select'}`}
         classNamePrefix="generic-select"
         placeholder={placeholder}
         blurInputOnSelect
