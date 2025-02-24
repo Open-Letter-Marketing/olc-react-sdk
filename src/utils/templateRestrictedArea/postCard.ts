@@ -141,7 +141,7 @@ export const addRestrictedAreaToPostCard = (
             removable: false,
             alwaysOnTop: true,
             showInExport: true,
-            x: store.width - size[0] * DPI - 0.15 * DPI + 10,
+            x: store.width - size[0] * DPI - 0.15 * DPI + 5,
             y: store.height - size[1] * DPI - 0.125 * DPI + 20,
             width: 240,
             height: 20,
