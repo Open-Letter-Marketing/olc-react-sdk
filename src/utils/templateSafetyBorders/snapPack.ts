@@ -14,61 +14,61 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
 
     const safetyBordersInsidePanel = createSafetyTextElement(
         `inside-panel-${randomizedId}`,
-        -0.5,
-        388.78,
+        817,
+        663.72,
         410,
         "Inside Panel",
-        -90,
+        90,
         18
     );
 
     const safetyBordersOutsideFrontPanel = createSafetyTextElement(
         `outside-front-panel-${randomizedId}`,
-        -0.5,
-        731.5,
+        817,
+        321,
         410,
         "Outside Front Panel",
-        -90,
+        90,
         18
     );
 
     const safetyBordersOutsideBackPanel = createSafetyTextElement(
         `outside-back-panel-${randomizedId}`,
-        -0.5,
-        1073,
+        817,
+        20.2,
         410,
         "Outside Back Panel",
-        -90,
+        90,
         18
     );
 
     const safetyLineTextFirst = createSafetyTextElement(
         `safety-line-1-${randomizedId}`,
-        -25,
-        269,
+        840,
+        783,
         866,
         "Perforated Fold Line (Detachable Section)",
-        0,
+        180,
         14
     );
 
     const safetyLineTextSecond = createSafetyTextElement(
         `safety-line-2-${randomizedId}`,
-        -25,
-        330,
+        840,
+        721,
         866,
         "Fold Line",
-        0,
+        180,
         14
     );
 
     const safetyLineTextThird = createSafetyTextElement(
         `safety-line-3-${randomizedId}`,
-        -25,
-        687,
+        840,
+        365,
         866,
         "Fold Line",
-        0,
+        180,
         14
     );
 
@@ -116,9 +116,9 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
             createBorder(`bottom-1-${randomizedId}`, 24, 1028, 768, 3.85, 0),
             createBorder(`left-1-${randomizedId}`, 22, 1030, 1006, 3.85, -90),
             createBorder(`right-1-${randomizedId}`, 790, 1030, 1006, 3.85, -90),
-            createBorder(`fold-line-1-${randomizedId}`, 840.8, 287.4, 866, 2, 180, 'rgba(208,2,27,1)'),
-            createBorder(`fold-line-2-${randomizedId}`, 840.8, 348, 866, 2, 180, 'rgba(208,2,27,1)'),
-            createBorder(`fold-line-3-${randomizedId}`, 840.8, 705, 866, 2, 180, 'rgba(208,2,27,1)'),
+            createBorder(`fold-line-1-${randomizedId}`, -25, 765.4, 866, 2, 0, 'rgba(208,2,27,1)'),
+            createBorder(`fold-line-2-${randomizedId}`, -25, 703, 866, 2, 0, 'rgba(208,2,27,1)'),
+            createBorder(`fold-line-3-${randomizedId}`, -25, 347, 866, 2, 0, 'rgba(208,2,27,1)'),
         ],
     };
 

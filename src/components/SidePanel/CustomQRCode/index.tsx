@@ -64,15 +64,25 @@ const CustomQRCode = {
       (state: RootState) => state.customFields.customFields
     );
 
+    const customFieldsV2 = useSelector(
+      (state: RootState) => state.customFields.customFieldsV2
+    ) as Record<string, any>;
+
     const defaultPropertyFields = useSelector(
       (state: RootState) => state.templates.defaultPropertyFields
     );
 
     const excludedLabels = ['utm_c_first_name c_last_name'];
+
+    let flattenedFieldsV2 = []; 
+    if (customFieldsV2.length > 0) {
+      flattenedFieldsV2 = customFieldsV2?.flatMap((section: { fields: any; }) => section.fields);
+    }
     
     const allFields = [
       ...defaultFields,
       ...customFields,
+      ...flattenedFieldsV2,
       ...(allowSenderFields ? defaultSenderFields : []),
       ...(allowPropertyFields ? defaultPropertyFields : []),
       ...(allowPropertyFields ? [{ value: "ROS.PROPERTY_OFFER", key: "ROS.PROPERTY_OFFER", defaultValue: "$123,456.00" }] : []),
@@ -242,7 +252,14 @@ const CustomQRCode = {
 
     return (
       <>
-        <div>
+       <button
+          className='qr-submit-btn'
+          onClick={isQR ? updateQRCode : addNewQRCode}>
+          {isQR
+            ? MESSAGES.TEMPLATE.QR_SECTION.UPDATE_BUTTON
+            : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
+        </button>
+        <div className='qr-input-wrapper'>
           <label>QR URL:</label>
           <Input
             type="text"
@@ -251,47 +268,51 @@ const CustomQRCode = {
             }}
             placeholder={MESSAGES.TEMPLATE.QR_SECTION.QR_PLACEHOLDER}
             value={url}
+            qrField={true}
           />
         </div>
-        <div style={{marginTop: '15px'}}>
+        <div className='qr-input-wrapper'>
           <label>UTM Source:</label>
           <Input
             type="text"
             onChange={(e) => {
               setUtmSource(e.target.value);
             }}
-            placeholder={'UTM Source'}
+            placeholder={'Enter UTM Source'}
             value={utmSource}
+            qrField={true}
           />
         </div>
-        <div style={{marginTop: '15px'}}>
+        <div className='qr-input-wrapper'>
           <label>UTM Medium:</label>
           <Input
             type="text"
             onChange={(e) => {
               setUtmMedium(e.target.value);
             }}
-            placeholder={'UTM MEDIUM'}
+            placeholder={'Enter UTM Medium'}
             value={utmMedium}
+            qrField={true}
           />
         </div>
-        <div style={{marginTop: '15px'}}>
+        <div className='qr-input-wrapper'>
           <label>UTM Campaign Name:</label>
           <Input
             type="text"
             onChange={(e) => {
               setUtmCampaignName(e.target.value);
             }}
-            placeholder={'UTM Campaign Name'}
+            placeholder={'Enter UTM Campaign Name'}
             value={utmCampaignName}
+            qrField={true}
           />
         </div>
         {utms?.map((utm, idx) => {
           return (
-            <div style={{marginTop: '15px'}} key={idx}>
+            <div className='qr-input-wrapper' key={idx}>
               <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>
               <GeneralSelect
-                placeholder={utm}
+                placeholder={`Select Custom UTM ${idx+1}`}
                 options={utmFields as any}
                 setSelectedValue={(value: any) => handleSelect(utm, value)}
                 selectedValue={customUtms[utm] || (null as any)}
@@ -302,28 +323,11 @@ const CustomQRCode = {
                 updateErrors={() => {}}
                 disableClearable={false}
                 templateBuilder={true}
+                qrField={true}
               />
             </div>
           );
         })}
-
-        <button
-          onClick={isQR ? updateQRCode : addNewQRCode}
-          style={{
-            width: '100%',
-            padding: '10px',
-            marginTop: '20px',
-            marginBottom: '10px',
-            backgroundColor: '#f6f7f9',
-            boxShadow: 'inset 0 0 0 1px #11141833,0 1px 2px #1114181a',
-            color: '#1c2127',
-            border: 'none',
-          }}
-        >
-          {isQR
-            ? MESSAGES.TEMPLATE.QR_SECTION.UPDATE_BUTTON
-            : MESSAGES.TEMPLATE.QR_SECTION.SUBMIT_BUTTON}
-        </button>
       </>
     );
   }),

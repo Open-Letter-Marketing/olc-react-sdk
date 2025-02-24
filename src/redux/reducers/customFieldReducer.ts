@@ -1,16 +1,19 @@
 import {
   SET_CUSTOM_FIELDS,
   SET_PLATFORM_FIELDS,
+  SET_CUSTOM_FIELDS_V2,
 } from '../actions/action-types';
 
 export interface CustomFieldState {
   customFields: any[];
+  customFieldsV2: any[];
   platformFields: any[];
   defaultDynamicFields: any[];
 }
 
 const initialState: CustomFieldState = {
   customFields: [],
+  customFieldsV2: [],
   platformFields: [],
   defaultDynamicFields: [
     {
@@ -34,37 +37,37 @@ const initialState: CustomFieldState = {
       defaultValue: "ABC Company, Inc.",
     },
     {
-      value: "Address 1",
+      value: "Mailing Address 1",
       key: "{{C.ADDRESS_1}}",
       defaultValue: "123 Main Street",
     },
     {
-      value: "Address 2",
+      value: "Mailing Address 2",
       key: "{{C.ADDRESS_2}}",
       defaultValue: "Suite 2",
     },
     {
-      value: "City",
+      value: "Mailing City",
       key: "{{C.CITY}}",
       defaultValue: "Lawrence",
     },
     {
-      value: "State",
+      value: "Mailing State",
       key: "{{C.STATE}}",
       defaultValue: "MA",
     },
     {
-      value: "Zip Code",
+      value: "Mailing Zip Code",
       key: "{{C.ZIP_CODE}}",
       defaultValue: "01843",
     },
     {
-      value: "Phone Number",
+      value: "Contact Phone Number",
       key: "{{C.PHONE_NUMBER}}",
       defaultValue: "(555) 278-9389",
     },
     {
-      value: "Email",
+      value: "Contact Email",
       key: "{{C.EMAIL}}",
       defaultValue: "johndoe@gmail.com",
     },
@@ -77,6 +80,11 @@ const customFieldReducer = (state = initialState, action: any): CustomFieldState
       return {
         ...state,
         customFields: action.payload,
+      };
+    case SET_CUSTOM_FIELDS_V2:
+      return {
+        ...state,
+        customFieldsV2: action.payload,
       };
     case SET_PLATFORM_FIELDS:
       return {

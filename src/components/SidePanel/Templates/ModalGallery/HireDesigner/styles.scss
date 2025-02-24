@@ -62,13 +62,13 @@
  
       .upload-icon {
         font-size: 32px;
-        color: #ff6347; /* Customize color */
+        color: var(--svg-color); /* Customize color */
         margin-bottom: 10px;
       }
  
  
       .upload-text {
-        color: #ff6347; /* Customize color */
+        color: var(--primary-color); /* Customize color */
         font-weight: 400;
         text-decoration: underline;
         cursor: pointer;
