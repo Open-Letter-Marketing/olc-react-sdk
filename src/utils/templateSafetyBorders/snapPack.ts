@@ -42,7 +42,7 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
         18
     );
 
-    const safetyLineTextFirst = createSafetyTextElement(
+    const safetyLineTextFourth = createSafetyTextElement(
         `safety-line-1-${randomizedId}`,
         840,
         783,
@@ -52,7 +52,7 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
         14
     );
 
-    const safetyLineTextSecond = createSafetyTextElement(
+    const safetyLineTextFifth = createSafetyTextElement(
         `safety-line-2-${randomizedId}`,
         840,
         721,
@@ -62,7 +62,7 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
         14
     );
 
-    const safetyLineTextThird = createSafetyTextElement(
+    const safetyLineTextSixth = createSafetyTextElement(
         `safety-line-3-${randomizedId}`,
         840,
         365,
@@ -72,7 +72,7 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
         14
     );
 
-    const safetyLineTextFourth = createSafetyTextElement(
+    const safetyLineTextFirst = createSafetyTextElement(
         `safety-line-4-${randomizedId}`,
         -25.2,
         334.9,
@@ -82,7 +82,7 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
         14
     );
 
-    const safetyLineTextFifth = createSafetyTextElement(
+    const safetyLineTextSecond = createSafetyTextElement(
         `safety-line-5-${randomizedId}`,
         -25.2,
         690,
@@ -92,7 +92,7 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
         14
     );
 
-    const safetyLineTextSixth = createSafetyTextElement(
+    const safetyLineTextThird = createSafetyTextElement(
         `safety-line-6-${randomizedId}`,
         -25.2,
         728,
@@ -116,12 +116,11 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
             createBorder(`bottom-1-${randomizedId}`, 24, 1028, 768, 3.85, 0),
             createBorder(`left-1-${randomizedId}`, 22, 1030, 1006, 3.85, -90),
             createBorder(`right-1-${randomizedId}`, 790, 1030, 1006, 3.85, -90),
-            createBorder(`fold-line-1-${randomizedId}`, -25, 765.4, 866, 2, 0, 'rgba(208,2,27,1)'),
-            createBorder(`fold-line-2-${randomizedId}`, -25, 703, 866, 2, 0, 'rgba(208,2,27,1)'),
-            createBorder(`fold-line-3-${randomizedId}`, -25, 347, 866, 2, 0, 'rgba(208,2,27,1)'),
+            createBorder(`fold-line-1-${randomizedId}`, 840.8, 353.92, 866, 2, 180, 'rgba(208,2,27,1)'),
+            createBorder(`fold-line-2-${randomizedId}`, 840.8, 710, 866, 2, 180, 'rgba(208,2,27,1)'),
+            createBorder(`fold-line-3-${randomizedId}`, 840.8, 746, 866, 2, 180, 'rgba(208,2,27,1)'),
         ],
     };
-
 
     const secondPageBorders: Element = {
         id: `safety-border-2-${randomizedId}`,
@@ -133,22 +132,20 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
         alwaysOnTop: true,
         showInExport: false,
         children: [
-            createBorder(`top-1-${randomizedId}`, 24, 22, 768, 3.85, 0),
-            createBorder(`bottom-1-${randomizedId}`, 24, 1028, 768, 3.85, 0),
-            createBorder(`left-1-${randomizedId}`, 22, 1030, 1006, 3.85, -90),
-            createBorder(`right-1-${randomizedId}`, 790, 1030, 1006, 3.85, -90),
-            createBorder(`fold-line-1-${randomizedId}`, 840.8, 353.92, 866, 2, 180, 'rgba(208,2,27,1)'),
-            createBorder(`fold-line-2-${randomizedId}`, 840.8, 710, 866, 2, 180, 'rgba(208,2,27,1)'),
-            createBorder(`fold-line-3-${randomizedId}`, 840.8, 746, 866, 2, 180, 'rgba(208,2,27,1)'),
+            createBorder(`top-2-${randomizedId}`, 24, 22, 768, 3.85, 0),
+            createBorder(`bottom-2-${randomizedId}`, 24, 1028, 768, 3.85, 0),
+            createBorder(`left-2-${randomizedId}`, 22, 1030, 1006, 3.85, -90),
+            createBorder(`right-2-${randomizedId}`, 790, 1030, 1006, 3.85, -90),
+            createBorder(`fold-line-4-${randomizedId}`, -25, 765.4, 866, 2, 0, 'rgba(208,2,27,1)'),
+            createBorder(`fold-line-5-${randomizedId}`, -25, 703, 866, 2, 0, 'rgba(208,2,27,1)'),
+            createBorder(`fold-line-6-${randomizedId}`, -25, 347, 866, 2, 0, 'rgba(208,2,27,1)'),
         ],
     };
 
     // Add elements to the pages
+
     store.pages[0]?.addElement(firstPageBorders);
     store?.pages[0]?.addElement(safetyBordersTextFirst);
-    store?.pages[0]?.addElement(safetyBordersInsidePanel);
-    store?.pages[0]?.addElement(safetyBordersOutsideFrontPanel);
-    store?.pages[0]?.addElement(safetyBordersOutsideBackPanel);
     store?.pages[0]?.addElement(safetyLineTextFirst);
     store?.pages[0]?.addElement(safetyLineTextSecond);
     store?.pages[0]?.addElement(safetyLineTextThird);
@@ -156,6 +153,9 @@ export const addSafetyBordersToSnapPackMailer = (store: Store): void => {
 
     store.pages[1]?.addElement(secondPageBorders);
     store?.pages[1]?.addElement(safetyBordersTextFirst);
+    store?.pages[1]?.addElement(safetyBordersInsidePanel);
+    store?.pages[1]?.addElement(safetyBordersOutsideFrontPanel);
+    store?.pages[1]?.addElement(safetyBordersOutsideBackPanel);
     store?.pages[1]?.addElement(safetyLineTextFourth);
     store?.pages[1]?.addElement(safetyLineTextFifth);
     store?.pages[1]?.addElement(safetyLineTextSixth);
