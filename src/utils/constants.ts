@@ -65,3 +65,7 @@ export const DISALLOWED_DOMAINS = [
   'demo-qrforward.org',
   'staging-qrforward.org',
 ];
+
+export const SAMPLE_CSV = `First Name,Last Name,Company,Mailing Address 1,Mailing Address 2,Mailing City,Mailing State,Mailing Zip Code,Contact Phone Number,Contact Email
+Alia Test,Walter Test,Dooley,19021 Adalberto Prairie,Suite 253,North Columbus,Nebraska,24604,208-495-6500,Nichole.OConnell21@gmail.com
+Greyson Test,Allen Test,Mertz LLC,2724 Erna Knolls,Suite 024,Mafaldaton,Washington,17482,997-670-2200,Cathy26@yahoo.com`;
