@@ -8,6 +8,10 @@ export const  STAGE_S3_URL = `https://staging.qrforward.org/api/v1/download/s3/s
 export const  DEMO_S3_URL = `https://demo.qrforward.org/api/v1/download/s3/sdk-images`;
 export const  PROD_S3_URL = `https://qrforward.org/api/v1/download/s3/sdk-images`;
 
+export const DEMO_PO_GENERATOR_URL = 'https://demo.offer-generator.com/property-offers';
+export const STAGE_PO_GENERATOR_URL = 'https://staging.offer-generator.com/property-offers';
+export const PROD_PO_GENERATOR_URL = 'https://offer-generator.com/property-offers';
+
 export const DPI: number = 96;
 
 export const BARCODE_IMAGE_URL: string = `/assets/preview/one-barcode.png`;

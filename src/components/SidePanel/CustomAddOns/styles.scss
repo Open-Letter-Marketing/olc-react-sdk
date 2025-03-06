@@ -39,6 +39,17 @@
     }
   }
 
+  .s-font {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .plain-text {
+    font-weight: 300;
+    font-size: 14px;
+    text-align: center;
+  }
+
   svg {
     width: 100px;
     height: 120px;
@@ -53,4 +64,17 @@
 
 .hidden-important {
   display: block !important;
+}
+
+.custom-po {
+  margin-top: -70% !important;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
 }

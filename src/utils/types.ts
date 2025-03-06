@@ -1,5 +1,5 @@
 // Define a union type for the allowed add-on values
-export type AddOnValue = 'gsv' | 'property_offer';
+export type AddOnValue = 'gsv' | 'property_offer' | 'custom_property_offer';
 export type TemplateTypesValue = 'my_templates' | 'team_templates' | 'olc-templates';
 
 
