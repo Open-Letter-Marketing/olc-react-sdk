@@ -8,6 +8,10 @@ export const  STAGE_S3_URL = `https://staging.qrforward.org/api/v1/download/s3/s
 export const  DEMO_S3_URL = `https://demo.qrforward.org/api/v1/download/s3/sdk-images`;
 export const  PROD_S3_URL = `https://qrforward.org/api/v1/download/s3/sdk-images`;
 
+export const DEMO_PO_GENERATOR_URL = 'https://demo.offer-generator.com/property-offers';
+export const STAGE_PO_GENERATOR_URL = 'https://staging.offer-generator.com/property-offers';
+export const PROD_PO_GENERATOR_URL = 'https://offer-generator.com/property-offers';
+
 export const DPI: number = 96;
 
 export const BARCODE_IMAGE_URL: string = `/assets/preview/one-barcode.png`;
@@ -65,7 +69,3 @@ export const DISALLOWED_DOMAINS = [
   'demo-qrforward.org',
   'staging-qrforward.org',
 ];
-
-export const SAMPLE_CSV = `First Name,Last Name,Company,Mailing Address 1,Mailing Address 2,Mailing City,Mailing State,Mailing Zip Code,Contact Phone Number,Contact Email
-Alia Test,Walter Test,Dooley,19021 Adalberto Prairie,Suite 253,North Columbus,Nebraska,24604,208-495-6500,Nichole.OConnell21@gmail.com
-Greyson Test,Allen Test,Mertz LLC,2724 Erna Knolls,Suite 024,Mafaldaton,Washington,17482,997-670-2200,Cathy26@yahoo.com`;
