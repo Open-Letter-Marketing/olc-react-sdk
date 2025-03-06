@@ -150,7 +150,7 @@ if (rootElement) {
     allowedAddOns: ['property_offer','gsv', 'custom_property_offer'],
     allowedTemplateSections: ['my_templates'],
     excludedFields: ['{{C.FIRST_NAME}}', '{{C.ADDRESS_1}}', '{{SPF.FIRST_NAME}}'],
-    env: 'staging',
+    // env: 'staging',
     // onGetCustomFields: getAllCustomFields,
     // restrictedProducts: [9, 11, 13],
     // onGetOneTemplate: getOneTemplate,

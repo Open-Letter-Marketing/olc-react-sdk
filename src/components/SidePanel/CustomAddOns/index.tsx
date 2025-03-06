@@ -12,10 +12,11 @@ import { AppDispatch } from '../../../redux/store';
 
 // Actions
 import { failure, success } from '../../../redux/actions/snackbarActions';
+import { SET_ROS_OFFER_PERCENTAGE } from '../../../redux/actions/action-types';
 
 // Utils
 import { MESSAGES } from '../../../utils/message';
-import { copyToClipboard, getEnv, getIsSandbox } from '../../../utils/helper';
+import { copyToClipboard, getEnv, getIsSandbox, getPublicApiKey } from '../../../utils/helper';
 
 // Components
 import Input from '../../GenericUIBlocks/Input';
@@ -27,11 +28,13 @@ import Button from '../../../components/GenericUIBlocks/Button';
 
 // Dummy Image for GSV
 import {
+  DEMO_PO_GENERATOR_URL,
   DEMO_S3_URL,
   GOOGLE_STREET_VIEW_IMAGE_URL,
   LOCAL_S3_URL,
+  PROD_PO_GENERATOR_URL,
   PROD_S3_URL,
-  SAMPLE_CSV,
+  STAGE_PO_GENERATOR_URL,
   STAGE_S3_URL,
 } from '../../../utils/constants';
 
@@ -84,6 +87,13 @@ const CustomAddOns: SideSection = {
           ? DEMO_S3_URL
           : PROD_S3_URL) + GOOGLE_STREET_VIEW_IMAGE_URL;
 
+    const propertyOfferGeneratorURL: string =
+      (getEnv() === 'local' || getEnv() === 'staging'
+        ? STAGE_PO_GENERATOR_URL
+        : getIsSandbox()
+          ? DEMO_PO_GENERATOR_URL
+          : PROD_PO_GENERATOR_URL) + `?apiKey=${getPublicApiKey()}`;
+
     const PropertyOfferfieldValue = '{{ROS.PROPERTY_OFFER}}';
 
     const handleAddElementOnScreen = (
@@ -129,12 +139,14 @@ const CustomAddOns: SideSection = {
         });
       } else if (type === 'custom_rpo') {
         if (!customRosValue) {
-          dispatch(failure(`Please enter the offer percentage`));
-          return
+          percentageRequired();
+          return;
         }
+        if (!validCustomRosRange()) return false;
+        dispatch({ type: SET_ROS_OFFER_PERCENTAGE, payload: customRosValue });
         const randomizedId = Math.random().toString(36).substring(2, 7);
         store.activePage.addElement({
-          id: `custom_ros_${randomizedId}`,
+          id: `ros_${randomizedId}`,
           type: 'text',
           x: 100,
           y: 100,
@@ -148,19 +160,21 @@ const CustomAddOns: SideSection = {
       }
     };
 
-    const downloadSampleCSV = () => {
-      const blob = new Blob([SAMPLE_CSV], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "sample.csv";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    };
+    const percentageRequired = () => dispatch(failure(`Please enter the offer percentage`));
+
+    const validCustomRosRange = () => {
+      if(+customRosValue < 1 || +customRosValue > 100) {
+        dispatch(failure(`Please enter an offer percentage between 1 and 100`));
+        return false;
+      }
+      return true;
+    }
 
     const copyPropertyOfferField = (e: React.MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
+      if (!validCustomRosRange()) return false;
       copyToClipboard(PropertyOfferfieldValue);
+      dispatch({ type: SET_ROS_OFFER_PERCENTAGE, payload: customRosValue });
       dispatch(success(`ROS Property Offer Copied`));
     };
 
@@ -226,9 +240,9 @@ const CustomAddOns: SideSection = {
           >
             <Button
               style={iconButtonStyles}
-              onClick={copyPropertyOfferField}
+              onClick={customRosValue ? copyPropertyOfferField : percentageRequired}
               backdrop={false}
-              className='custom-po'
+              className='custom-po' 
             >
               <ContentCopyIcon className="copy" />
             </Button>
@@ -238,9 +252,9 @@ const CustomAddOns: SideSection = {
               {MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.CUSTOM.DESCRIPTION}
             </Typography>
             <div style={{ margin: '12px' }} className='plain-text'>
-              <a
+              <a href={propertyOfferGeneratorURL} target='_blank'
                 onClick={(e) => {
-                  e.stopPropagation(), downloadSampleCSV();
+                  e.stopPropagation()
                 }}
               >
                 {MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.CUSTOM.CLICK}
