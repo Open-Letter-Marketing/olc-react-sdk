@@ -111,4 +111,4 @@ export const Products: Product[] = [
             }
         ]
     }
-].filter((item) => +item.id !== 18);
+];
