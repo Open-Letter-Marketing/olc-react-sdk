@@ -133,6 +133,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
     (state: RootState) => state.templates.envelopeType
   );
 
+  const rosOfferPercentage = useSelector(
+    (state: RootState) => state.templates.offerPercentage
+  );
+
   useEffect(() => {
     if (!id) {
       const formData = getItem('formData');
@@ -310,11 +314,13 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
           formData.append('backThumbnail', backBlob, 'backLogo.png');
           store.loadJSON(jsonData);
         }
+
         const jsonString = JSON.stringify(jsonData);
         const blobData = new Blob([jsonString], { type: 'application/json' });
         formData.append('json', blobData, 'template.json');
         formData.append('thumbnail', blob, 'logo.png');
         selectedFields = allFields.filter(field => jsonString.includes(field.key));
+        jsonString.includes('ros_') || jsonString.includes('{{ROS.PROPERTY_OFFER}}') ?  formData.append('rosOfferPercentage', rosOfferPercentage) : undefined;
       }
 
       formData.append('title', title);

@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useState } from 'react';
 
 // Plotno Library Imports
 import { observer } from 'mobx-react-lite';
@@ -12,10 +12,14 @@ import { AppDispatch } from '../../../redux/store';
 
 // Actions
 import { failure, success } from '../../../redux/actions/snackbarActions';
+import { SET_ROS_OFFER_PERCENTAGE } from '../../../redux/actions/action-types';
 
 // Utils
 import { MESSAGES } from '../../../utils/message';
-import { copyToClipboard, getEnv, getIsSandbox } from '../../../utils/helper';
+import { copyToClipboard, getEnv, getIsSandbox, getPublicApiKey } from '../../../utils/helper';
+
+// Components
+import Input from '../../GenericUIBlocks/Input';
 
 // MUI Components
 import GeneralTootip from '../../GenericUIBlocks/GeneralTooltip';
@@ -24,10 +28,13 @@ import Button from '../../../components/GenericUIBlocks/Button';
 
 // Dummy Image for GSV
 import {
+  DEMO_PO_GENERATOR_URL,
   DEMO_S3_URL,
   GOOGLE_STREET_VIEW_IMAGE_URL,
   LOCAL_S3_URL,
+  PROD_PO_GENERATOR_URL,
   PROD_S3_URL,
+  STAGE_PO_GENERATOR_URL,
   STAGE_S3_URL,
 } from '../../../utils/constants';
 
@@ -69,13 +76,23 @@ const CustomAddOns: SideSection = {
 
   // we need observer to update component automatically on any store changes
   Panel: observer(({ store, allowedAddOns }: CustomAddOnsSectionProps) => {
+    const [customRosValue, setCustomRosValue] = useState('');
+
     const dispatch: AppDispatch = useDispatch();
+
     const googleStreetViewSrc: string =
       (getEnv() === 'local' || getEnv() === 'staging'
         ? STAGE_S3_URL
         : getIsSandbox()
           ? DEMO_S3_URL
           : PROD_S3_URL) + GOOGLE_STREET_VIEW_IMAGE_URL;
+
+    const propertyOfferGeneratorURL: string =
+      (getEnv() === 'local' || getEnv() === 'staging'
+        ? STAGE_PO_GENERATOR_URL
+        : getIsSandbox()
+          ? DEMO_PO_GENERATOR_URL
+          : PROD_PO_GENERATOR_URL) + `?apiKey=${getPublicApiKey()}`;
 
     const PropertyOfferfieldValue = '{{ROS.PROPERTY_OFFER}}';
 
@@ -120,12 +137,44 @@ const CustomAddOns: SideSection = {
           width: 175,
           contentEditable: false,
         });
+      } else if (type === 'custom_rpo') {
+        if (!customRosValue) {
+          percentageRequired();
+          return;
+        }
+        if (!validCustomRosRange()) return false;
+        dispatch({ type: SET_ROS_OFFER_PERCENTAGE, payload: customRosValue });
+        const randomizedId = Math.random().toString(36).substring(2, 7);
+        store.activePage.addElement({
+          id: `ros_${randomizedId}`,
+          type: 'text',
+          x: 100,
+          y: 100,
+          text: value,
+          width: 175,
+          contentEditable: false,
+          custom: {
+            ros_custom_value: customRosValue
+          }
+        });
       }
     };
 
+    const percentageRequired = () => dispatch(failure(`Please enter the offer percentage`));
+
+    const validCustomRosRange = () => {
+      if(+customRosValue < 1 || +customRosValue > 100) {
+        dispatch(failure(`Please enter an offer percentage between 1 and 100`));
+        return false;
+      }
+      return true;
+    }
+
     const copyPropertyOfferField = (e: React.MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
+      if (!validCustomRosRange()) return false;
       copyToClipboard(PropertyOfferfieldValue);
+      dispatch({ type: SET_ROS_OFFER_PERCENTAGE, payload: customRosValue });
       dispatch(success(`ROS Property Offer Copied`));
     };
 
@@ -133,12 +182,12 @@ const CustomAddOns: SideSection = {
       <div className="dynamic-content">
         <div className="dynamic-content__top">
           <div>
-            <span className="title">Optional Add-On's</span>{' '}
+            <span className="title">{MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.TITLE}</span>{' '}
             <InfoIcon fill="var(--primary-color)" className="infoIcon" />
             <GeneralTootip
               anchorSelect=".infoIcon"
               place="bottom"
-              title="Google Street View is a technology featured in Google Maps and Google Earth that provides interactive panoramas from positions along many streets in the world."
+              title={MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.DESCRIPTION}
             />
           </div>
         </div>
@@ -150,8 +199,8 @@ const CustomAddOns: SideSection = {
             }
           >
             <GsvIcon />
-            <Typography>Street View Property Image</Typography>
-            <Typography>+$0.02 per mail piece</Typography>
+            <Typography>{MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.GSV.TITLE}</Typography>
+            <Typography>{MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.GSV.DESCRIPTION}</Typography>
           </div>
         )}
         {allowedAddOns?.includes('property_offer') && (
@@ -170,15 +219,68 @@ const CustomAddOns: SideSection = {
                 <ContentCopyIcon className="copy" />
               </Button>
               <EpoIcon />
-              <Typography>Add an Offer</Typography>
+              <Typography>{MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.TITLE}</Typography>
               <Typography className="no-margin">
-                (generated using Property Info)
+                {MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.DESCRIPTION}
               </Typography>
-              <Typography>+$0.03 per mail piece</Typography>
+              <Typography>{MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.PRICE}</Typography>
             </div>
-            <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
           </div>
         )}
+        {allowedAddOns?.includes('custom_property_offer') && (
+          <div
+            className="addonBox"
+            onClick={(event: any) =>
+              handleAddElementOnScreen(
+                event,
+                PropertyOfferfieldValue,
+                'custom_rpo'
+              )
+            }
+          >
+            <Button
+              style={iconButtonStyles}
+              onClick={customRosValue ? copyPropertyOfferField : percentageRequired}
+              backdrop={false}
+              className='custom-po' 
+            >
+              <ContentCopyIcon className="copy" />
+            </Button>
+            <EpoIcon />
+            <Typography>{MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.CUSTOM.TITLE}</Typography>
+            <Typography variant="h3" className="no-margin s-font">
+              {MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.CUSTOM.DESCRIPTION}
+            </Typography>
+            <div style={{ margin: '12px' }} className='plain-text'>
+              <a href={propertyOfferGeneratorURL} target='_blank'
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+              >
+                {MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.CUSTOM.CLICK}
+              </a>{' '}
+              {MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.CUSTOM.CSV_IMPORT}
+            </div>
+            <Typography className="no-margin s-font">
+              {MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.PROPERTY_OFFER.CUSTOM.CUSTOM_PRICE}
+            </Typography>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{ width: '18rem', marginBottom: '15px' }}
+            >
+              <Input
+                type="number"
+                placeholder={'Type in a Number between 1-100'}
+                qrField={true}
+                value={customRosValue}
+                onChange={(e) => {
+                  setCustomRosValue(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+        )}
+        <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
       </div>
     );
   }) as unknown as SideSection['Panel'],

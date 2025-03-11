@@ -10,6 +10,7 @@ import {
   SET_UPLOADED_IMAGES,
   CLEAR_TEMPLATE_FIELDS,
   LOAD_DATA_FROM_LOCAL_STORAGE,
+  SET_ROS_OFFER_PERCENTAGE,
   CLEAR_TEMPLATE,
   CLEAR_REDUX
 } from "../actions/action-types";
@@ -75,6 +76,7 @@ export interface TemplateState {
   envelopeType: string;
   templateLoading: boolean | null;
   uploadedImages: any[];
+  offerPercentage: string;
 }
 
 
@@ -280,7 +282,8 @@ const initialState: TemplateState = {
   templateType: "json",
   envelopeType: "",
   templateLoading: null,
-  uploadedImages: []
+  uploadedImages: [],
+  offerPercentage: ''
 };
 
 // @ts-ignore
@@ -362,6 +365,11 @@ const templateReducer = (state = initialState, { type, payload }): TemplateState
         product: payload.data.product,
         templateType: payload.data.templateType,
         envelopeType: payload.data.envelopeType,
+      };
+    case SET_ROS_OFFER_PERCENTAGE:
+      return {
+        ...state,
+        offerPercentage: payload,
       };
     case CLEAR_REDUX:
       return initialState;
