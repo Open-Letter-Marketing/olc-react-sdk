@@ -1,4 +1,4 @@
-import React, { CSSProperties, useState } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 
 // Plotno Library Imports
 import { observer } from 'mobx-react-lite';
@@ -7,8 +7,8 @@ import type { StoreType } from 'polotno/model/store';
 import type { TemplatesSection } from 'polotno/side-panel';
 
 // Hooks
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../redux/store';
 
 // Actions
 import { failure, success } from '../../../redux/actions/snackbarActions';
@@ -77,6 +77,14 @@ const CustomAddOns: SideSection = {
   // we need observer to update component automatically on any store changes
   Panel: observer(({ store, allowedAddOns }: CustomAddOnsSectionProps) => {
     const [customRosValue, setCustomRosValue] = useState('');
+
+    const currentTemplate = useSelector(
+      (state: RootState) => state.templates.template
+    ) as Record<string, any>;
+
+    const currentOfferPercentage = useSelector(
+      (state: RootState) => state.templates.offerPercentage
+    ) as string;
 
     const dispatch: AppDispatch = useDispatch();
 
@@ -177,6 +185,14 @@ const CustomAddOns: SideSection = {
       dispatch({ type: SET_ROS_OFFER_PERCENTAGE, payload: customRosValue });
       dispatch(success(`ROS Property Offer Copied`));
     };
+
+    useEffect(() => {
+      if(currentTemplate?.meta?.rosOfferPercentage && !currentOfferPercentage) {
+        setCustomRosValue(currentTemplate.meta.rosOfferPercentage);
+      } else if(currentOfferPercentage) {
+        setCustomRosValue(currentOfferPercentage);
+      }
+    }, [])
 
     return (
       <div className="dynamic-content">
