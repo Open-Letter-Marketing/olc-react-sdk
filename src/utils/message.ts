@@ -101,6 +101,27 @@ export const MESSAGES = {
       EMAIL_VALIDATION: 'Email is not valid',
       SUBMIT_BUTTON: "'Next'",
     },
+    CUSTOM_ADD_ONS: {
+      TITLE: `Optional Add-On's`,
+      DESCRIPTION: `Optional add-ons are additional services that user can choose to include with their template, enhancing their overall experience.`,
+      GSV: {
+        TITLE: 'Street View Property Image',
+        DESCRIPTION: '+$0.02 per mail piece',
+      },
+      PROPERTY_OFFER : {
+        TITLE: 'Add an Offer',
+        DESCRIPTION: '(generated using Property Info)',
+        PRICE: '+$0.03 per mail piece',
+        CUSTOM: {
+          TITLE: 'Add an Offer (+$0.03 per mail piece)',
+          DESCRIPTION: 'Unsure of your offer %?',
+          PRICE: '+$0.03 per mail piece',
+          CLICK: 'Click here',
+          CSV_IMPORT: 'to import a CSV to determine the best offer % for you!',
+          CUSTOM_PRICE: 'Enter Offer Percentage*'
+        }
+      }
+    },
     DOWNLOAD_PROOF_BUTTON: "Download Proof",
     CANCEL_BUTTON: "Cancel",
     SUBMIT_BUTTON: "Save"
