@@ -282,7 +282,7 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             dash: [],
             strokeWidth: 0,
             stroke: "#0c0c0c",
-            cornerRadius: 0
+            cornerRadius: 12
         },
         {
             id: 'return-address',
@@ -376,7 +376,7 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             dash: [],
             strokeWidth: 0,
             stroke: "#0c0c0c",
-            cornerRadius: 0
+            cornerRadius: 12
         },
         {
             id: 'indicia',
@@ -439,12 +439,12 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             selectable: false,
             removable: false,
             alwaysOnTop: true,
-            showInExport: false,
-            x: 720,
-            y: 510,
-            width: 286.86,
-            height: 97.13,
-            rotation: 180,
+            showInExport: true,
+            x: 400,
+            y: 365,
+            width: 360,
+            height: 185,
+            rotation: 0,
             animations: [],
             blurEnabled: false,
             blurRadius: 10,
@@ -467,7 +467,10 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             dash: [],
             strokeWidth: 0,
             stroke: "#0c0c0c",
-            cornerRadius: 16
+            cornerRadius: 16,
+            custom: {
+                replaceBg: true,
+            },
         },
         {
             id: "mailing-address-window-text-1",
@@ -480,7 +483,7 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             alwaysOnTop: true,
             showInExport: false,
             x: 780,
-            y: 480,
+            y: 475,
             width: 408,
             height: 31,
             rotation: 180,
@@ -534,10 +537,10 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             custom: {
                 replaceBg: true,
             },
-            x: 355,
-            y: 425,
+            x: 375,
+            y: 435,
             width: 319,
-            height: 77.69,
+            height: 65,
             rotation: 180,
             animations: [],
             blurEnabled: false,
@@ -561,7 +564,7 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             dash: [],
             strokeWidth: 0,
             stroke: "#0c0c0c",
-            cornerRadius: 0
+            cornerRadius: 12
         },
         {
             id: 'barcode',
@@ -573,8 +576,8 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             removable: false,
             alwaysOnTop: true,
             showInExport: true,
-            x: 355,
-            y: 390,
+            x: 375,
+            y: 410,
             width: 315,
             height: 15,
             rotation: 180,
@@ -772,11 +775,11 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             selectable: false,
             removable: false,
             alwaysOnTop: true,
-            showInExport: false,
-            x: 96.48,
-            y: 419.82,
-            width: 286.86,
-            height: 97.13,
+            showInExport: true,
+            x: 60,
+            y: 375,
+            width: 360,
+            height: 185,
             rotation: 0,
             animations: [],
             blurEnabled: false,
@@ -800,7 +803,10 @@ export const addRestrictedAreaToSnapPackMailer = (store: Store, barcodeSrc: stri
             dash: [],
             strokeWidth: 0,
             stroke: "#0c0c0c",
-            cornerRadius: 16
+            cornerRadius: 16,
+            custom: {
+                replaceBg: true,
+            },
         },
         {
             id: "mailing-address-window-text-2",
