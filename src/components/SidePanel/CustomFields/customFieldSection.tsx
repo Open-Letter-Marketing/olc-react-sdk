@@ -61,11 +61,12 @@ const CustomFieldSection: SideSection = {
     const [isShowDialog, setIsShowDialog] = useState(false);
     const [search, setSearch] = useState('');
     const [filteredDynamicFields, setFilteredDynamicFields] = useState([]);
+    const [filteredCustomFields, setFilteredCustomFields] = useState([]);
+    const [filteredMiscFields, setFilteredMiscFields] = useState([]);
     const [filteredPropertyFields, setFilteredPropertyFields] = useState([]);
     const [filteredCustomFieldsV2, setFilteredCustomFieldsV2] = useState([]);
     const [filteredSenderFields, setFilteredSenderFields] = useState([]);
     const [filteredPlatformFields, setFilteredPlatformFields] = useState([]);
-    const [filteredCustomFields, setFilteredCustomFields] = useState([]);
 
 
     const dispatch = useDispatch<AppDispatch>();
@@ -92,6 +93,10 @@ const CustomFieldSection: SideSection = {
 
     const defaultPropertyFields = useSelector(
       (state: RootState) => state.templates.defaultPropertyFields
+    ) as Record<string, any>;
+
+    const defaultMiscFields = useSelector(
+      (state: RootState) => state.templates.defaultMiscFields
     ) as Record<string, any>;
 
     const product = useSelector((state: RootState) => state.templates.product);
@@ -179,6 +184,10 @@ const CustomFieldSection: SideSection = {
             value.toLowerCase().includes(search.toLowerCase())
           )
       );
+
+      setFilteredMiscFields(defaultMiscFields.filter(({ value }: any) =>
+        value.toLowerCase().includes(search.toLowerCase())
+      ))
 
       setFilteredPropertyFields(
         allowPropertyFields
@@ -397,7 +406,8 @@ const CustomFieldSection: SideSection = {
                   )
                 )}
             </>
-          )}
+          )
+          }
           {onGetCustomFields && filteredCustomFieldsV2.length > 0 ?
             filteredCustomFieldsV2.map((section: any, index: number): any => (
               <div key={index + 'custom-section'}>
@@ -485,7 +495,45 @@ const CustomFieldSection: SideSection = {
               </>
             )
           }
+          {defaultMiscFields && filteredMiscFields.length > 0 && <>
+            <hr className="divider" />
+            <div className="dynamic-content__top">
+              <div>
+                <span className="title">Miscellaneous Fields</span>
+                <InfoIcon fill="var(--primary-color)" className="miscellaneous" />
+                <GeneralTootip
+                  anchorSelect=".miscellaneous"
+                  place="bottom"
+                  title="You can add miscellaneous fields to your template."
+                />
+              </div>
+            </div>
+            {filteredMiscFields
+              ?.filter(({ key }) => !excludedFields?.includes(key))
+              ?.map(
+                ({ key, value }: { key: string; value: string }, i: number) => (
+                  <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_property'}>
+                    <span
+                      className="contact-element"
+                      onClick={() =>
+                        copyCustomFieldText(key, value)
+                      }
+                    >
+                      {value}
+                    </span>
+                    <Button
+                      style={iconButtonStyles}
+                      onClick={() => copyCustomFieldText(key, value)}
+                      backdrop={false}
+                    >
+                      <ContentCopyIcon className="copy" />
+                    </Button>
+                  </div>
+                )
+              )}
+          </>}
           {filteredDynamicFields.length <= 0 && filteredCustomFieldsV2.length <= 0 && filteredPropertyFields.length <= 0 && filteredSenderFields.length <= 0 && filteredPlatformFields.length <= 0 && filteredCustomFields.length <= 0 &&
+            filteredMiscFields.length <= 0 &&
             <div className="no-result">No results</div>
           }
         </div >
