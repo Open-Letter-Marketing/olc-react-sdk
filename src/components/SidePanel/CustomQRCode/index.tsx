@@ -74,18 +74,18 @@ const CustomQRCode = {
 
     const excludedLabels = ['utm_c_first_name c_last_name'];
 
-    let flattenedFieldsV2 = []; 
+    let flattenedFieldsV2 = [];
     if (customFieldsV2.length > 0) {
       flattenedFieldsV2 = customFieldsV2?.flatMap((section: { fields: any; }) => section.fields);
     }
-    
+
     const allFields = [
       ...defaultFields,
       ...customFields,
       ...flattenedFieldsV2,
       ...(allowSenderFields ? defaultSenderFields : []),
       ...(allowPropertyFields ? defaultPropertyFields : []),
-      ...(allowPropertyFields ? [{ value: "ROS.PROPERTY_OFFER", key: "ROS.PROPERTY_OFFER", defaultValue: "$123,456.00" }] : []),
+      ...(allowPropertyFields ? [{ value: "ROS.PROPERTY_OFFER", key: "{{ROS.PROPERTY_OFFER}}", defaultValue: "$123,456.00" }] : []),
     ].filter(({ key }) => !excludedFields?.includes(key));
 
 
@@ -118,7 +118,7 @@ const CustomQRCode = {
         { value: utmMedium, label: "UTM Medium" },
         { value: utmCampaignName, label: "UTM Campaign" },
       ];
-    
+
       for (const { value, label } of validations) {
         if (value.length >= 150) {
           dispatch(failure(`${label} must be less than 150 characters`));
@@ -129,15 +129,15 @@ const CustomQRCode = {
           return false;
         }
       }
-    
+
       return true;
     };
 
     const containsDisallowedDomains = (str: string) => {
-      return DISALLOWED_DOMAINS.some(substring => 
+      return DISALLOWED_DOMAINS.some(substring =>
         str.includes(substring)
       );
-    } 
+    }
 
     // create svg image for QR code for input text
     const getQR = (text: string) => {
@@ -159,13 +159,52 @@ const CustomQRCode = {
       });
     }
 
+    const createCustomizeURL = (url: string) => {
+      let customURL = url;
+      let params = [];
+      if (utmSource) {
+        params.push(`utm_source=${utmSource.replace(/ /g, "_")}`);
+      }
+      if (utmMedium) {
+        params.push(`utm_medium=${utmMedium.replace(/ /g, "_")}`);
+      }
+      if (utmCampaignName) {
+        params.push(`utm_campaign=${utmCampaignName.replace(/ /g, "_")}`);
+      }
+
+      if (customUtms[utms[0]]?.label) {
+        const orignalField = `{{${customUtms[utms[0]]?.label.replace('utm_', '').replace('_', '.').toUpperCase()}}}`;
+        const defaultValue = allFields.find((field) => field.key === orignalField)?.defaultValue;
+        params.push(`${customUtms[utms[0]]?.label}=${defaultValue}`)
+      }
+
+      if (customUtms[utms[1]]?.label) {
+        const orignalField = `{{${customUtms[utms[1]]?.label.replace('utm_', '').replace('_', '.').toUpperCase()}}}`;
+        const defaultValue = allFields.find((field) => field.key === orignalField)?.defaultValue;
+        params.push(`${customUtms[utms[1]]?.label}=${defaultValue}`)
+      }
+
+      if (customUtms[utms[2]]?.label) {
+        const orignalField = `{{${customUtms[utms[2]]?.label.replace('utm_', '').replace('_', '.').toUpperCase()}}}`;
+        const defaultValue = allFields.find((field) => field.key === orignalField)?.defaultValue;
+        params.push(`${customUtms[utms[2]]?.label}=${defaultValue}`)
+      }
+
+      if (params.length > 0) {
+        customURL += `/?${params.join("&")}`;
+      }
+
+      return customURL;
+    }
+
     const addNewQRCode = async () => {
       if (url) {
         if (validURL(url) && !containsDisallowedDomains(url)) {
           const isValidQR = validateQRCode();
           if (!isValidQR) return false;
           const randomizedId = Math.random().toString(36).substring(2, 7);
-          const src = await getQR(url);
+          const customQRUrl = createCustomizeURL(url);
+          const src = await getQR(customQRUrl);
           store.activePage.addElement({
             id: `qr-${randomizedId}`,
             type: 'svg',
@@ -182,7 +221,7 @@ const CustomQRCode = {
               utm_source: utmSource,
               utm_medium: utmMedium,
               utm_campaign_name: utmCampaignName,
-              custom_utms: customUtms
+              custom_utms: customUtms,
             },
           });
           clearQRFields();
@@ -200,17 +239,17 @@ const CustomQRCode = {
         if (validURL(url) && !containsDisallowedDomains(url)) {
           const isValidQR = validateQRCode();
           if (!isValidQR) return false;
-          await getQR(url).then((src) => {
-            el.set({
-              src,
-              custom: {
-                url,
-                utm_source: utmSource,
-                utm_medium: utmMedium,
-                utm_campaign_name: utmCampaignName,
-                custom_utms: customUtms
-              },
-            });
+          const customQRUrl = createCustomizeURL(url);
+          const src = await getQR(customQRUrl);
+          el.set({
+            src,
+            custom: {
+              url,
+              utm_source: utmSource,
+              utm_medium: utmMedium,
+              utm_campaign_name: utmCampaignName,
+              custom_utms: customUtms,
+            },
           });
           clearQRFields();
         } else {
@@ -239,8 +278,8 @@ const CustomQRCode = {
         setUrl(el?.custom?.url || el?.custom?.value || '');
         setUtmSource(el?.custom?.utm_source || 'direct mail');
         setUtmMedium(el?.custom?.utm_medium || 'QR Code');
-        setUtmCampaignName(el?.custom?.utm_campaign_name || ''); 
-        Object.values(el?.custom?.custom_utms || {}).length ? setCustomUtms(el?.custom?.custom_utms) : setCustomUtms({}) ;
+        setUtmCampaignName(el?.custom?.utm_campaign_name || '');
+        Object.values(el?.custom?.custom_utms || {}).length ? setCustomUtms(el?.custom?.custom_utms) : setCustomUtms({});
       } else {
         setUrl('');
         setUtmSource('direct mail');
@@ -252,7 +291,7 @@ const CustomQRCode = {
 
     return (
       <>
-       <button
+        <button
           className='qr-submit-btn'
           onClick={isQR ? updateQRCode : addNewQRCode}>
           {isQR
@@ -312,15 +351,15 @@ const CustomQRCode = {
             <div className='qr-input-wrapper' key={idx}>
               <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>
               <GeneralSelect
-                placeholder={`Select Custom UTM ${idx+1}`}
+                placeholder={`Select Custom UTM ${idx + 1}`}
                 options={utmFields as any}
                 setSelectedValue={(value: any) => handleSelect(utm, value)}
                 selectedValue={customUtms[utm] || (null as any)}
                 builderSelect={true}
                 clearField={true}
                 // @ts-ignore
-                search={(() => {}) as any}
-                updateErrors={() => {}}
+                search={(() => { }) as any}
+                updateErrors={() => { }}
                 disableClearable={false}
                 templateBuilder={true}
                 qrField={true}
