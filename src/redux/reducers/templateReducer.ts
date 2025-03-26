@@ -63,6 +63,7 @@ export interface TemplateState {
   defaultDynamicFields: DynamicField[];
   defaultSenderFields: DynamicField[];
   defaultPropertyFields: DynamicField[];
+  defaultMiscFields: DynamicField[];
   products: any[];
   productDetailByTemplate: any[];
   templates: TemplatesState;
@@ -257,6 +258,13 @@ const initialState: TemplateState = {
       value: "Property Offer",
       key: "{{C.PROPERTY_OFFER}}",
       defaultValue: "$123,456.00",
+    },
+  ],
+  defaultMiscFields: [
+    {
+      value: "Mailing Date",
+      key: "{{MISC.MAILED_DATE}}",
+      defaultValue: "12/13/2025",
     },
   ],
   products: Products,

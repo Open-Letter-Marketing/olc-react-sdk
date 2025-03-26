@@ -61,11 +61,12 @@ const CustomFieldSection: SideSection = {
     const [isShowDialog, setIsShowDialog] = useState(false);
     const [search, setSearch] = useState('');
     const [filteredDynamicFields, setFilteredDynamicFields] = useState([]);
+    const [filteredCustomFields, setFilteredCustomFields] = useState([]);
+    const [filteredMiscFields, setFilteredMiscFields] = useState([]);
     const [filteredPropertyFields, setFilteredPropertyFields] = useState([]);
     const [filteredCustomFieldsV2, setFilteredCustomFieldsV2] = useState([]);
     const [filteredSenderFields, setFilteredSenderFields] = useState([]);
     const [filteredPlatformFields, setFilteredPlatformFields] = useState([]);
-    const [filteredCustomFields, setFilteredCustomFields] = useState([]);
 
 
     const dispatch = useDispatch<AppDispatch>();
@@ -92,6 +93,10 @@ const CustomFieldSection: SideSection = {
 
     const defaultPropertyFields = useSelector(
       (state: RootState) => state.templates.defaultPropertyFields
+    ) as Record<string, any>;
+
+    const defaultMiscFields = useSelector(
+      (state: RootState) => state.templates.defaultMiscFields
     ) as Record<string, any>;
 
     const product = useSelector((state: RootState) => state.templates.product);
@@ -172,33 +177,47 @@ const CustomFieldSection: SideSection = {
     }, []);
 
     useEffect(() => {
-      setFilteredDynamicFields(defaultDynamicFields.filter(({ value }: any) =>
+      setFilteredDynamicFields(
+        defaultDynamicFields
+          ?.filter(({ key }: any) => !excludedFields?.includes(key))
+          .filter(({ value }: any) =>
+            value.toLowerCase().includes(search.toLowerCase())
+          )
+      );
+
+      setFilteredMiscFields(defaultMiscFields.filter(({ value }: any) =>
         value.toLowerCase().includes(search.toLowerCase())
-      ));
+      ))
 
       setFilteredPropertyFields(
         allowPropertyFields
-          ? defaultPropertyFields.filter(({ value }: any) =>
-            value.toLowerCase().includes(search.toLowerCase())
-          )
+          ? defaultPropertyFields
+            ?.filter(({ key }: any) => !excludedFields?.includes(key))
+            ?.filter(({ value }: any) =>
+              value.toLowerCase().includes(search.toLowerCase())
+            )
           : []
       );
 
       setFilteredSenderFields(
         allowSenderFields
-          ? defaultSenderFields.filter(({ value }: any) =>
+          ? defaultSenderFields?.filter(({ key }: any) => !excludedFields?.includes(key))?.filter(({ value }: any) =>
             value.toLowerCase().includes(search.toLowerCase())
           )
           : []
       );
 
-      setFilteredPlatformFields(platformFields.filter(({ value }: any) =>
-        value.toLowerCase().includes(search.toLowerCase())
-      ));
+      setFilteredPlatformFields(platformFields
+        ?.filter(({ key }: any) => !excludedFields?.includes(key))
+        ?.filter(({ value }: any) =>
+          value.toLowerCase().includes(search.toLowerCase())
+        ));
 
-      setFilteredCustomFields(customFields.filter(({ value }: any) =>
-        value.toLowerCase().includes(search.toLowerCase())
-      ));
+      setFilteredCustomFields(customFields
+        ?.filter(({ key }: any) => !excludedFields?.includes(key))
+        ?.filter(({ value }: any) =>
+          value.toLowerCase().includes(search.toLowerCase())
+        ));
 
       if (customFieldsV2.length) {
         const newFilteredData = customFieldsV2
@@ -211,10 +230,13 @@ const CustomFieldSection: SideSection = {
 
         setFilteredCustomFieldsV2(newFilteredData);
       } else {
-        setFilteredDynamicFields(defaultDynamicFields.filter(({ value }: any) =>
-          value.toLowerCase().includes(search.toLowerCase())
-        ));
-
+        setFilteredDynamicFields(
+          defaultDynamicFields
+            ?.filter(({ key }: any) => !excludedFields?.includes(key))
+            ?.filter(({ value }: any) =>
+              value.toLowerCase().includes(search.toLowerCase())
+            )
+        );
       }
 
     }, [search, defaultSenderFields, platformFields, customFields, defaultDynamicFields, customFieldsV2]);
@@ -225,7 +247,7 @@ const CustomFieldSection: SideSection = {
         display: "flex",
         flexDirection: "column"
       }}>
-      <div className="bp5-input-group fields-search">
+        <div className="bp5-input-group fields-search">
           <span aria-hidden="true" className="bp5-icon bp5-icon-search">
             <svg data-icon="search" height="16" role="img" viewBox="0 0 16 16" width="16">
               <path d="M15.55 13.43l-2.67-2.68a6.94 6.94 0 001.11-3.76c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7c1.39 0 2.68-.42 3.76-1.11l2.68 2.67a1.498 1.498 0 102.12-2.12zm-8.56-1.44c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" fillRule="evenodd"></path>
@@ -236,25 +258,60 @@ const CustomFieldSection: SideSection = {
             value={search}
           />
         </div>
-      <div className="dynamic-content">
-        {filteredDynamicFields.length > 0 &&
-          <>
+        <div className="dynamic-content">
+          {filteredDynamicFields.length > 0 &&
+            <>
+              <div className="dynamic-content__top">
+                <div>
+                  <span className="title">Contact Fields</span>
+                  <InfoIcon fill="var(--primary-color)" className="infoIcon" />
+                  <GeneralTootip
+                    anchorSelect=".infoIcon"
+                    place="bottom"
+                    title="Merge fields allow you to personalize your mailer with contact information."
+                  />
+                </div>
+              </div>
+              {filteredDynamicFields
+                ?.map(
+                  ({ key, value }: { key: string; value: string }, i: number) => (
+                    <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_contact'}>
+                      <span
+                        className="contact-element"
+                        onClick={() =>
+                          copyCustomFieldText(key, value)
+                        }
+                      >
+                        {value}
+                      </span>
+                      <Button
+                        style={iconButtonStyles}
+                        onClick={() => copyCustomFieldText(key, value)}
+                        backdrop={false}
+                      >
+                        <ContentCopyIcon className="copy" />
+                      </Button>
+                    </div>
+                  )
+                )}
+            </>}
+          {allowPropertyFields && filteredPropertyFields.length > 0 && <>
+            <hr className="divider" />
             <div className="dynamic-content__top">
               <div>
-                <span className="title">Contact Fields</span>
-                <InfoIcon fill="var(--primary-color)" className="infoIcon" />
+                <span className="title">Property Address</span>
+                <InfoIcon fill="var(--primary-color)" className="property" />
                 <GeneralTootip
-                  anchorSelect=".infoIcon"
+                  anchorSelect=".property"
                   place="bottom"
-                  title="Merge fields allow you to personalize your mailer with contact information."
+                  title="You can add property fields to your template."
                 />
               </div>
             </div>
-            {filteredDynamicFields
-              ?.filter(({ key }) => !excludedFields?.includes(key))
+            {filteredPropertyFields
               ?.map(
                 ({ key, value }: { key: string; value: string }, i: number) => (
-                  <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_contact'}>
+                  <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_property'}>
                     <span
                       className="contact-element"
                       onClick={() =>
@@ -274,101 +331,23 @@ const CustomFieldSection: SideSection = {
                 )
               )}
           </>}
-        {allowPropertyFields && filteredPropertyFields.length > 0 && <>
-          <hr className="divider" />
-          <div className="dynamic-content__top">
-            <div>
-              <span className="title">Property Address</span>
-              <InfoIcon fill="var(--primary-color)" className="property" />
-              <GeneralTootip
-                anchorSelect=".property"
-                place="bottom"
-                title="You can add property fields to your template."
-              />
-            </div>
-          </div>
-          {filteredPropertyFields
-            ?.filter(({ key }) => !excludedFields?.includes(key))
-            ?.map(
-              ({ key, value }: { key: string; value: string }, i: number) => (
-                <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_property'}>
-                  <span
-                    className="contact-element"
-                    onClick={() =>
-                      copyCustomFieldText(key, value)
-                    }
-                  >
-                    {value}
-                  </span>
-                  <Button
-                    style={iconButtonStyles}
-                    onClick={() =>  copyCustomFieldText(key, value)}
-                    backdrop={false}
-                  >
-                    <ContentCopyIcon className="copy" />
-                  </Button>
-                </div>
-              )
-            )}
-        </>}
-        {allowSenderFields && filteredSenderFields.length > 0 && <>
-          <hr className="divider" />
-          <div className="dynamic-content__top">
-            <div>
-              <span className="title">Sender Fields</span>
-              <InfoIcon fill="var(--primary-color)" className="sender" />
-              <GeneralTootip
-                anchorSelect=".sender"
-                place="bottom"
-                title="You can add sender fields to your template."
-              />
-            </div>
-          </div>
-          {filteredSenderFields
-            ?.filter(({ key }) => !excludedFields?.includes(key))
-            ?.map(
-              ({ key, value }: { key: string; value: string }, i: number) => (
-                <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_sender'}>
-                  <span
-                    className="contact-element"
-                    onClick={() =>
-                      copyCustomFieldText(key, value)
-                    }
-                  >
-                    {value}
-                  </span>
-                  <Button
-                    style={iconButtonStyles}
-                    onClick={() => copyCustomFieldText(key, value)}
-                    backdrop={false}
-                  >
-                    <ContentCopyIcon className="copy" />
-                  </Button>
-                </div>
-              )
-            )}
-        </>}
-        <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
-        {onGetCustomFields && platformFields?.length > 0 && (
-          <>
+          {allowSenderFields && filteredSenderFields.length > 0 && <>
             <hr className="divider" />
             <div className="dynamic-content__top">
               <div>
-                <span className="title">{platformName ? `${platformName} Fields` : 'OLC Fields'}</span>
-                <InfoIcon fill="var(--primary-color)" className="platform" />
+                <span className="title">Sender Fields</span>
+                <InfoIcon fill="var(--primary-color)" className="sender" />
                 <GeneralTootip
-                  anchorSelect=".platform"
+                  anchorSelect=".sender"
                   place="bottom"
-                  title={`You can add ${platformName ? `${platformName} Fields` : 'OLC Fields'} to your template.`}
+                  title="You can add sender fields to your template."
                 />
               </div>
-              <Button onClick={handleShowDialog}></Button>
             </div>
-            {filteredPlatformFields
-              ?.filter(({ key }: { key: string }) => !excludedFields?.includes(key))
+            {filteredSenderFields
               ?.map(
                 ({ key, value }: { key: string; value: string }, i: number) => (
-                  <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_platform'}>
+                  <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_sender'}>
                     <span
                       className="contact-element"
                       onClick={() =>
@@ -387,75 +366,27 @@ const CustomFieldSection: SideSection = {
                   </div>
                 )
               )}
-          </>
-        )}
-        {onGetCustomFields && filteredCustomFieldsV2.length > 0 ?
-          filteredCustomFieldsV2.map((section: any, index: number): any => (
-            <div key={index + 'custom-section'}>
-              <hr className="divider" />
-              <div className="dynamic-content__top">
-                <div>
-                  <span className="title">{section?.section}</span>
-                  <InfoIcon fill="var(--primary-color)" className={section?.section
-                    .toLowerCase()
-                    .replace(/[^a-z0-9\s]/g, '')
-                    .trim()
-                    .replace(/\s+/g, '-')} />
-                  <GeneralTootip
-                    anchorSelect={`.${section?.section
-                      .toLowerCase()
-                      .replace(/[^a-z0-9\s]/g, '')
-                      .trim()
-                      .replace(/\s+/g, '-')}`}
-                    place="bottom"
-                    title={`You can add ${section?.section} to your template.`}
-                  />
-                </div>
-
-                <Button onClick={handleShowDialog}></Button>
-              </div>
-
-              {section.fields.map(({ key, value }: { key: string; value: string }, i: number) => (
-                <div style={{ display: 'flex', alignItems: 'center' }} key={i + value}>
-                  <span
-                    className="contact-element"
-                    onClick={() =>
-                      copyCustomFieldText(key, value)
-                    }
-                  >
-                    {value}
-                  </span>
-                  <Button
-                    style={iconButtonStyles}
-                    onClick={() => copyCustomFieldText(key, value)}
-                    backdrop={false}
-                  >
-                    <ContentCopyIcon className="copy" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          ))
-          : onGetCustomFields && customFields?.length > 0 && filteredCustomFields.length > 0 && (
+          </>}
+          <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
+          {onGetCustomFields && platformFields?.length > 0 && (
             <>
               <hr className="divider" />
               <div className="dynamic-content__top">
                 <div>
-                  <span className="title">Custom Fields</span>
-                  <InfoIcon fill="var(--primary-color)" className="custom" />
+                  <span className="title">{platformName ? `${platformName} Fields` : 'OLC Fields'}</span>
+                  <InfoIcon fill="var(--primary-color)" className="platform" />
                   <GeneralTootip
-                    anchorSelect=".custom"
+                    anchorSelect=".platform"
                     place="bottom"
-                    title="You can add custom fields to your template."
+                    title={`You can add ${platformName ? `${platformName} Fields` : 'OLC Fields'} to your template.`}
                   />
                 </div>
                 <Button onClick={handleShowDialog}></Button>
               </div>
-              {filteredCustomFields
-                ?.filter(({ key }: { key: string }) => !excludedFields?.includes(key))
+              {filteredPlatformFields
                 ?.map(
                   ({ key, value }: { key: string; value: string }, i: number) => (
-                    <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_custom'}>
+                    <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_platform'}>
                       <span
                         className="contact-element"
                         onClick={() =>
@@ -476,11 +407,136 @@ const CustomFieldSection: SideSection = {
                 )}
             </>
           )
-        }
-        {filteredDynamicFields.length <= 0 && filteredCustomFieldsV2.length <= 0 && filteredPropertyFields.length <= 0 && filteredSenderFields.length <= 0 && filteredPlatformFields.length <= 0 && filteredCustomFields.length <= 0 &&
-          <div className="no-result">No results</div>
-        }
-      </div >
+          }
+          {onGetCustomFields && filteredCustomFieldsV2.length > 0 ?
+            filteredCustomFieldsV2.map((section: any, index: number): any => (
+              <div key={index + 'custom-section'}>
+                <hr className="divider" />
+                <div className="dynamic-content__top">
+                  <div>
+                    <span className="title">{section?.section}</span>
+                    <InfoIcon fill="var(--primary-color)" className={section?.section
+                      .toLowerCase()
+                      .replace(/[^a-z0-9\s]/g, '')
+                      .trim()
+                      .replace(/\s+/g, '-')} />
+                    <GeneralTootip
+                      anchorSelect={`.${section?.section
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s]/g, '')
+                        .trim()
+                        .replace(/\s+/g, '-')}`}
+                      place="bottom"
+                      title={`You can add ${section?.section} to your template.`}
+                    />
+                  </div>
+
+                  <Button onClick={handleShowDialog}></Button>
+                </div>
+
+                {section.fields.map(({ key, value }: { key: string; value: string }, i: number) => (
+                  <div style={{ display: 'flex', alignItems: 'center' }} key={i + value}>
+                    <span
+                      className="contact-element"
+                      onClick={() =>
+                        copyCustomFieldText(key, value)
+                      }
+                    >
+                      {value}
+                    </span>
+                    <Button
+                      style={iconButtonStyles}
+                      onClick={() => copyCustomFieldText(key, value)}
+                      backdrop={false}
+                    >
+                      <ContentCopyIcon className="copy" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            ))
+            : onGetCustomFields && customFields?.length > 0 && filteredCustomFields.length > 0 && (
+              <>
+                <hr className="divider" />
+                <div className="dynamic-content__top">
+                  <div>
+                    <span className="title">Custom Fields</span>
+                    <InfoIcon fill="var(--primary-color)" className="custom" />
+                    <GeneralTootip
+                      anchorSelect=".custom"
+                      place="bottom"
+                      title="You can add custom fields to your template."
+                    />
+                  </div>
+                  <Button onClick={handleShowDialog}></Button>
+                </div>
+                {filteredCustomFields
+                  ?.map(
+                    ({ key, value }: { key: string; value: string }, i: number) => (
+                      <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_custom'}>
+                        <span
+                          className="contact-element"
+                          onClick={() =>
+                            copyCustomFieldText(key, value)
+                          }
+                        >
+                          {value}
+                        </span>
+                        <Button
+                          style={iconButtonStyles}
+                          onClick={() => copyCustomFieldText(key, value)}
+                          backdrop={false}
+                        >
+                          <ContentCopyIcon className="copy" />
+                        </Button>
+                      </div>
+                    )
+                  )}
+              </>
+            )
+          }
+          {defaultMiscFields && filteredMiscFields.length > 0 && <>
+            <hr className="divider" />
+            <div className="dynamic-content__top">
+              <div>
+                <span className="title">Miscellaneous Fields</span>
+                <InfoIcon fill="var(--primary-color)" className="miscellaneous" />
+                <GeneralTootip
+                  anchorSelect=".miscellaneous"
+                  place="bottom"
+                  title="You can add miscellaneous fields to your template."
+                />
+              </div>
+            </div>
+            {filteredMiscFields
+              ?.filter(({ key }) => !excludedFields?.includes(key))
+              ?.map(
+                ({ key, value }: { key: string; value: string }, i: number) => (
+                  <div style={{ display: 'flex', alignItems: 'center' }} key={i + '_property'}>
+                    <span
+                      className="contact-element"
+                      onClick={() =>
+                        copyCustomFieldText(key, value)
+                      }
+                    >
+                      {value}
+                    </span>
+                    <Button
+                      style={iconButtonStyles}
+                      onClick={() => copyCustomFieldText(key, value)}
+                      backdrop={false}
+                    >
+                      <ContentCopyIcon className="copy" />
+                    </Button>
+                  </div>
+                )
+              )}
+          </>}
+          {filteredDynamicFields.length <= 0 && filteredCustomFieldsV2.length <= 0 && filteredPropertyFields.length <= 0 && filteredSenderFields.length <= 0 && filteredPlatformFields.length <= 0 && filteredCustomFields.length <= 0 &&
+            filteredMiscFields.length <= 0 &&
+            <div className="no-result">No results</div>
+          }
+        </div >
       </div>
     );
   }) as unknown as SideSection['Panel'],
