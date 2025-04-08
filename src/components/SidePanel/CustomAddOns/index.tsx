@@ -61,6 +61,7 @@ const iconButtonStyles: CSSProperties = {
   marginLeft: '70%',
   marginTop: '-40%',
   position: 'absolute',
+  height:'0%'
 };
 
 // define the new custom section
@@ -178,11 +179,13 @@ const CustomAddOns: SideSection = {
       return true;
     }
 
-    const copyPropertyOfferField = (e: React.MouseEvent<HTMLDivElement>) => {
+    const copyPropertyOfferField = (e: React.MouseEvent<HTMLDivElement>, isCustom = false) => {
       e.stopPropagation();
-      if (!validCustomRosRange()) return false;
+      if (isCustom) {
+        if (!validCustomRosRange()) return false;
+        dispatch({ type: SET_ROS_OFFER_PERCENTAGE, payload: customRosValue });
+      }
       copyToClipboard(PropertyOfferfieldValue);
-      dispatch({ type: SET_ROS_OFFER_PERCENTAGE, payload: customRosValue });
       dispatch(success(`ROS Property Offer Copied`));
     };
 
@@ -256,7 +259,7 @@ const CustomAddOns: SideSection = {
           >
             <Button
               style={iconButtonStyles}
-              onClick={customRosValue ? copyPropertyOfferField : percentageRequired}
+              onClick={(e) => customRosValue ? copyPropertyOfferField(e, true) : percentageRequired()}
               backdrop={false}
               className='custom-po' 
             >
