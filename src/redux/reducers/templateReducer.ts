@@ -259,6 +259,11 @@ const initialState: TemplateState = {
       key: "{{C.PROPERTY_OFFER}}",
       defaultValue: "$123,456.00",
     },
+    {
+      value: "Property Written Offer",
+      key: "{{ROS.WRITTEN_OFFER}}",
+      defaultValue: "One hundred twenty three thousand and 00/100",
+    },
   ],
   defaultMiscFields: [
     {
