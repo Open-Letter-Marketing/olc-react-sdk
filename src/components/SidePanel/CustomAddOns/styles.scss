@@ -78,3 +78,9 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
+.no-result-addOns {
+  display: flex;
+  justify-content: center;
+  margin: 3px;
+}
