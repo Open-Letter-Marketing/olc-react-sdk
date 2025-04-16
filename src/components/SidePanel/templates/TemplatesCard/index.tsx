@@ -126,7 +126,7 @@ const TemplatesCard = (props: any) => {
           <Typography>{MESSAGES.TEMPLATE.NO_TEAM_TEMPLATES}</Typography>
         </div>
       ) : currentTemplateType?.id === '3' ? (
-        <div className="noTemplateGallery">
+        <div className={`${+product?.id === 5 ? 'noTemplateGallery more-visible' : 'noTemplateGallery'}`}>
           <Typography>
             {platformName
               ? `No ${platformName} Templates to show`
