@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 
 // Hooks
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import { RootState } from '../../../../../redux/reducers';
 import {AppDispatch} from '../../../../../redux/store';
 
 // Actions
@@ -56,16 +57,11 @@ const errorStyles = {
 const HireDesigner = (props: any) => {
   const { open, onClose, onCreateCustomTemplateQuery, productId } = props;
 
-  const loadState = () => {
-    const savedState = getItem('hireDesignerFormState');
-    return savedState ? JSON.parse(savedState) : {};
-  };
-
-  const [queryTitle, setQueryTitle] = useState(loadState().queryTitle || '');
-  const [queryEmail, setQueryEmail] = useState(loadState().queryEmail || '');
+  const [queryTitle, setQueryTitle] = useState('');
+  const [queryEmail, setQueryEmail] = useState('');
   const [queryFile, setQueryFile] = useState([]);
-  const [queryVideoUrl, setQueryVideoUrl] = useState(loadState().queryVideoUrl || '');
-  const [queryComments, setQueryComments] = useState(loadState().queryComments || '');
+  const [queryVideoUrl, setQueryVideoUrl] = useState('');
+  const [queryComments, setQueryComments] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({
     title: '',
@@ -77,10 +73,7 @@ const HireDesigner = (props: any) => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  // Update localStorage whenever a form state changes
-  const updateLocalStorage = (newState: any) => {
-    setItem('hireDesignerFormState', JSON.stringify(newState));
-  };
+  const designerFormStates = useSelector((state: RootState) => state.templates.hireDesignerForm);
 
   const handleTitleChange = (event: any) => {
     const newTitle = event.target.value;
@@ -89,7 +82,7 @@ const HireDesigner = (props: any) => {
       ...prevErrors,
       title: newTitle.trim() && '',
     }));
-    updateLocalStorage({ ...loadState(), queryTitle: newTitle });
+    dispatch({type: 'SET_HIRE_DESIGNER_FORM_FIELDS', payload: { queryTitle: newTitle }});
   };
 
   const handleEmailChange = (event: any) => {
@@ -99,7 +92,7 @@ const HireDesigner = (props: any) => {
       ...prevErrors,
       email: newEmail.trim() && '',
     }));
-    updateLocalStorage({ ...loadState(), queryEmail: newEmail });
+    dispatch({type: 'SET_HIRE_DESIGNER_FORM_FIELDS', payload: { queryEmail: newEmail }});
   };
 
   const handleVideoUrlChange = (event: any) => {
@@ -109,7 +102,17 @@ const HireDesigner = (props: any) => {
       ...prevErrors,
       videoUrl: newVideoUrl.trim() && '',
     }));
-    updateLocalStorage({ ...loadState(), queryVideoUrl: newVideoUrl });
+    dispatch({type: 'SET_HIRE_DESIGNER_FORM_FIELDS', payload: { queryVideoUrl: newVideoUrl }});
+  };
+
+  const handleCommentsChange = (event: any) => {
+    const newComments = event.target.value;
+    setQueryComments(newComments);
+    setFormErrors((prevErrors: any) => ({
+      ...prevErrors,
+      comments: newComments.trim() && '',
+    }));
+    dispatch({type: 'SET_HIRE_DESIGNER_FORM_FIELDS', payload: { queryComments: newComments }})
   };
 
   const saveFilesToLocalStorage = (files: File[]) => {
@@ -125,7 +128,7 @@ const HireDesigner = (props: any) => {
       reader.onload = () => {
         fileData[index].content = reader.result as string;
         if (index === files.length - 1) {
-          localStorage.setItem("queryFiles", JSON.stringify(fileData));
+          dispatch({type: 'SET_HIRE_DESIGNER_FORM_FIELDS', payload: { queryFiles: fileData }});
         }
       };
       reader.readAsDataURL(file);
@@ -133,10 +136,10 @@ const HireDesigner = (props: any) => {
   };
 
   // Retrieve files from localStorage
-  const getFilesFromLocalStorage = (): File[] => {
-    const savedFiles = localStorage.getItem("queryFiles");
+  const getFilesFromLocalStorage = () => {
+    const savedFiles =  designerFormStates.queryFiles;
     if (!savedFiles) return [];
-    const fileData = JSON.parse(savedFiles);
+    const fileData = savedFiles;
 
     return fileData.map((file: any) => {
       const blob = dataURLtoBlob(file.content, file.type);
@@ -179,17 +182,9 @@ const HireDesigner = (props: any) => {
   const handleFileRemove = (file: any) => {
     const updatedFiles = queryFile.filter((f: any) => f.name !== file.name);
     setQueryFile(updatedFiles);
-    updatedFiles.length ? saveFilesToLocalStorage([...updatedFiles] as never[]) : removeItem('queryFiles');
-  };
-
-  const handleCommentsChange = (event: any) => {
-    const newComments = event.target.value;
-    setQueryComments(newComments);
-    setFormErrors((prevErrors: any) => ({
-      ...prevErrors,
-      comments: newComments.trim() && '',
-    }));
-    updateLocalStorage({ ...loadState(), queryComments: newComments });
+    updatedFiles.length ?
+      saveFilesToLocalStorage([...updatedFiles] as never[])
+      : dispatch({ type: 'SET_HIRE_DESIGNER_FORM_FIELDS', payload: { queryFiles: [] as never[] } });
   };
 
   const validateForm = (formData: any, setFormErrors: any) => {
@@ -197,10 +192,6 @@ const HireDesigner = (props: any) => {
 
     if (!formData.queryTitle.trim()) {
       errors.title = MESSAGES.TEMPLATE.HIRE_DESIGNER.TITLE_REQUIRED;
-    }
-
-    if (formData.queryFile.length > 5) {
-      errors.files = MESSAGES.TEMPLATE.HIRE_DESIGNER.FILE_NUMBER;
     }
 
     if (!formData.queryVideoUrl.trim()) {
@@ -239,6 +230,7 @@ const HireDesigner = (props: any) => {
     });
     removeItem('hireDesignerFormState');
     removeItem('queryFiles');
+    dispatch({type: 'CLEAR_HIRE_DESIGNER_FORM_FIELDS'});
   };
 
   const handleSubmit = async (event: any) => {
@@ -271,8 +263,7 @@ const HireDesigner = (props: any) => {
       const response: any = await post('/custom-template-queries/create', form);
       if (response && response.status === 200) {
         setIsLoading(false);
-        resetForm();
-        onClose();
+        closeHireModal();
         dispatch(success(response.data.message));
         onCreateCustomTemplateQuery(response.data);
       } else {
@@ -285,18 +276,25 @@ const HireDesigner = (props: any) => {
     }
   };
 
-  useEffect(()=>{
+  const closeHireModal = () => {
+    onClose();
+    resetForm();
+  }
+  
+  useEffect(() => {
+    setQueryTitle(designerFormStates.queryTitle);
+    setQueryEmail(designerFormStates.queryEmail);
+    setQueryVideoUrl(designerFormStates.queryVideoUrl);
+    setQueryComments(designerFormStates.queryComments);
     const savedFiles: any = getFilesFromLocalStorage();
     setQueryFile(savedFiles);
-  },[])
-  
- 
+  }, [open])
 
   return (
     <Dialog
       open={open}
       customStyles={hireModalStyles}
-      handleClose={onClose}
+      handleClose={closeHireModal}
       isGallery={true}
       submitText="Next"
     >
