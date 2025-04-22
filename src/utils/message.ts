@@ -103,6 +103,7 @@ export const MESSAGES = {
     },
     CUSTOM_ADD_ONS: {
       TITLE: `Optional Add-On's`,
+      NO_RESULT: 'Add-ons are unavailable because the property address is excluded. Please update your settings to enable these features.',
       DESCRIPTION: `Optional add-ons are additional services that user can choose to include with their template, enhancing their overall experience.`,
       GSV: {
         TITLE: 'Street View Property Image',

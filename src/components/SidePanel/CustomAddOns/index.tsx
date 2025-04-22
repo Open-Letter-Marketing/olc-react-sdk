@@ -299,6 +299,9 @@ const CustomAddOns: SideSection = {
             </div>
           </div>
         )}
+        <div className='no-result-addOns'>
+          {!allowedAddOns || allowedAddOns?.length === 0 && <Typography>{MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.NO_RESULT}</Typography>}
+        </div>
         <GeneralTootip anchorSelect=".copy" place="bottom" title="Copy" />
       </div>
     );

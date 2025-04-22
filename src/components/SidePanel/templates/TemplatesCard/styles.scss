@@ -86,3 +86,8 @@
     line-height: normal;
   }
 }
+
+
+.more-visible {
+  height: calc(100vh - 850px) !important;
+}
