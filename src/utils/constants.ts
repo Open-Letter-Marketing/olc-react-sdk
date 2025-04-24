@@ -68,3 +68,22 @@ export const DISALLOWED_DOMAINS = [
   'demo-qrforward.org',
   'staging-qrforward.org',
 ];
+
+export const MERGE_UTM_PARAMS = [
+  {
+    key: '{{C.FIRST_NAME}}',
+    value: 'firstname'
+  },
+  {
+    key: '{{C.LAST_NAME}}',
+    value: 'lastname'
+  },
+  {
+    key: '{{C.EMAIL}}',
+    value: 'email'
+  },
+  {
+    key: '{{C.PHONE_NUMBER}}',
+    value: 'phone'
+  }
+];
