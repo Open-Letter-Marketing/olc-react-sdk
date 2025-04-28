@@ -15,7 +15,7 @@ import { failure } from '../../../redux/actions/snackbarActions';
 // Utils
 import { MESSAGES } from '../../../utils/message';
 import { validURL } from '../../../utils/helper';
-import { DISALLOWED_DOMAINS, emojiRegex } from '../../../utils/constants';
+import { DISALLOWED_DOMAINS, MERGE_UTM_PARAMS, emojiRegex } from '../../../utils/constants';
 
 //Components
 import GeneralSelect from '../../../components/GenericUIBlocks/GeneralSelect';
@@ -112,6 +112,15 @@ const CustomQRCode = {
       setCustomUtms({});
     }
 
+    const appendUtmParameters = (utmField: string, defaultValue: string) => {
+      let result = '';
+      const field = MERGE_UTM_PARAMS.find((field) => field.key === utmField);
+      if (field) {
+        result = `${field.value}=${defaultValue}`
+      }
+      return result;
+    }
+
     const validateQRCode = () => {
       const validations = [
         { value: utmSource, label: "UTM Source" },
@@ -175,26 +184,53 @@ const CustomQRCode = {
       if (customUtms[utms[0]]?.label) {
         const orignalField = `{{${customUtms[utms[0]]?.label.replace('utm_', '').replace('_', '.').toUpperCase()}}}`;
         const defaultValue = allFields.find((field) => field.key === orignalField)?.defaultValue;
-        params.push(`${customUtms[utms[0]]?.label}=${defaultValue}`)
+        const attachUtmKeys = appendUtmParameters(orignalField, defaultValue);
+        const mergeUtmParams =
+          attachUtmKeys && orignalField == '{{C.PHONE_NUMBER}}'
+            ? encodeURIComponent(
+              `${customUtms[utms[0]]?.label}=${defaultValue}&${attachUtmKeys}`
+            ).replace(/[\s\(\)]/g, '')
+            : attachUtmKeys
+              ? `${customUtms[utms[0]]?.label}=${defaultValue}&${attachUtmKeys}`
+              : `${customUtms[utms[0]]?.label}=${defaultValue}`;
+        params.push(mergeUtmParams);
       }
 
       if (customUtms[utms[1]]?.label) {
         const orignalField = `{{${customUtms[utms[1]]?.label.replace('utm_', '').replace('_', '.').toUpperCase()}}}`;
         const defaultValue = allFields.find((field) => field.key === orignalField)?.defaultValue;
-        params.push(`${customUtms[utms[1]]?.label}=${defaultValue}`)
+        const attachUtmKeys = appendUtmParameters(orignalField, defaultValue);
+        const mergeUtmParams =
+          attachUtmKeys && orignalField == '{{C.PHONE_NUMBER}}'
+            ? encodeURIComponent(
+              `${customUtms[utms[1]]?.label}=${defaultValue}&${attachUtmKeys}`
+            ).replace(/[\s\(\)]/g, '')
+            : attachUtmKeys
+              ? `${customUtms[utms[1]]?.label}=${defaultValue}&${attachUtmKeys}`
+              : `${customUtms[utms[1]]?.label}=${defaultValue}`;
+        params.push(mergeUtmParams);
       }
 
       if (customUtms[utms[2]]?.label) {
         const orignalField = `{{${customUtms[utms[2]]?.label.replace('utm_', '').replace('_', '.').toUpperCase()}}}`;
         const defaultValue = allFields.find((field) => field.key === orignalField)?.defaultValue;
-        params.push(`${customUtms[utms[2]]?.label}=${defaultValue}`)
+        const attachUtmKeys = appendUtmParameters(orignalField, defaultValue);
+        const mergeUtmParams =
+          attachUtmKeys && orignalField == '{{C.PHONE_NUMBER}}'
+            ? encodeURIComponent(
+              `${customUtms[utms[2]]?.label}=${defaultValue}&${attachUtmKeys}`
+            ).replace(/[\s\(\)]/g, '')
+            : attachUtmKeys
+              ? `${customUtms[utms[2]]?.label}=${defaultValue}&${attachUtmKeys}`
+              : `${customUtms[utms[2]]?.label}=${defaultValue}`;
+        params.push(mergeUtmParams);
       }
 
       if (params.length > 0) {
         customURL += `/?${params.join("&")}`;
       }
-
-      return customURL;
+      
+      return encodeURI(customURL);
     }
 
     const addNewQRCode = async () => {
