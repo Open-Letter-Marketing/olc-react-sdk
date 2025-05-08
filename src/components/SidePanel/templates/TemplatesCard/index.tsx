@@ -21,7 +21,8 @@ const TemplatesCard = (props: any) => {
     currentTemplateType,
     product,
     searchApplied,
-    primaryColorRGBA
+    primaryColorRGBA,
+    designerQueryAmount
   } = props;
 
   const [isFilpedIds, setIsFlipedIds] = useState<string[]>([]);
@@ -117,16 +118,18 @@ const TemplatesCard = (props: any) => {
             </div>
           );
         })
-      ) : currentTemplateType?.id === '1' && searchApplied ? (
-        <div className="noTemplateGallery">
+      ) : currentTemplateType?.id === '1' ? (
+        <div className={`${+product?.id === 5 && designerQueryAmount ? 'noTemplateGallery more-visible' :
+        product?.productType === "Professional Letters" ? 'noTemplateGallery noTemplateProfessionalAndPersonal' : 'noTemplateGallery'}`}>
           <Typography>{MESSAGES.TEMPLATE.NO_MY_TEMPLATES}</Typography>
         </div>
       ) : currentTemplateType?.id === '2' ? (
-        <div className="noTemplateGallery">
+        <div className={`${+product?.id === 5 && designerQueryAmount ? 'noTemplateGallery more-visible' : 'noTemplateGallery'}`}>
           <Typography>{MESSAGES.TEMPLATE.NO_TEAM_TEMPLATES}</Typography>
         </div>
       ) : currentTemplateType?.id === '3' ? (
-        <div className={`${+product?.id === 5 ? 'noTemplateGallery more-visible' : 'noTemplateGallery'}`}>
+        <div className={`${+product?.id === 5 && designerQueryAmount ? 'noTemplateGallery more-visible' : 
+        product?.productType === "Professional Letters" ? 'noTemplateGallery noTemplateProfessionalAndPersonal' : 'noTemplateGallery'}`}>
           <Typography>
             {platformName
               ? `No ${platformName} Templates to show`

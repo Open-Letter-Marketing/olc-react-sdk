@@ -165,8 +165,10 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                     <Typography>{removeSThroughOne(`${currentTemplates.length > 0 ? pagination.total : 0} templates`)}</Typography>
                 </div>
                 <div className={`templatesContent ${currentTemplateType?.id === '3' && "heightOLC"}`} style={{
-                    justifyContent: loader ? "center" : "flex-start",
-                    alignItems: searchApplied ? "center" : "flex-start"
+                    justifyContent: loader || searchApplied ? "center" : "flex-start",
+                    alignItems: searchApplied ? "center" : "flex-start",
+                    height: searchApplied ? "calc(100vh - 300px)" : "auto",
+                    overflowY: product?.productType === "Personal Letters" ? "hidden" : "scroll"
                 }}>
                     {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '1' && (
                         <div>
@@ -220,6 +222,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                         product={product}
                         searchApplied={searchApplied}
                         primaryColorRGBA={primaryColorRGBA}
+                        designerQueryAmount={designerQueryAmount}
                     />
                 </div>
             </Dialog>
