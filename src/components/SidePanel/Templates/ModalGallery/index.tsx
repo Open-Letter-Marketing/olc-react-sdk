@@ -220,6 +220,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                         product={product}
                         searchApplied={searchApplied}
                         primaryColorRGBA={primaryColorRGBA}
+                        designerQueryAmount={designerQueryAmount}
                     />
                 </div>
             </Dialog>
