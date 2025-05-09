@@ -117,7 +117,7 @@ const TemplatesCard = (props: any) => {
             </div>
           );
         })
-      ) : currentTemplateType?.id === '1' && searchApplied ? (
+      ) : currentTemplateType?.id === '1' || searchApplied ? (
         <div className="noTemplateGallery">
           <Typography>{MESSAGES.TEMPLATE.NO_MY_TEMPLATES}</Typography>
         </div>
