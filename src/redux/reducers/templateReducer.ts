@@ -11,6 +11,8 @@ import {
   CLEAR_TEMPLATE_FIELDS,
   LOAD_DATA_FROM_LOCAL_STORAGE,
   SET_ROS_OFFER_PERCENTAGE,
+  SET_HIRE_DESIGNER_FORM_FIELDS,
+  CLEAR_HIRE_DESIGNER_FORM_FIELDS,
   CLEAR_TEMPLATE,
   CLEAR_REDUX
 } from "../actions/action-types";
@@ -78,6 +80,7 @@ export interface TemplateState {
   templateLoading: boolean | null;
   uploadedImages: any[];
   offerPercentage: string;
+  hireDesignerForm: any;
 }
 
 
@@ -296,7 +299,14 @@ const initialState: TemplateState = {
   envelopeType: "",
   templateLoading: null,
   uploadedImages: [],
-  offerPercentage: ''
+  offerPercentage: '',
+  hireDesignerForm: {
+    queryTitle: '',
+    queryEmail: '',
+    queryFiles: [],
+    queryVideoUrl: '',
+    queryComments: '',
+  }
 };
 
 // @ts-ignore
@@ -351,6 +361,14 @@ const templateReducer = (state = initialState, { type, payload }): TemplateState
           productType: payload.productType,
         },
       };
+    case SET_HIRE_DESIGNER_FORM_FIELDS:
+      return {
+        ...state,
+        hireDesignerForm: {
+          ...state.hireDesignerForm,
+          ...payload
+        }
+      };
     case SET_UPLOADED_IMAGES:
       return {
         ...state,
@@ -378,6 +396,17 @@ const templateReducer = (state = initialState, { type, payload }): TemplateState
         product: payload.data.product,
         templateType: payload.data.templateType,
         envelopeType: payload.data.envelopeType,
+      };
+    case CLEAR_HIRE_DESIGNER_FORM_FIELDS:
+      return {
+        ...state,
+        hireDesignerForm: {
+          queryTitle: '',
+          queryEmail: '',
+          queryFiles: [],
+          queryVideoUrl: '',
+          queryComments: '',
+        }
       };
     case SET_ROS_OFFER_PERCENTAGE:
       return {
