@@ -25,5 +25,14 @@ export const SET_CUSTOM_FIELDS = 'SET_CUSTOM_FIELDS';
 export const SET_CUSTOM_FIELDS_V2 = 'SET_CUSTOM_FIELDS_V2';
 export const SET_PLATFORM_FIELDS = 'SET_PLATFORM_FIELDS';
 
+// QR Code Actions
+export const SET_QR_URL = 'SET_QR_URL';
+export const SET_UTM_SOURCE = 'SET_UTM_SOURCE';
+export const SET_UTM_MEDIUM = 'SET_UTM_MEDIUM';
+export const SET_UTM_CAMPAIGN_NAME = 'SET_UTM_CAMPAIGN_NAME';
+export const SET_CUSTOM_UTMS = 'SET_CUSTOM_UTMS';
+export const CLEAR_QR_FIELDS = 'CLEAR_QR_FIELDS';
+export const SET_IS_QR = 'SET_IS_QR';
+
 // Clear Redux
 export const CLEAR_REDUX: string = 'CLEAR_REDUX';
