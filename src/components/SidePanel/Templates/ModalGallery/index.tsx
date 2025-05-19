@@ -168,7 +168,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                     justifyContent: loader || searchApplied ? "center" : "flex-start",
                     alignItems: searchApplied ? "center" : "flex-start",
                     height: searchApplied ? "calc(100vh - 300px)" : "auto",
-                    overflowY: product?.productType === "Personal Letters" ? "hidden" : "scroll"
+                    overflowY: product?.productType === "Personal Letters" && currentTemplates.length === 0 ? "hidden" : "scroll"
                 }}>
                     {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '1' && (
                         <div>
