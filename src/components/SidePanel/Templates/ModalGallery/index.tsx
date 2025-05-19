@@ -154,11 +154,8 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                     builderSelect={true}
                                     gallerySelect={true}
                                     clearField={true}
-                                    // @ts-ignore
-                                    search={(() => { }) as any}
-                                    updateErrors={() => { }}
-                                    disableClearable={false}
-                                    templateBuilder={true}
+                                    search={false} 
+                                    isError={false}
                                 />
                             </div>
                         )}
