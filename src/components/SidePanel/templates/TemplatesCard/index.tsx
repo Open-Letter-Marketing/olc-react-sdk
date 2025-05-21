@@ -119,17 +119,15 @@ const TemplatesCard = (props: any) => {
           );
         })
       ) : currentTemplateType?.id === '1' ? (
-        <div className={`${+product?.id === 5 && designerQueryAmount ? 'noTemplateGallery more-visible' :
-        product?.productType === "Professional Letters" ? 'noTemplateGallery noTemplateProfessionalAndPersonal' : 'noTemplateGallery'}`}>
+        <div className={`${+product?.id === 5 && designerQueryAmount ? 'noTemplateGallery'  : 'noTemplateGallery'}`}>
           <Typography>{MESSAGES.TEMPLATE.NO_MY_TEMPLATES}</Typography>
         </div>
       ) : currentTemplateType?.id === '2' ? (
-        <div className={`${+product?.id === 5 && designerQueryAmount ? 'noTemplateGallery more-visible' : 'noTemplateGallery'}`}>
+        <div className={`${+product?.id === 5 && designerQueryAmount ? 'noTemplateGallery' : 'noTemplateGallery'}`}>
           <Typography>{MESSAGES.TEMPLATE.NO_TEAM_TEMPLATES}</Typography>
         </div>
       ) : currentTemplateType?.id === '3' ? (
-        <div className={`${+product?.id === 5 && designerQueryAmount ? 'noTemplateGallery more-visible' : 
-        product?.productType === "Professional Letters" ? 'noTemplateGallery noTemplateProfessionalAndPersonal' : 'noTemplateGallery'}`}>
+        <div className={`${+product?.id === 5 && designerQueryAmount ? 'noTemplateGallery'  : 'noTemplateGallery'}`}>
           <Typography>
             {platformName
               ? `No ${platformName} Templates to show`
