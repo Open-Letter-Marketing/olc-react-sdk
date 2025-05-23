@@ -48,29 +48,24 @@ const SidePanel: React.FC<Props> = (props) => {
       <PolotnoSidePanel
         store={props.store}
         sections={[
-          ...(props.currentTemplateType !== 'Real Penned Letter'
-            ? [
-              {
-                ...CustomTemplateSection,
-                ...CustomUploadSection,
-                Panel: (panelProps: any) => (
-                  <CustomTemplateSection.Panel
-                    {...panelProps}
-                    platformName={props.platformName}
-                    templateGalleryModal={props.templateGalleryModal}
-                    designerQueryAmount={props.designerQueryAmount}
-                    selectedSection={props.selectedSection}
-                    allowedTemplateSections={props.allowedTemplateSections}
-                    hireDesignerModal={hireDesignerModal}
-                    setHireDesignerModal={setHireDesignerModal}
-                    onCreateCustomTemplateQuery={props.onCreateCustomTemplateQuery}
-                    onGetTemplates={props.onGetTemplates}
-                    onGetOneTemplate={props.onGetOneTemplate}
-                  />
-                ),
-              },
-            ]
-            : []),
+          {
+            ...CustomTemplateSection,
+            Panel: (panelProps: any) => (
+              <CustomTemplateSection.Panel
+                {...panelProps}
+                platformName={props.platformName}
+                templateGalleryModal={props.templateGalleryModal}
+                designerQueryAmount={props.designerQueryAmount}
+                selectedSection={props.selectedSection}
+                allowedTemplateSections={props.allowedTemplateSections}
+                hireDesignerModal={hireDesignerModal}
+                setHireDesignerModal={setHireDesignerModal}
+                onCreateCustomTemplateQuery={props.onCreateCustomTemplateQuery}
+                onGetTemplates={props.onGetTemplates}
+                onGetOneTemplate={props.onGetOneTemplate}
+              />
+            ),
+          },
           ...sections,
           {
             ...CustomFieldSection,
