@@ -88,11 +88,10 @@ const SideBarSelction = (props: CustomTemplateSectionProps) => {
                         setSelectedValue={setCurrentTemplateType as any}
                         selectedValue={currentTemplateType as any}
                         builderSelect={true}
-                        // @ts-ignore
-                        search={() => { }}
-                        updateErrors={() => { }}
-                        disableClearable={true}
-                        templateBuilder={true}
+                        search={false} 
+                        isError={false} 
+                        gallerySelect={false} 
+                        clearField={false}                    
                     />
                 </div>
                 {currentTemplateType?.id === '3' && templateCategories?.length > 1 && (
@@ -103,12 +102,9 @@ const SideBarSelction = (props: CustomTemplateSectionProps) => {
                             setSelectedValue={setSelectedCategory as any}
                             selectedValue={selectedCategory as any}
                             builderSelect={true}
-                            clearField={true}
-                            // @ts-ignore
-                            search={(() => { }) as any}
-                            updateErrors={() => { }}
-                            disableClearable={false}
-                            templateBuilder={true}
+                            clearField={true} 
+                            isError={false} 
+                            gallerySelect={false}            
                         />
                     </div>
                 )}

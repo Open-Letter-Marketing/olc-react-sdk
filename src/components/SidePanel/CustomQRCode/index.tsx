@@ -389,7 +389,7 @@ const CustomQRCode = {
         {utms?.map((utm, idx) => {
           return (
             <div className='qr-input-wrapper' key={idx}>
-              <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>
+              <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>      
               <GeneralSelect
                 placeholder={`Select Custom UTM ${idx + 1}`}
                 options={utmFields as any}
@@ -397,12 +397,10 @@ const CustomQRCode = {
                 selectedValue={customUtms[utm] || (null as any)}
                 builderSelect={true}
                 clearField={true}
-                // @ts-ignore
-                search={(() => { }) as any}
-                updateErrors={() => { }}
-                disableClearable={false}
-                templateBuilder={true}
+                search={true}
                 qrField={true}
+                isError={false} 
+                gallerySelect={false}              
               />
             </div>
           );
