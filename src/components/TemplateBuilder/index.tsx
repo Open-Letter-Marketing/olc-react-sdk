@@ -28,6 +28,7 @@ import {
   searchAndAdvanceChange,
   selectProduct,
 } from '../../redux/actions/templateActions';
+import { clearQrFields } from '../../redux/actions/customQRCodeActions';
 
 // Utils
 import {
@@ -228,6 +229,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
       return () => {
         store.history.clear();
         store.clear();
+        dispatch(clearQrFields());
         off();
       };
     }
@@ -339,7 +341,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
       if (currentTemplateType === 'Real Penned Letter') {
         handleRealPennedLetters();
       }
-
+      dispatch(clearQrFields());
       store.history.clear();
     }
 
@@ -426,6 +428,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
       }
       store.loadJSON(jsonData);
       await store.waitLoading();
+      dispatch(clearQrFields());
       setIsStoreUpdated(false);
       addSafetyBordersForTemplates(existingTemplate?.product?.id, store);
       dispatch({ type: TEMPLATE_LOADING, payload: false });
