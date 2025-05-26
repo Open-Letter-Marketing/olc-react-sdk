@@ -30,6 +30,7 @@ import Typography from "../GenericUIBlocks/Typography";
 import Button from "../GenericUIBlocks/Button";
 import CircularProgress from "../GenericUIBlocks/CircularProgress";
 import { GridContainer, GridItem } from '../GenericUIBlocks/Grid';
+import DuplicateTemplateModal from "./DuplicateTemplateModal";
 
 // Icons
 // @ts-ignore
@@ -70,6 +71,7 @@ interface TopNavigationProps {
   createTemplateRoute?: string | null;
   isStoreUpdated: boolean;
   olcTemplate?: Record<string, any>;
+  onDuplicateTemplate?: (payload: any) => Promise<any>;
   onReturnAndNavigate?: () => void;
   onSubmit?: (payload: any) => Promise<any>;
 }
@@ -79,6 +81,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   createTemplateRoute,
   isStoreUpdated,
   olcTemplate,
+  onDuplicateTemplate,
   onReturnAndNavigate,
   onSubmit,
 }) => {
@@ -88,10 +91,12 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
     open: boolean;
     model: string;
     loading: boolean;
+    inputValue?: string;
   }>({
     open: false,
     model: '',
     loading: false,
+    inputValue: '',
   });
   const [downloadingProof, setDownloaingProof] = useState<boolean>(false);
 
@@ -164,6 +169,15 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
       handleNavigation(createTemplateRoute || '/create-template');
     }
   };
+
+  const closeDuplicateModal = () => {
+      setIsShowModel((prev) => ({
+        ...prev,
+        open: false,
+        model: '',
+        inputValue: '',
+      }))
+  }
 
   const handleNavigation = async (route = '/') => {
     handleClearFilters();
@@ -382,9 +396,22 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
           handleSave={handleSave}
         />
       )}
+      {/* Duplicate Template Modal */}
+      <DuplicateTemplateModal
+        open={isShowModel.open && isShowModel.model === 'duplicate'}
+        value={isShowModel.inputValue || ''}
+        onChange={(val) =>
+          setIsShowModel((prev) => ({
+            ...prev,
+            inputValue: val,
+          }))
+        }
+        onCancel={closeDuplicateModal}
+        onDuplicateTemplate={onDuplicateTemplate}
+      />
       <GridContainer style={{alignItems: 'center'}}>
         <GridItem lg={4} md={4} sm={0} xs={0}></GridItem>
-        <GridItem lg={4} md={2} sm={2} xs={12}>
+        <GridItem lg={3} md={2} sm={2} xs={12}>
           <div className="middle">
             <Typography>{title}</Typography>
             <div onClick={() => handleChangeModel('edit')}>
@@ -392,8 +419,26 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
             </div>
           </div>
         </GridItem>
-        <GridItem lg={4} md={6} sm={9} xs={12}>
+        <GridItem lg={5} md={6} sm={9} xs={12}>
           <div className="actionsBtnWrapper right">
+          <Button
+              style={{
+                ...buttonStyles,
+                fontWeight: '400',
+                maxWidth: 'auto',
+                minWidth: '100px',
+              }}
+              onClick={() =>
+                setIsShowModel(prev => ({
+                  ...prev,
+                  open: true,
+                  model: 'duplicate',
+                  inputValue: '',
+                }))
+              }
+            >
+              Clone
+            </Button>
             <Button
               style={{
                 ...buttonStyles,

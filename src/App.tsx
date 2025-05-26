@@ -41,6 +41,7 @@ interface AppProps {
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
+  onDuplicateTemplate?: () => Promise<any>;
   onSubmit?: (payload: any) => Promise<any>;
 }
 
@@ -64,6 +65,7 @@ const App: React.FC<AppProps> = ({
   onCreateCustomTemplateQuery,
   onGetOneTemplate,
   onGetCustomFields,
+  onDuplicateTemplate,
   onGetTemplates,
   onSubmit,
 }) => {
@@ -133,6 +135,7 @@ const App: React.FC<AppProps> = ({
               onGetOneTemplate={onGetOneTemplate}
               onGetTemplates={onGetTemplates}
               onGetCustomFields={onGetCustomFields}
+              onDuplicateTemplate={onDuplicateTemplate}
               onSubmit={onSubmit}
             />
           }

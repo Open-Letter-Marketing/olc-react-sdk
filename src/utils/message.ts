@@ -4,6 +4,7 @@ export const MESSAGES = {
   TEMPLATE_MESSAGE_ON_SMALL_SCREEN: 'Template Builder is available on tablet and web view only.',
   GENERAL_ERROR: "Internal Server Error",
   DOWNLOAD_ERROR: 'Something went wrong. Please try again.',
+  CLONE_ERROR: 'We are currently unable to clone the template. Please try again later.',
   TEMPLATE: {
     SEARCH_PLACE_HOLDER: "Search by template name or template ID",
     NAME_REQUIRED: "Template Name is required",
@@ -99,7 +100,13 @@ export const MESSAGES = {
       COMMENT_REQUIRED: 'Comments are required',
       EMAIL_REQUIRED: 'Email is required',
       EMAIL_VALIDATION: 'Email is not valid',
-      SUBMIT_BUTTON: "'Next'",
+      SUBMIT_BUTTON: "Next",
+    },
+    DUPLICATE_MODAL: {
+      TITLE: 'Duplicate Template',
+      NAME_PLACEHOLDER: 'Enter new template name',
+      CANCEL_BUTTON: 'Cancel',
+      SUBMIT_BUTTON: "Duplicate",
     },
     CUSTOM_ADD_ONS: {
       TITLE: `Optional Add-On's`,

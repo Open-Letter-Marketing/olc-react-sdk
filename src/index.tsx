@@ -42,6 +42,7 @@ interface TemplateBuilderProps {
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
+  onDuplicateTemplate?: () => Promise<any>;
   onSubmit?: (payload: any) => Promise<any>;
   styles?: {
     root?: CustomCSSProperties;
@@ -72,6 +73,7 @@ const TemplateBuilder = ({
   onGetOneTemplate,
   onGetTemplates,
   onGetCustomFields,
+  onDuplicateTemplate,
   onSubmit,
   styles,
 }: TemplateBuilderProps): void => {
@@ -117,6 +119,7 @@ const TemplateBuilder = ({
             onGetOneTemplate={onGetOneTemplate}
             onGetTemplates={onGetTemplates}
             onGetCustomFields={onGetCustomFields}
+            onDuplicateTemplate={onDuplicateTemplate}
             onSubmit={onSubmit}
           />
         </Router>
