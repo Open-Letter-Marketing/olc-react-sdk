@@ -181,12 +181,12 @@ const CustomFieldSection: SideSection = {
         defaultDynamicFields
           ?.filter(({ key }: any) => !excludedFields?.includes(key))
           .filter(({ value }: any) =>
-            value.toLowerCase().includes(search.toLowerCase())
+            value?.toLowerCase().includes(search?.toLowerCase())
           )
       );
 
       setFilteredMiscFields(defaultMiscFields.filter(({ value }: any) =>
-        value.toLowerCase().includes(search.toLowerCase())
+        value?.toLowerCase().includes(search?.toLowerCase())
       ))
 
       setFilteredPropertyFields(
@@ -194,7 +194,7 @@ const CustomFieldSection: SideSection = {
           ? defaultPropertyFields
             ?.filter(({ key }: any) => !excludedFields?.includes(key))
             ?.filter(({ value }: any) =>
-              value.toLowerCase().includes(search.toLowerCase())
+              value?.toLowerCase().includes(search?.toLowerCase())
             )
           : []
       );
@@ -202,7 +202,7 @@ const CustomFieldSection: SideSection = {
       setFilteredSenderFields(
         allowSenderFields
           ? defaultSenderFields?.filter(({ key }: any) => !excludedFields?.includes(key))?.filter(({ value }: any) =>
-            value.toLowerCase().includes(search.toLowerCase())
+            value?.toLowerCase().includes(search?.toLowerCase())
           )
           : []
       );
@@ -210,13 +210,13 @@ const CustomFieldSection: SideSection = {
       setFilteredPlatformFields(platformFields
         ?.filter(({ key }: any) => !excludedFields?.includes(key))
         ?.filter(({ value }: any) =>
-          value.toLowerCase().includes(search.toLowerCase())
+          value?.toLowerCase().includes(search?.toLowerCase())
         ));
 
       setFilteredCustomFields(customFields
         ?.filter(({ key }: any) => !excludedFields?.includes(key))
         ?.filter(({ value }: any) =>
-          value.toLowerCase().includes(search.toLowerCase())
+          value?.toLowerCase().includes(search?.toLowerCase())
         ));
 
       if (customFieldsV2.length) {
@@ -224,7 +224,7 @@ const CustomFieldSection: SideSection = {
           .map((section: { fields: any[]; }) => ({
             ...section,
             fields: section.fields.filter((field: { value: string; }) =>
-              field.value.toLowerCase().includes(search.toLowerCase())
+              field.value?.toLowerCase().includes(search?.toLowerCase())
             )
           })).filter((section: any) => section?.fields?.length > 0);
 
@@ -234,7 +234,7 @@ const CustomFieldSection: SideSection = {
           defaultDynamicFields
             ?.filter(({ key }: any) => !excludedFields?.includes(key))
             ?.filter(({ value }: any) =>
-              value.toLowerCase().includes(search.toLowerCase())
+              value?.toLowerCase().includes(search?.toLowerCase())
             )
         );
       }
@@ -416,13 +416,13 @@ const CustomFieldSection: SideSection = {
                   <div>
                     <span className="title">{section?.section}</span>
                     <InfoIcon fill="var(--primary-color)" className={section?.section
-                      .toLowerCase()
+                      ?.toLowerCase()
                       .replace(/[^a-z0-9\s]/g, '')
                       .trim()
                       .replace(/\s+/g, '-')} />
                     <GeneralTootip
                       anchorSelect={`.${section?.section
-                        .toLowerCase()
+                        ?.toLowerCase()
                         .replace(/[^a-z0-9\s]/g, '')
                         .trim()
                         .replace(/\s+/g, '-')}`}
