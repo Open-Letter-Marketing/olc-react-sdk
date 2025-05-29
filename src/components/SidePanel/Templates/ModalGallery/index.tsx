@@ -175,7 +175,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                         product?.size?.find((product: any) => product?.size === "4x6") || product?.paperSize === "4x6" ? "postcard-4x6"
                                         : product?.id === '15' && product?.size?.find((product: any) => product?.size === "6x11") || product?.paperSize === "6x11" ? "postcard-6x11"
                                             : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") || product?.paperSize === "6x9" ? "postcard-6x9"
-                                                : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
+                                                : product?.id === '5' || product?.id === '16' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                                 onClick={() => handleDialogChange('design-own')}
                                 style={{
                                     boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`
@@ -195,7 +195,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                         product?.size?.find((product: any) => product?.size === "4x6") || product?.paperSize === "4x6" ? "postcard-4x6"
                                         : product?.id === '15' && product?.size?.find((product: any) => product?.size === "6x11") || product?.paperSize === "6x11" ? "postcard-6x11"
                                             : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") || product?.paperSize === "6x9" ? "postcard-6x9"
-                                                : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
+                                                : product?.id === '5' || product?.id === '16' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                                 onClick={() => {
                                     setOpenGalleryModal(false);
                                     setHireDesignerModal(true);

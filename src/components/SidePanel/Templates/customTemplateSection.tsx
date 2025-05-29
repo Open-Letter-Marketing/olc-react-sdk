@@ -36,6 +36,7 @@ import { MESSAGES } from '../../../utils/message';
 import { getItem, removeItem, setItem } from '../../../utils/local-storage';
 import { addSafetyBordersForTemplates } from '../../../utils/templateSafetyBorders';
 import { addIdentifiersForTemplates } from '../../../utils/templateIdentifierArea';
+import { addElementsforRealPennedLetters } from '../../../utils/templateRestrictedArea/realPenned';
 
 // Components
 import Dialog from '../../GenericUIBlocks/Dialog';
@@ -50,6 +51,7 @@ import ModalCross from '../../../assets/images/modal-icons/modal-cross';
 
 // styles
 import './styles.scss';
+
 
 type SideSection = typeof TemplatesSection;
 
@@ -472,6 +474,9 @@ const CustomTemplateSection: SideSection = {
         }
         drawRestrictedAreaOnPage(store, product, envelopeType);
         addIdentifiersForTemplates(product.id, store);
+        if (product.productType  === 'Real Penned Letter') {
+          addElementsforRealPennedLetters(store);
+        }
         handleDialogChange('');
         if (templateGalleryModal) {
           closeGalleryModal();
