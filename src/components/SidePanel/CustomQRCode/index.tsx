@@ -100,7 +100,7 @@ const CustomQRCode = {
 
 
     const utmFields = allFields.map(({ key }) => ({
-      label: `utm_${key.toLowerCase().replaceAll('.', '_').replaceAll(/[{}]/g, '')}`
+      label: `utm_${key?.toLowerCase().replaceAll('.', '_').replaceAll(/[{}]/g, '')}`
     })).filter((utmField) => !excludedLabels.includes(utmField.label));
 
      const utms = [
