@@ -15,6 +15,7 @@ import Input from '../GenericUIBlocks/Input';
 interface DuplicateTemplateModalProps {
   open: boolean;
   value: string;
+  setIsDuplication: any;
   onChange: (value: string) => void;
   onCancel: () => void;
   onDuplicateTemplate?: (payload: any) => Promise<any>;
@@ -27,6 +28,7 @@ interface DuplicateTemplateModalProps {
 const DuplicateTemplateModal: React.FC<DuplicateTemplateModalProps> = ({
   open,
   value,
+  setIsDuplication,
   onChange,
   onCancel,
   onDuplicateTemplate,
@@ -49,6 +51,7 @@ const DuplicateTemplateModal: React.FC<DuplicateTemplateModalProps> = ({
     try {
       setLoader(true);
       if (onDuplicateTemplate) {
+        setIsDuplication(true);
         await onDuplicateTemplate(value);
       }
     } catch (error) {

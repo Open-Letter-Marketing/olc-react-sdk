@@ -74,7 +74,9 @@ interface TopNavigationProps {
   store: any;
   createTemplateRoute?: string | null;
   isStoreUpdated: boolean;
+  setIsDuplication: any;
   olcTemplate?: Record<string, any>;
+  designerTemplateQuery?: Record<string, any> | null;
   onDuplicateTemplate?: (payload: any) => Promise<any>;
   onReturnAndNavigate?: () => void;
   onSubmit?: (payload: any) => Promise<any>;
@@ -84,7 +86,9 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   store,
   createTemplateRoute,
   isStoreUpdated,
+  setIsDuplication,
   olcTemplate,
+  designerTemplateQuery,
   onDuplicateTemplate,
   onReturnAndNavigate,
   onSubmit,
@@ -415,6 +419,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         submitButtonText={MESSAGES.TEMPLATE.DUPLICATE_MODAL.SUBMIT_BUTTON}
         onCancel={closeDuplicateModal}
         onDuplicateTemplate={onDuplicateTemplate}
+        setIsDuplication={setIsDuplication}
         icon={<CloneIcon fill="var(--primary-color)" />}
       />
       <GridContainer style={{alignItems: 'center'}}>
@@ -429,7 +434,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         </GridItem>
         <GridItem lg={5} md={6} sm={9} xs={12}>
           <div className="actionsBtnWrapper right">
-            <div
+            {olcTemplate && !designerTemplateQuery && <div
               className="clone"
               style={{
                 ...buttonStyles,
@@ -453,7 +458,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
               }
             >
               <CloneIcon fill="#545454" />
-            </div>
+            </div>}
             <GeneralTooltip
               title={MESSAGES.TEMPLATE.DUPLICATE_MODAL.TITLE}
               place="top"
