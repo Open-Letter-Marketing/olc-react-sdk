@@ -41,7 +41,7 @@ interface AppProps {
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
   onGetCustomFields?: () => Promise<any>;
-  onDuplicateTemplate?: () => Promise<any>;
+  onDuplicateTemplate?: (payload: any) => Promise<any>;
   onSubmit?: (payload: any) => Promise<any>;
 }
 

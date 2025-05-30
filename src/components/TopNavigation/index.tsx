@@ -31,6 +31,7 @@ import Button from "../GenericUIBlocks/Button";
 import CircularProgress from "../GenericUIBlocks/CircularProgress";
 import { GridContainer, GridItem } from '../GenericUIBlocks/Grid';
 import DuplicateTemplateModal from "./DuplicateTemplateModal";
+import GeneralTooltip from '../GenericUIBlocks/GeneralTooltip';
 
 // Icons
 // @ts-ignore
@@ -41,7 +42,7 @@ import DownloadIcon from '../../assets/images/modal-icons/order-download.tsx';
 import CloneIcon from '../../assets/images/modal-icons/template-copy.tsx';
 // Styles
 import './styles.scss';
-import GeneralTooltip from '../GenericUIBlocks/GeneralTooltip';
+
 
 
 /**
@@ -74,7 +75,9 @@ interface TopNavigationProps {
   store: any;
   createTemplateRoute?: string | null;
   isStoreUpdated: boolean;
+  setIsDuplication: any;
   olcTemplate?: Record<string, any>;
+  designerTemplateQuery?: Record<string, any> | null;
   onDuplicateTemplate?: (payload: any) => Promise<any>;
   onReturnAndNavigate?: () => void;
   onSubmit?: (payload: any) => Promise<any>;
@@ -84,7 +87,9 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   store,
   createTemplateRoute,
   isStoreUpdated,
+  setIsDuplication,
   olcTemplate,
+  designerTemplateQuery,
   onDuplicateTemplate,
   onReturnAndNavigate,
   onSubmit,
@@ -415,6 +420,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         submitButtonText={MESSAGES.TEMPLATE.DUPLICATE_MODAL.SUBMIT_BUTTON}
         onCancel={closeDuplicateModal}
         onDuplicateTemplate={onDuplicateTemplate}
+        setIsDuplication={setIsDuplication}
         icon={<CloneIcon fill="var(--primary-color)" />}
       />
       <GridContainer style={{alignItems: 'center'}}>
@@ -429,7 +435,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         </GridItem>
         <GridItem lg={5} md={6} sm={9} xs={12}>
           <div className="actionsBtnWrapper right">
-            <div
+            {olcTemplate && !designerTemplateQuery && <div
               className="clone"
               style={{
                 ...buttonStyles,
@@ -453,10 +459,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
               }
             >
               <CloneIcon fill="#545454" />
-            </div>
+            </div>}
             <GeneralTooltip
               title={MESSAGES.TEMPLATE.DUPLICATE_MODAL.TITLE}
-              place="top"
+              place="bottom"
               anchorSelect=".clone"
             />
             <div
@@ -483,7 +489,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
             </div>
             <GeneralTooltip
               title={MESSAGES.TEMPLATE.DOWNLOAD_PROOF_BUTTON}
-              place="top"
+              place="bottom"
               anchorSelect=".download"
             />
             <Button

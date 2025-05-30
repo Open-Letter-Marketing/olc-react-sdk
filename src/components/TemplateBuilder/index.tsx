@@ -82,7 +82,7 @@ interface TemplateBuilderProps {
   allowedTemplateSections?: any;
   onReturnAndNavigate?: () => void;
   onGetCustomFields?: () => Promise<any>;
-  onDuplicateTemplate?: () => Promise<any>;
+  onDuplicateTemplate?: (payload: any) => Promise<any>;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -111,6 +111,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   onSubmit,
 }) => {
   const [isStoreUpdated, setIsStoreUpdated] = useState(false);
+  const [isDuplication, setIsDuplication] = useState(false);
   const [switchTabCount, setSwitchTabCount] = useState(1);
   const [selectedSection, setSelectedSection] = useState('text');
 
@@ -223,6 +224,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
       const handleChange = () => {
         if (!isStoreUpdated) {
           setIsStoreUpdated(true);
+          setIsDuplication(false);
         }
       };
 
@@ -259,14 +261,14 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
 
-    if (isStoreUpdated) {
+    if (isStoreUpdated && !isDuplication) {
       addBeforeUnloadListener();
     }
 
     return () => {
       removeBeforeUnloadListener();
     };
-  }, [isStoreUpdated]);
+  }, [isStoreUpdated, isDuplication]);
 
   const fetchCustomFields = async () => {
     if (onGetCustomFields) {
@@ -455,7 +457,9 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
               store={store}
               isStoreUpdated={isStoreUpdated}
               olcTemplate={olcTemplate}
+              designerTemplateQuery={designerTemplateQuery}
               onDuplicateTemplate={onDuplicateTemplate}
+              setIsDuplication={setIsDuplication}
               onReturnAndNavigate={onReturnAndNavigate}
               onSubmit={onSubmit}
             />
