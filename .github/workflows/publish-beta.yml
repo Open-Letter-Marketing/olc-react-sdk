@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - develop
+    tags:
+      - '*-beta*'
+      - 'beta-*'
+      - 'v*-beta*'
   workflow_dispatch:
 
 jobs:
