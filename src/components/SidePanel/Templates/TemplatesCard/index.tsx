@@ -6,8 +6,8 @@ import {MESSAGES} from '../../../../utils/message';
 // // icons
 import Dot from '../../../../assets/images/templates/dot';
 import ArrowDown from '../../../../assets/images/templates/arrow-down';
-import Button from '../../../../components/GenericUIBlocks/Button';
-import Typography from '../../../../components/GenericUIBlocks/Typography';
+import Button from '../../../GenericUIBlocks/Button';
+import Typography from '../../../GenericUIBlocks/Typography';
 
 // styles
 import './styles.scss';
@@ -21,7 +21,7 @@ const TemplatesCard = (props: any) => {
     currentTemplateType,
     product,
     searchApplied,
-    primaryColorRGBA
+    primaryColorRGBA,
   } = props;
 
   const [isFilpedIds, setIsFlipedIds] = useState<string[]>([]);
@@ -126,7 +126,9 @@ const TemplatesCard = (props: any) => {
           <Typography>{MESSAGES.TEMPLATE.NO_TEAM_TEMPLATES}</Typography>
         </div>
       ) : currentTemplateType?.id === '3' ? (
-        <div className={`${+product?.id === 5 ? 'noTemplateGallery more-visible' : 'noTemplateGallery'}`}>
+        <div
+          className={`${+product?.id === 5 ? 'noTemplateGallery more-visible' : 'noTemplateGallery'}`}
+        >
           <Typography>
             {platformName
               ? `No ${platformName} Templates to show`
