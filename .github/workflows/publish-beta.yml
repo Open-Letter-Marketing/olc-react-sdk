@@ -3,7 +3,7 @@ name: Publish Beta Version
 on:
   push:
     branches:
-      - develop
+      - cicd
   workflow_dispatch:
 
 jobs:
@@ -96,7 +96,8 @@ jobs:
                   "type": "context",
                   "elements": [
                     { "type": "mrkdwn", "text": ":male-factory-worker: *Started By:* ${{ github.event.pusher.name }}" },
-                    { "type": "mrkdwn", "text": ":package: *Version:* ${{ steps.version.outputs.beta_version }}" }
+                    { "type": "mrkdwn", "text": ":package: *Version:* ${{ steps.version.outputs.beta_version }}" },
+                    { "type": "mrkdwn", "text": ":memo: *Commit:* ${{ github.event.head_commit.message }}" }
                   ]
                 }
               ]
