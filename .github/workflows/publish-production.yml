@@ -72,13 +72,13 @@ jobs:
       - name: Build package
         run: npm run build
 
-      - name: Commit build changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git diff --staged --quiet || git commit -m "chore: update build artifacts for v${{ steps.version.outputs.version }} [skip ci]"
-          git push origin HEAD
+      #   - name: Commit build changes
+      #     run: |
+      #       git config --local user.email "action@github.com"
+      #       git config --local user.name "GitHub Action"
+      #       git add .
+      #       git diff --staged --quiet || git commit -m "chore: update build artifacts for v${{ steps.version.outputs.version }} [skip ci]"
+      #       git push origin HEAD
 
       - name: Publish to npm
         run: npm publish --access public
