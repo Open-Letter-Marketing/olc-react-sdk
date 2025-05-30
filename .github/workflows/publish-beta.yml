@@ -3,7 +3,7 @@ name: Publish Beta Version
 on:
   push:
     branches:
-      - cicd
+      - develop
   workflow_dispatch:
 
 jobs:
