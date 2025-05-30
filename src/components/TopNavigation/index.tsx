@@ -35,9 +35,13 @@ import DuplicateTemplateModal from "./DuplicateTemplateModal";
 // Icons
 // @ts-ignore
 import EditIcon from '../../assets/images/templates/edit-pencil-icon.tsx';
-
+// @ts-ignore
+import DownloadIcon from '../../assets/images/modal-icons/order-download.tsx';
+// @ts-ignore
+import CloneIcon from '../../assets/images/modal-icons/template-copy.tsx';
 // Styles
 import './styles.scss';
+import GeneralTooltip from '../GenericUIBlocks/GeneralTooltip';
 
 
 /**
@@ -406,8 +410,12 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
             inputValue: val,
           }))
         }
+        error=""
+        title={MESSAGES.TEMPLATE.DUPLICATE_MODAL.TITLE}
+        submitButtonText={MESSAGES.TEMPLATE.DUPLICATE_MODAL.SUBMIT_BUTTON}
         onCancel={closeDuplicateModal}
         onDuplicateTemplate={onDuplicateTemplate}
+        icon={<CloneIcon fill="var(--primary-color)" />}
       />
       <GridContainer style={{alignItems: 'center'}}>
         <GridItem lg={4} md={4} sm={0} xs={0}></GridItem>
@@ -421,12 +429,19 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         </GridItem>
         <GridItem lg={5} md={6} sm={9} xs={12}>
           <div className="actionsBtnWrapper right">
-          <Button
+            <div
+              className="clone"
               style={{
                 ...buttonStyles,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '40px',
                 fontWeight: '400',
                 maxWidth: 'auto',
-                minWidth: '100px',
+                minWidth: '50px',
+                borderRadius: '3px',
+                cursor: 'pointer',
               }}
               onClick={() =>
                 setIsShowModel(prev => ({
@@ -437,23 +452,40 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
                 }))
               }
             >
-              Clone
-            </Button>
-            <Button
+              <CloneIcon fill="#545454" />
+            </div>
+            <GeneralTooltip
+              title={MESSAGES.TEMPLATE.DUPLICATE_MODAL.TITLE}
+              place="top"
+              anchorSelect=".clone"
+            />
+            <div
+              className="download"
               style={{
                 ...buttonStyles,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '40px',
                 fontWeight: '400',
                 maxWidth: 'auto',
-                minWidth: '100px',
+                minWidth: '50px',
+                borderRadius: '3px',
+                cursor: 'pointer',
               }}
               onClick={handleViewProofWithLamda}
             >
               {downloadingProof ? (
                 <CircularProgress style={progressStyles} />
               ) : (
-                MESSAGES.TEMPLATE.DOWNLOAD_PROOF_BUTTON
+                <DownloadIcon />
               )}
-            </Button>
+            </div>
+            <GeneralTooltip
+              title={MESSAGES.TEMPLATE.DOWNLOAD_PROOF_BUTTON}
+              place="top"
+              anchorSelect=".download"
+            />
             <Button
               style={{
                 ...buttonStyles,
