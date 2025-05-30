@@ -2,8 +2,10 @@ name: Publish Production Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    # tags:
+    #   - 'v*'
+  release:
+    types: [published]
 
 jobs:
   publish-production:
@@ -16,11 +18,18 @@ jobs:
       - name: Extract version from tag
         id: version
         run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}
+          if [ "${{ github.event_name }}" = "release" ]; then
+            # For release events, get tag from release
+            TAG_NAME="${{ github.event.release.tag_name }}"
+          else
+            # For push events, get tag from ref
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+          fi
+
           VERSION=${TAG_NAME#v}  # Remove 'v' prefix if present
           echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
-          echo "Extracted version: ${VERSION} from tag: ${TAG_NAME}"
+          echo "Extracted version: ${VERSION} from tag: ${TAG_NAME} (event: ${{ github.event_name }})"
 
       - name: Send Deployment Started Notification
         uses: slackapi/slack-github-action@v1.24.0
