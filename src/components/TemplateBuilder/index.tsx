@@ -82,6 +82,7 @@ interface TemplateBuilderProps {
   allowedTemplateSections?: any;
   onReturnAndNavigate?: () => void;
   onGetCustomFields?: () => Promise<any>;
+  onDuplicateTemplate?: () => Promise<any>;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -105,6 +106,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   onReturnAndNavigate,
   onGetOneTemplate,
   onGetCustomFields,
+  onDuplicateTemplate,
   onGetTemplates,
   onSubmit,
 }) => {
@@ -453,6 +455,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
               store={store}
               isStoreUpdated={isStoreUpdated}
               olcTemplate={olcTemplate}
+              onDuplicateTemplate={onDuplicateTemplate}
               onReturnAndNavigate={onReturnAndNavigate}
               onSubmit={onSubmit}
             />
