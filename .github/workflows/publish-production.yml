@@ -1,0 +1,129 @@
+name: Publish Production Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish-production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG_NAME#v}  # Remove 'v' prefix if present
+          echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Extracted version: ${VERSION} from tag: ${TAG_NAME}"
+
+      - name: Send Deployment Started Notification
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":rocket: Production Release Deployment Started",
+              "blocks": [
+                {
+                    "type": "section",
+                    "text": { "type": "mrkdwn", "text": ":rocket: :rocket: *Production Release* v${{ steps.version.outputs.version }} Deployment Started :rocket: :rocket:" }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    { "type": "mrkdwn", "text": ":male-factory-worker: *Started By:* ${{ github.actor }}" },
+                    { "type": "mrkdwn", "text": ":label: *Tag:* ${{ steps.version.outputs.tag_name }}" }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --force
+
+      - name: Update package.json version
+        run: |
+          npm version ${{ steps.version.outputs.version }} --no-git-tag-version --allow-same-version
+
+      - name: Build package
+        run: npm run build
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Send Deployment Completed Notification
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":white_check_mark: Production Release Deployment Completed",
+              "blocks": [
+                {
+                    "type": "section",
+                    "text": { "type": "mrkdwn", "text": ":white_check_mark: :white_check_mark: *Production Release* v${{ steps.version.outputs.version }} Deployment Completed :white_check_mark: :white_check_mark:" }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    { "type": "mrkdwn", "text": "*Version:*\nv${{ steps.version.outputs.version }}" },
+                    { "type": "mrkdwn", "text": "*Tag:*\n${{ steps.version.outputs.tag_name }}" }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": { "type": "mrkdwn", "text": "*Links:*\n• <https://www.npmjs.com/package/@openlettermarketing/olc-react-sdk/v/${{ steps.version.outputs.version }}|NPM Package>\n• <https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.tag_name }}|GitHub Release>" }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    { "type": "mrkdwn", "text": ":male-factory-worker: *Released By:* ${{ github.actor }}" }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Notify on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":x: Production Release Deployment Failed",
+              "blocks": [
+                {
+                    "type": "section",
+                    "text": { "type": "mrkdwn", "text": ":x: :x: *Production Release* v${{ steps.version.outputs.version }} Deployment Failed :x: :x:" }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    { "type": "mrkdwn", "text": ":male-factory-worker: *Started By:* ${{ github.actor }}" },
+                    { "type": "mrkdwn", "text": ":link: *Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>" },
+                    { "type": "mrkdwn", "text": ":label: *Tag:* ${{ steps.version.outputs.tag_name }}" }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
