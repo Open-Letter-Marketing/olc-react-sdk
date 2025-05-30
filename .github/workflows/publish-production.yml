@@ -27,17 +27,18 @@ jobs:
         with:
           payload: |
             {
-              "text": ":rocket: Production Release Deployment Started",
+              "text": ":test_tube: Production Workflow Test (Beta) Started",
               "blocks": [
                 {
                     "type": "section",
-                    "text": { "type": "mrkdwn", "text": ":rocket: :rocket: *Production Release* v${{ steps.version.outputs.version }} Deployment Started :rocket: :rocket:" }
+                    "text": { "type": "mrkdwn", "text": ":test_tube: :test_tube: *Production Workflow Test* (Publishing as Beta) Started :test_tube: :test_tube:" }
                 },
                 {
                   "type": "context",
                   "elements": [
                     { "type": "mrkdwn", "text": ":male-factory-worker: *Started By:* ${{ github.actor }}" },
-                    { "type": "mrkdwn", "text": ":label: *Tag:* ${{ steps.version.outputs.tag_name }}" }
+                    { "type": "mrkdwn", "text": ":label: *Tag:* ${{ steps.version.outputs.tag_name }}" },
+                    { "type": "mrkdwn", "text": ":warning: *Mode:* Testing (Beta Release)" }
                   ]
                 }
               ]
@@ -58,7 +59,11 @@ jobs:
 
       - name: Update package.json version
         run: |
-          npm version ${{ steps.version.outputs.version }} --no-git-tag-version --allow-same-version
+          # Add -beta suffix for testing
+          BETA_VERSION="${{ steps.version.outputs.version }}-beta.$(date +%Y%m%d%H%M%S)"
+          echo "beta_version=${BETA_VERSION}" >> $GITHUB_OUTPUT
+          echo "Testing with beta version: ${BETA_VERSION}"
+          npm version ${BETA_VERSION} --no-git-tag-version --allow-same-version
 
       - name: Build package
         run: npm run build
@@ -71,8 +76,17 @@ jobs:
           git diff --staged --quiet || git commit -m "chore: update build artifacts for v${{ steps.version.outputs.version }} [skip ci]"
           git push origin HEAD
 
-      - name: Publish to npm
-        run: npm publish --access public
+      - name: Update package metadata for beta testing
+        run: |
+          # Add beta tag to package.json for testing
+          node -e "
+            const pkg = require('./package.json');
+            pkg.publishConfig = { ...pkg.publishConfig, tag: 'beta' };
+            require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+          "
+
+      - name: Publish to npm (beta for testing)
+        run: npm publish --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -81,27 +95,28 @@ jobs:
         with:
           payload: |
             {
-              "text": ":white_check_mark: Production Release Deployment Completed",
+              "text": ":white_check_mark: Production Workflow Test (Beta) Completed",
               "blocks": [
                 {
                     "type": "section",
-                    "text": { "type": "mrkdwn", "text": ":white_check_mark: :white_check_mark: *Production Release* v${{ steps.version.outputs.version }} Deployment Completed :white_check_mark: :white_check_mark:" }
+                    "text": { "type": "mrkdwn", "text": ":white_check_mark: :white_check_mark: *Production Workflow Test* (Published as Beta) Completed :white_check_mark: :white_check_mark:" }
                 },
                 {
                   "type": "section",
                   "fields": [
-                    { "type": "mrkdwn", "text": "*Version:*\nv${{ steps.version.outputs.version }}" },
-                    { "type": "mrkdwn", "text": "*Tag:*\n${{ steps.version.outputs.tag_name }}" }
+                    { "type": "mrkdwn", "text": "*Original Tag:*\n${{ steps.version.outputs.tag_name }}" },
+                    { "type": "mrkdwn", "text": "*Beta Version:*\n${{ steps.version.outputs.beta_version }}" }
                   ]
                 },
                 {
                   "type": "section",
-                  "text": { "type": "mrkdwn", "text": "*Links:*\n• <https://www.npmjs.com/package/@openlettermarketing/olc-react-sdk/v/${{ steps.version.outputs.version }}|NPM Package>\n• <https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.tag_name }}|GitHub Release>" }
+                  "text": { "type": "mrkdwn", "text": "*Links:*\n• <https://www.npmjs.com/package/@openlettermarketing/olc-react-sdk/v/${{ steps.version.outputs.beta_version }}|NPM Package (Beta)>\n• <https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.tag_name }}|GitHub Release>" }
                 },
                 {
                   "type": "context",
                   "elements": [
-                    { "type": "mrkdwn", "text": ":male-factory-worker: *Released By:* ${{ github.actor }}" }
+                    { "type": "mrkdwn", "text": ":male-factory-worker: *Released By:* ${{ github.actor }}" },
+                    { "type": "mrkdwn", "text": ":warning: *Note:* This was a test run - published as beta" }
                   ]
                 }
               ]
@@ -116,11 +131,11 @@ jobs:
         with:
           payload: |
             {
-              "text": ":x: Production Release Deployment Failed",
+              "text": ":x: Production Workflow Test (Beta) Failed",
               "blocks": [
                 {
                     "type": "section",
-                    "text": { "type": "mrkdwn", "text": ":x: :x: *Production Release* v${{ steps.version.outputs.version }} Deployment Failed :x: :x:" }
+                    "text": { "type": "mrkdwn", "text": ":x: :x: *Production Workflow Test* (Beta Mode) Failed :x: :x:" }
                 },
                 {
                   "type": "context",
