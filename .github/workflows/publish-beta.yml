@@ -20,11 +20,11 @@ jobs:
         with:
           payload: |
             {
-              "text": ":red_circle: Beta Package Deployment Started",
+              "text": ":large_yellow_circle: Beta Package Deployment Started",
               "blocks": [
                 {
                     "type": "section",
-                    "text": { "type": "mrkdwn", "text": ":red_circle: :red_circle: *Beta Package* Deployment Started :red_circle: :red_circle:" }
+                    "text": { "type": "mrkdwn", "text": ":large_yellow_circle: :large_yellow_circle: *Beta Package* Deployment Started :large_yellow_circle: :large_yellow_circle:" }
                 },
                 {
                   "type": "context",
