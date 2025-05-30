@@ -1,7 +1,6 @@
 name: Publish Production Release
 
 on:
-  push:
   release:
     types: [published]
 
