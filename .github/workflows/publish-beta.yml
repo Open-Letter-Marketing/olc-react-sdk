@@ -67,6 +67,13 @@ jobs:
       - name: Build package
         run: npm run build
 
+      - name: Commit build changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git diff --staged --quiet || git commit -m "chore: update build artifacts for beta v${{ steps.version.outputs.beta_version }} [skip ci]"
+
       - name: Update package metadata for beta
         run: |
           # Add beta tag to package.json
