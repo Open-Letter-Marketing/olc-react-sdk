@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 // Import Polotno and third-party libraries
 import QRCode from 'qrcode';
@@ -7,15 +7,23 @@ import { SectionTab } from 'polotno/side-panel';
 import type { StoreType } from 'polotno/model/store';
 import * as svg from 'polotno/utils/svg';
 
-// Hooks
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
 import { failure } from '../../../redux/actions/snackbarActions';
+import {
+  setQrUrl,
+  setUtmSource,
+  setUtmMedium,
+  setUtmCampaignName,
+  setCustomUtms,
+  clearQrFields,
+  setIsQR,
+} from '../../../redux/actions/customQRCodeActions';
 
 // Utils
 import { MESSAGES } from '../../../utils/message';
 import { validURL } from '../../../utils/helper';
-import { DISALLOWED_DOMAINS, emojiRegex } from '../../../utils/constants';
+import { DISALLOWED_DOMAINS, MERGE_UTM_PARAMS, emojiRegex } from '../../../utils/constants';
 
 //Components
 import GeneralSelect from '../../../components/GenericUIBlocks/GeneralSelect';
@@ -44,11 +52,13 @@ const CustomQRCode = {
 
   // we need observer to update component automatically on any store changes
   Panel: observer(({ store, allowSenderFields, allowPropertyFields, excludedFields }: CustomQRProps) => {
-    const [url, setUrl] = useState('');
-    const [utmSource, setUtmSource] = useState('direct mail');
-    const [utmMedium, setUtmMedium] = useState('QR Code');
-    const [utmCampaignName, setUtmCampaignName] = useState('');
-    const [customUtms, setCustomUtms] = useState<Record<string, any>>({});
+
+    const url = useSelector((state: RootState) => state.customQRCode.url);
+    const utmSource = useSelector((state: RootState) => state.customQRCode.utmSource);
+    const utmMedium = useSelector((state: RootState) => state.customQRCode.utmMedium);
+    const utmCampaignName = useSelector((state: RootState) => state.customQRCode.utmCampaignName);
+    const customUtms = useSelector((state: RootState) => state.customQRCode.customUtms);
+    const isQR = useSelector((state: RootState) => state.customQRCode.isQR);
 
     const dispatch: AppDispatch = useDispatch();
 
@@ -90,26 +100,29 @@ const CustomQRCode = {
 
 
     const utmFields = allFields.map(({ key }) => ({
-      label: `utm_${key.toLowerCase().replaceAll('.', '_').replaceAll(/[{}]/g, '')}`
+      label: `utm_${key?.toLowerCase().replaceAll('.', '_').replaceAll(/[{}]/g, '')}`
     })).filter((utmField) => !excludedLabels.includes(utmField.label));
 
-    const utms = [
+     const utms = [
       'custom_utm_1',
       'custom_utm_2',
       'custom_utm_3',
     ]
 
     const el = store.selectedElements[0];
-    const isQR = el?.name === 'qr';
-
 
     const clearQRFields = () => {
       store.selectElements([]);
-      setUrl('');
-      setUtmSource('direct mail');
-      setUtmMedium('QR Code');
-      setUtmCampaignName('');
-      setCustomUtms({});
+      dispatch(clearQrFields());
+    }
+
+    const appendUtmParameters = (utmField: string, defaultValue: string) => {
+      let result = '';
+      const field = MERGE_UTM_PARAMS.find((field) => field.key === utmField);
+      if (field) {
+        result = `${field.value}=${defaultValue}`
+      }
+      return result;
     }
 
     const validateQRCode = () => {
@@ -175,26 +188,53 @@ const CustomQRCode = {
       if (customUtms[utms[0]]?.label) {
         const orignalField = `{{${customUtms[utms[0]]?.label.replace('utm_', '').replace('_', '.').toUpperCase()}}}`;
         const defaultValue = allFields.find((field) => field.key === orignalField)?.defaultValue;
-        params.push(`${customUtms[utms[0]]?.label}=${defaultValue}`)
+        const attachUtmKeys = appendUtmParameters(orignalField, defaultValue);
+        const mergeUtmParams =
+          attachUtmKeys && orignalField == '{{C.PHONE_NUMBER}}'
+            ? encodeURIComponent(
+              `${customUtms[utms[0]]?.label}=${defaultValue}&${attachUtmKeys}`
+            ).replace(/[\s\(\)]/g, '')
+            : attachUtmKeys
+              ? `${customUtms[utms[0]]?.label}=${defaultValue}&${attachUtmKeys}`
+              : `${customUtms[utms[0]]?.label}=${defaultValue}`;
+        params.push(mergeUtmParams);
       }
 
       if (customUtms[utms[1]]?.label) {
         const orignalField = `{{${customUtms[utms[1]]?.label.replace('utm_', '').replace('_', '.').toUpperCase()}}}`;
         const defaultValue = allFields.find((field) => field.key === orignalField)?.defaultValue;
-        params.push(`${customUtms[utms[1]]?.label}=${defaultValue}`)
+        const attachUtmKeys = appendUtmParameters(orignalField, defaultValue);
+        const mergeUtmParams =
+          attachUtmKeys && orignalField == '{{C.PHONE_NUMBER}}'
+            ? encodeURIComponent(
+              `${customUtms[utms[1]]?.label}=${defaultValue}&${attachUtmKeys}`
+            ).replace(/[\s\(\)]/g, '')
+            : attachUtmKeys
+              ? `${customUtms[utms[1]]?.label}=${defaultValue}&${attachUtmKeys}`
+              : `${customUtms[utms[1]]?.label}=${defaultValue}`;
+        params.push(mergeUtmParams);
       }
 
       if (customUtms[utms[2]]?.label) {
         const orignalField = `{{${customUtms[utms[2]]?.label.replace('utm_', '').replace('_', '.').toUpperCase()}}}`;
         const defaultValue = allFields.find((field) => field.key === orignalField)?.defaultValue;
-        params.push(`${customUtms[utms[2]]?.label}=${defaultValue}`)
+        const attachUtmKeys = appendUtmParameters(orignalField, defaultValue);
+        const mergeUtmParams =
+          attachUtmKeys && orignalField == '{{C.PHONE_NUMBER}}'
+            ? encodeURIComponent(
+              `${customUtms[utms[2]]?.label}=${defaultValue}&${attachUtmKeys}`
+            ).replace(/[\s\(\)]/g, '')
+            : attachUtmKeys
+              ? `${customUtms[utms[2]]?.label}=${defaultValue}&${attachUtmKeys}`
+              : `${customUtms[utms[2]]?.label}=${defaultValue}`;
+        params.push(mergeUtmParams);
       }
 
       if (params.length > 0) {
         customURL += `/?${params.join("&")}`;
       }
-
-      return customURL;
+      
+      return encodeURI(customURL);
     }
 
     const addNewQRCode = async () => {
@@ -262,30 +302,30 @@ const CustomQRCode = {
 
     // Handler to update dropdown values
     const handleSelect = (utmKey: string, value: any) => {
-      setCustomUtms((prev) => {
-        if (value === null) {
-          const updatedUtms = { ...prev };
-          delete updatedUtms[utmKey];
-          return updatedUtms;
-        }
-        return { ...prev, [utmKey]: value };
-      });
+      const updatedUtms = { ...customUtms };
+      if (value === null) {
+        delete updatedUtms[utmKey];
+      } else {
+        updatedUtms[utmKey] = value;
+      }
+      dispatch(setCustomUtms(updatedUtms));
     };
 
     // if selection is changed we need to update input value
     useEffect(() => {
       if (el?.name === 'qr') {
-        setUrl(el?.custom?.url || el?.custom?.value || '');
-        setUtmSource(el?.custom?.utm_source || 'direct mail');
-        setUtmMedium(el?.custom?.utm_medium || 'QR Code');
-        setUtmCampaignName(el?.custom?.utm_campaign_name || '');
-        Object.values(el?.custom?.custom_utms || {}).length ? setCustomUtms(el?.custom?.custom_utms) : setCustomUtms({});
-      } else {
-        setUrl('');
-        setUtmSource('direct mail');
-        setUtmMedium('QR Code');
-        setUtmCampaignName('');
-        setCustomUtms({});
+        dispatch(setIsQR(el?.name === 'qr'));
+        dispatch(setQrUrl(el?.custom?.url || el?.custom?.value || ''));
+        dispatch(setUtmSource(el?.custom?.utm_source || 'direct mail'));
+        dispatch(setUtmMedium(el?.custom?.utm_medium || 'QR Code'));
+        dispatch(setUtmCampaignName(el?.custom?.utm_campaign_name || ''));
+        if (Object.values(el?.custom?.custom_utms || {}).length) {
+          dispatch(setCustomUtms(el?.custom?.custom_utms));
+        } else {
+          dispatch(setCustomUtms({}));
+        }
+      } else if (isQR && el?.name !== 'qr'){
+        dispatch(clearQrFields());
       }
     }, [isQR, el]);
 
@@ -303,7 +343,7 @@ const CustomQRCode = {
           <Input
             type="text"
             onChange={(e) => {
-              setUrl(e.target.value);
+              dispatch(setQrUrl(e.target.value));
             }}
             placeholder={MESSAGES.TEMPLATE.QR_SECTION.QR_PLACEHOLDER}
             value={url}
@@ -315,7 +355,7 @@ const CustomQRCode = {
           <Input
             type="text"
             onChange={(e) => {
-              setUtmSource(e.target.value);
+              dispatch(setUtmSource(e.target.value));
             }}
             placeholder={'Enter UTM Source'}
             value={utmSource}
@@ -327,7 +367,7 @@ const CustomQRCode = {
           <Input
             type="text"
             onChange={(e) => {
-              setUtmMedium(e.target.value);
+              dispatch(setUtmMedium(e.target.value));
             }}
             placeholder={'Enter UTM Medium'}
             value={utmMedium}
@@ -339,7 +379,7 @@ const CustomQRCode = {
           <Input
             type="text"
             onChange={(e) => {
-              setUtmCampaignName(e.target.value);
+              dispatch(setUtmCampaignName(e.target.value));
             }}
             placeholder={'Enter UTM Campaign Name'}
             value={utmCampaignName}
@@ -349,7 +389,7 @@ const CustomQRCode = {
         {utms?.map((utm, idx) => {
           return (
             <div className='qr-input-wrapper' key={idx}>
-              <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>
+              <label>{utm.toUpperCase().replace(/\_/g, ' ')}:</label>      
               <GeneralSelect
                 placeholder={`Select Custom UTM ${idx + 1}`}
                 options={utmFields as any}
@@ -357,12 +397,10 @@ const CustomQRCode = {
                 selectedValue={customUtms[utm] || (null as any)}
                 builderSelect={true}
                 clearField={true}
-                // @ts-ignore
-                search={(() => { }) as any}
-                updateErrors={() => { }}
-                disableClearable={false}
-                templateBuilder={true}
+                search={true}
                 qrField={true}
+                isError={false} 
+                gallerySelect={false}              
               />
             </div>
           );

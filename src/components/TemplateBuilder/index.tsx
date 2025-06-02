@@ -28,6 +28,7 @@ import {
   searchAndAdvanceChange,
   selectProduct,
 } from '../../redux/actions/templateActions';
+import { clearQrFields } from '../../redux/actions/customQRCodeActions';
 
 // Utils
 import {
@@ -81,6 +82,7 @@ interface TemplateBuilderProps {
   allowedTemplateSections?: any;
   onReturnAndNavigate?: () => void;
   onGetCustomFields?: () => Promise<any>;
+  onDuplicateTemplate?: () => Promise<any>;
   onCreateCustomTemplateQuery?: (payload: any) => Promise<any>;
   onGetOneTemplate?: (payload: any) => Promise<any>;
   onGetTemplates?: (payload: any) => Promise<any>;
@@ -104,6 +106,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   onReturnAndNavigate,
   onGetOneTemplate,
   onGetCustomFields,
+  onDuplicateTemplate,
   onGetTemplates,
   onSubmit,
 }) => {
@@ -228,6 +231,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
       return () => {
         store.history.clear();
         store.clear();
+        dispatch(clearQrFields());
         off();
       };
     }
@@ -339,7 +343,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
       if (currentTemplateType === 'Real Penned Letter') {
         handleRealPennedLetters();
       }
-
+      dispatch(clearQrFields());
       store.history.clear();
     }
 
@@ -426,6 +430,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
       }
       store.loadJSON(jsonData);
       await store.waitLoading();
+      dispatch(clearQrFields());
       setIsStoreUpdated(false);
       addSafetyBordersForTemplates(existingTemplate?.product?.id, store);
       dispatch({ type: TEMPLATE_LOADING, payload: false });
@@ -450,6 +455,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
               store={store}
               isStoreUpdated={isStoreUpdated}
               olcTemplate={olcTemplate}
+              onDuplicateTemplate={onDuplicateTemplate}
               onReturnAndNavigate={onReturnAndNavigate}
               onSubmit={onSubmit}
             />

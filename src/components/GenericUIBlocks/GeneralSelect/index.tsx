@@ -30,6 +30,7 @@ interface GeneralSelectProps {
   gallerySelect: boolean;
   clearField: boolean;
   qrField?: boolean;
+  search?: boolean;
 }
 
 const colourStyles: StylesConfig<Option, false> = {
@@ -77,7 +78,8 @@ const GeneralSelect: React.FC<GeneralSelectProps> = ({
   builderSelect,
   gallerySelect=false,
   clearField,
-  qrField = false
+  qrField = false,
+  search = false
 }) => {
   return (
     <div className="select-layout" style={{
@@ -95,7 +97,7 @@ const GeneralSelect: React.FC<GeneralSelectProps> = ({
         blurInputOnSelect
         isClearable={clearField}
         components={{ClearIndicator}}
-        isSearchable={false}
+        isSearchable={search}
       />
       {isError && (
         <Typography variant="p" style={errorStyles}>

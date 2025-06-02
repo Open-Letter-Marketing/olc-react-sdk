@@ -154,19 +154,18 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                     builderSelect={true}
                                     gallerySelect={true}
                                     clearField={true}
-                                    // @ts-ignore
-                                    search={(() => { }) as any}
-                                    updateErrors={() => { }}
-                                    disableClearable={false}
-                                    templateBuilder={true}
+                                    search={false} 
+                                    isError={false}
                                 />
                             </div>
                         )}
                     <Typography>{removeSThroughOne(`${currentTemplates.length > 0 ? pagination.total : 0} templates`)}</Typography>
                 </div>
                 <div className={`templatesContent ${currentTemplateType?.id === '3' && "heightOLC"}`} style={{
-                    justifyContent: loader ? "center" : "flex-start",
-                    alignItems: searchApplied ? "center" : "flex-start"
+                    justifyContent: loader || searchApplied ? "center" : "flex-start",
+                    alignItems: searchApplied ? "center" : "flex-start",
+                    height: searchApplied ? "calc(100vh - 300px)" : "auto",
+                    overflowY: product?.productType === "Personal Letters" && currentTemplates.length === 0 ? "hidden" : "scroll"
                 }}>
                     {!loader && !searchApplied && currentTemplateTypeRef.current?.id === '1' && (
                         <div>
@@ -176,7 +175,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                         product?.size?.find((product: any) => product?.size === "4x6") || product?.paperSize === "4x6" ? "postcard-4x6"
                                         : product?.id === '15' && product?.size?.find((product: any) => product?.size === "6x11") || product?.paperSize === "6x11" ? "postcard-6x11"
                                             : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") || product?.paperSize === "6x9" ? "postcard-6x9"
-                                                : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
+                                                : product?.id === '5' || product?.id === '16' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                                 onClick={() => handleDialogChange('design-own')}
                                 style={{
                                     boxShadow: `inset 0 0 0 2px ${primaryColorRGBA}`
@@ -196,7 +195,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                                         product?.size?.find((product: any) => product?.size === "4x6") || product?.paperSize === "4x6" ? "postcard-4x6"
                                         : product?.id === '15' && product?.size?.find((product: any) => product?.size === "6x11") || product?.paperSize === "6x11" ? "postcard-6x11"
                                             : product?.id === '14' && product?.size?.find((product: any) => product?.size === "6x9") || product?.paperSize === "6x9" ? "postcard-6x9"
-                                                : product?.id === '5' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
+                                                : product?.id === '5' || product?.id === '16' ? 'personalLetter' : product?.id === '2' || product?.id === '4' || product?.id === '18' ? 'professionalLetter' : product?.id === '9' ? 'biFold' : product?.id === '11' ? 'triFold' : null}`}
                                 onClick={() => {
                                     setOpenGalleryModal(false);
                                     setHireDesignerModal(true);
@@ -220,6 +219,7 @@ const ModalGallery = (props: CustomTemplateSectionProps) => {
                         product={product}
                         searchApplied={searchApplied}
                         primaryColorRGBA={primaryColorRGBA}
+                        designerQueryAmount={designerQueryAmount}
                     />
                 </div>
             </Dialog>

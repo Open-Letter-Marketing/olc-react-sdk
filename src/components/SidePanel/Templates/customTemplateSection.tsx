@@ -20,6 +20,7 @@ import { failure } from '../../../redux/actions/snackbarActions';
 // Hooks
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
+import { clearQrFields } from '../../../redux/actions/customQRCodeActions';
 
 // Utils
 import {
@@ -35,11 +36,13 @@ import { MESSAGES } from '../../../utils/message';
 import { getItem, removeItem, setItem } from '../../../utils/local-storage';
 import { addSafetyBordersForTemplates } from '../../../utils/templateSafetyBorders';
 import { addIdentifiersForTemplates } from '../../../utils/templateIdentifierArea';
+import { addElementsforRealPennedLetters } from '../../../utils/templateRestrictedArea/realPenned';
 
 // Components
 import Dialog from '../../GenericUIBlocks/Dialog';
 import SideBarGallery from './SideBarGallery';
 import ModalGallery from './ModalGallery';
+import HireDesigner from './ModalGallery/HireDesigner';
 
 // Icons
 // @ts-ignore
@@ -48,7 +51,7 @@ import ModalCross from '../../../assets/images/modal-icons/modal-cross';
 
 // styles
 import './styles.scss';
-import HireDesigner from './ModalGallery/HireDesigner';
+
 
 type SideSection = typeof TemplatesSection;
 
@@ -352,6 +355,7 @@ const CustomTemplateSection: SideSection = {
           try {
             const template = await onGetOneTemplate(id);
             dispatch({ type: TEMPLATE_LOADING, payload: true });
+            dispatch(clearQrFields());
             if (template) {
               const workspaceElement = document.querySelector(
                 '.polotno-workspace-container'
@@ -444,6 +448,7 @@ const CustomTemplateSection: SideSection = {
 
       const handleClearStore = () => {
         store.clear();
+        dispatch(clearQrFields());
         let size: string | string[] = '';
         let isPostCards = false;
         let _product = product;
@@ -469,6 +474,9 @@ const CustomTemplateSection: SideSection = {
         }
         drawRestrictedAreaOnPage(store, product, envelopeType);
         addIdentifiersForTemplates(product.id, store);
+        if (product.productType  === 'Real Penned Letter') {
+          addElementsforRealPennedLetters(store);
+        }
         handleDialogChange('');
         if (templateGalleryModal) {
           closeGalleryModal();

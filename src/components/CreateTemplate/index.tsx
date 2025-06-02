@@ -13,6 +13,7 @@ import {
   selectProduct,
 } from '../../redux/actions/templateActions';
 import { CLEAR_TEMPLATE } from '../../redux/actions/action-types';
+import { clearQrFields } from '../../redux/actions/customQRCodeActions';
 
 //utils
 import { PRODUCT_LEARN_URL, sortOrderForTemplates } from '../../utils/constants';
@@ -175,6 +176,7 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({
 
     useEffect(() => {
       dispatch(clearTemplateFields());
+      dispatch(clearQrFields());
       removeItem('formData');
       dispatch({ type: CLEAR_TEMPLATE });
     }, []);

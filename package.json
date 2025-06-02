@@ -13,8 +13,7 @@
     "build": "node update-version.js && webpack && tsc",
     "test": "jest --silent",
     "coverage": "npm run test -- --coverage",
-    "prepare": "npm run build",
-    "publish": "npm publish --access public"
+    "prepare": "npm run build"
   },
   "publishConfig": {
     "access": "public"

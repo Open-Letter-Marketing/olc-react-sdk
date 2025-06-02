@@ -1,0 +1,143 @@
+name: Publish Beta Version
+
+on:
+  push:
+    branches:
+      - develop
+    tags:
+      - '*-beta*'
+      - 'beta-*'
+      - 'v*-beta*'
+  workflow_dispatch:
+
+jobs:
+  publish-beta:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Send Deployment Started Notification
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":large_yellow_circle: Beta Package Deployment Started",
+              "blocks": [
+                {
+                    "type": "section",
+                    "text": { "type": "mrkdwn", "text": ":large_yellow_circle: :large_yellow_circle: *Beta Package* Deployment Started :large_yellow_circle: :large_yellow_circle:" }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    { "type": "mrkdwn", "text": ":male-factory-worker: *Started By:* ${{ github.event.pusher.name }}" }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm i --force
+
+      - name: Generate beta version
+        id: version
+        run: |
+          # Get current version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+          # Generate beta version with timestamp
+          TIMESTAMP=$(date +%Y%m%d%H%M%S)
+          BETA_VERSION="${CURRENT_VERSION}-beta.${TIMESTAMP}"
+
+          echo "beta_version=${BETA_VERSION}" >> $GITHUB_OUTPUT
+          echo "Generated beta version: ${BETA_VERSION}"
+
+          # Update package.json with beta version
+          npm version ${BETA_VERSION} --no-git-tag-version
+
+      - name: Build package
+        run: npm run build
+
+      #   - name: Commit build changes
+      #     run: |
+      #       git config --local user.email "action@github.com"
+      #       git config --local user.name "GitHub Action"
+      #       git add .
+      #       git diff --staged --quiet || git commit -m "chore: update build artifacts for beta v${{ steps.version.outputs.beta_version }} [skip ci]"
+
+      - name: Update package metadata for beta
+        run: |
+          # Add beta tag to package.json
+          node -e "
+            const pkg = require('./package.json');
+            pkg.publishConfig = { ...pkg.publishConfig, tag: 'beta' };
+            require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+          "
+
+      - name: Publish to npm (beta)
+        run: npm publish --tag beta --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Send Deployment Completed Notification
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":large_green_circle: Beta Package Deployment Completed",
+              "blocks": [
+                {
+                    "type": "section",
+                    "text": { "type": "mrkdwn", "text": ":large_green_circle: :large_green_circle: *Beta Package* Deployment Completed :large_green_circle: :large_green_circle:" }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    { "type": "mrkdwn", "text": ":male-factory-worker: *Started By:* ${{ github.event.pusher.name }}" },
+                    { "type": "mrkdwn", "text": ":package: *Version:* ${{ steps.version.outputs.beta_version }}" },
+                    { "type": "mrkdwn", "text": ":memo: *Commit:* ${{ github.event.head_commit.message }}" }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Notify on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":x: Beta Package Deployment Failed",
+              "blocks": [
+                {
+                    "type": "section",
+                    "text": { "type": "mrkdwn", "text": ":x: :x: *Beta Package* Deployment Failed :x: :x:" }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    { "type": "mrkdwn", "text": ":male-factory-worker: *Started By:* ${{ github.event.pusher.name }}" },
+                    { "type": "mrkdwn", "text": ":link: *Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>" }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
