@@ -94,6 +94,7 @@ const Images: Record<string, ReactElement> = {
   'Bi-Fold Self-Mailers': <BiFoldSelfMailers fill="var(--svg-color)" />,
   'Snap Pack Mailers': <SnapPackMailers fill="var(--svg-color)" />,
   'A6 Envelope': <ProfessionalLetter fill="var(--svg-color)" />,
+  '#10 Envelope': <ProfessionalLetter fill="var(--svg-color)" />,
 };
 
 interface CreateTemplateProps {

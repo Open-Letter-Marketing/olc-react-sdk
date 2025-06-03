@@ -117,8 +117,19 @@ export const Products: Product[] = [
         productType: "A6 Envelope",
         size: [
             {
-                id: "20",
+                id: "30",
                 size: "4.75x6.5"
+            }
+        ]
+    },
+    {
+        id: "31",
+        title: "#10 Envelope",
+        productType: "#10 Envelope",
+        size: [
+            {
+                id: "31",
+                size: "4.125x9.5"
             }
         ]
     },
