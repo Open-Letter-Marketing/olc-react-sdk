@@ -109,6 +109,7 @@ export const MESSAGES = {
       SUBMIT_BUTTON: "Clone",
       SUB_HEADING: 'Enter a New Name for Your Template',
       DESCRIPTION: 'Create a clone of an existing template. Please provide a new name for the template to proceed.',
+      NOTE: " Note: Only saved changes will appear in the cloned template."
     },
     CUSTOM_ADD_ONS: {
       TITLE: `Optional Add-On's`,

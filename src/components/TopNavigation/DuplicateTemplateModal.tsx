@@ -43,6 +43,14 @@ const DuplicateTemplateModal: React.FC<DuplicateTemplateModalProps> = ({
     maxWidth: '480px',
     minHeight: error ? '380px' : '360px',
   };
+
+  const noteStyle = {
+    fontSize: '12px',
+    color: "#000",
+    fontWeight: '400',
+    marginTop: '5px',
+  }
+
   const [loader, setLoader] = useState(false);
 
   const dispatch: AppDispatch = useDispatch();
@@ -86,6 +94,7 @@ const DuplicateTemplateModal: React.FC<DuplicateTemplateModalProps> = ({
             error={error}
             onChange={(e) => onChange(e.target.value)}
           />
+          <div style={noteStyle}>{MESSAGES.TEMPLATE.DUPLICATE_MODAL.NOTE}</div>
         </div>
       }
     />

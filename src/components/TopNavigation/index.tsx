@@ -435,21 +435,8 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         </GridItem>
         <GridItem lg={5} md={6} sm={9} xs={12}>
           <div className="actionsBtnWrapper right">
-            {olcTemplate && !designerTemplateQuery && <div
-              className="clone"
-              style={{
-                ...buttonStyles,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: '40px',
-                fontWeight: '400',
-                maxWidth: 'auto',
-                minWidth: '50px',
-                borderRadius: '3px',
-                cursor: 'pointer',
-              }}
-              onClick={() =>
+            {olcTemplate && !designerTemplateQuery && 
+            <div className="clone" onClick={() =>
                 setIsShowModel(prev => ({
                   ...prev,
                   open: true,
@@ -465,22 +452,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
               place="bottom"
               anchorSelect=".clone"
             />
-            <div
-              className="download"
-              style={{
-                ...buttonStyles,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: '40px',
-                fontWeight: '400',
-                maxWidth: 'auto',
-                minWidth: '50px',
-                borderRadius: '3px',
-                cursor: 'pointer',
-              }}
-              onClick={handleViewProofWithLamda}
-            >
+            <div className="download" onClick={handleViewProofWithLamda}>
               {downloadingProof ? (
                 <CircularProgress style={progressStyles} />
               ) : (
