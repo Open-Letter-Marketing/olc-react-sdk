@@ -92,7 +92,8 @@ const Images: Record<string, ReactElement> = {
   'Real Penned Letter': <RealPennedLetter fill="var(--svg-color)" />,
   'Tri-Fold Self-Mailers': <TriFoldSelfMailers fill="var(--svg-color)" />,
   'Bi-Fold Self-Mailers': <BiFoldSelfMailers fill="var(--svg-color)" />,
-  'Snap Pack Mailers': <SnapPackMailers fill="var(--svg-color)" />
+  'Snap Pack Mailers': <SnapPackMailers fill="var(--svg-color)" />,
+  'A6 Envelope': <ProfessionalLetter fill="var(--svg-color)" />,
 };
 
 interface CreateTemplateProps {
