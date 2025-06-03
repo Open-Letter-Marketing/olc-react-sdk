@@ -58,7 +58,8 @@ export const sortOrderForTemplates: string[] = [
   "Bi-Fold Self-Mailers",
   "Tri-Fold Self-Mailers",
   "Real Penned Letter",
-  "A6 Envelope"
+  "A6 Envelope",
+  '#10 Envelope'
 ];
 
 export const EMAIL_REGEX = /^[a-z0-9](\.?[a-z0-9_\-\+])*@[a-z0-9](\.?[a-z0-9-])*\.[a-z]{2,}$/i;
