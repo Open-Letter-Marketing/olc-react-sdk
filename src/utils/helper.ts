@@ -166,7 +166,7 @@ export const createSafetyTextElement = (
     styleEditable: false,
     text,
     fontSize,
-    fontFamily: "Noto Sans",
+    fontFamily: "Noto Sans JP",
     fontStyle: "italic",
     fontWeight: "normal",
     fill: "rgba(74,74,74,1)",
