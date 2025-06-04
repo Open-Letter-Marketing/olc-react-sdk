@@ -103,10 +103,13 @@ export const MESSAGES = {
       SUBMIT_BUTTON: "Next",
     },
     DUPLICATE_MODAL: {
-      TITLE: 'Duplicate Template',
+      TITLE: 'Clone Template',
       NAME_PLACEHOLDER: 'Enter new template name',
       CANCEL_BUTTON: 'Cancel',
-      SUBMIT_BUTTON: "Duplicate",
+      SUBMIT_BUTTON: "Clone",
+      SUB_HEADING: 'Enter a New Name for Your Template',
+      DESCRIPTION: 'Create a clone of an existing template. Please provide a new name for the template to proceed.',
+      NOTE: " Note: Only saved changes will appear in the cloned template."
     },
     CUSTOM_ADD_ONS: {
       TITLE: `Optional Add-On's`,
