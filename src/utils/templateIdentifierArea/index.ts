@@ -10,6 +10,7 @@ import { addIdentifierAreaToSnapPackMailer } from './snapPack'
 
 
 export const addIdentifiersForTemplates = (productId: string, store: StoreType) => {
+    if (+productId === 18) return;
     if (!productId) return;
     if (+productId === 13) {
         addIdentifierAreaTo4x6PostCard(store);

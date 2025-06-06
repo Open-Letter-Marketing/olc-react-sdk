@@ -123,6 +123,7 @@ export interface Product {
 }
 
 export const drawRestrictedAreaOnPage = (store: any, product: Product, envelopeType: string) => {
+  if (+product?.id === 18) return;
   const barcodeSrc =
     (getEnv() === 'local' || getEnv() === 'staging'
       ? STAGE_S3_URL

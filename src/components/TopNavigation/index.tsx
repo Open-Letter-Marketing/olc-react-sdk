@@ -295,10 +295,10 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
           await store.loadJSON(jsonData);
         }
 
-        if (product.productType === 'Snap Pack Mailers') {
-          const updatedBoxes = changeColorOfBoxesForSnapPack(jsonData);
-          jsonData = updatedBoxes;
-        }
+        // if (product.productType === 'Snap Pack Mailers') {
+        //   const updatedBoxes = changeColorOfBoxesForSnapPack(jsonData);
+        //   jsonData = updatedBoxes;
+        // }
 
         // get all fonts family from json
         const fontFamilies = extractFontFamilies(jsonData?.pages);
@@ -333,7 +333,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
 
         const blob = await store.toBlob();
 
-        if (multiPageTemplates.includes(product.productType)) {
+        if (multiPageTemplates.includes(product.productType) && product?.productType !== 'Snap Pack Mailers') {
           const backJsonData = { ...jsonData, pages: [jsonData.pages[1]] }
           await store.loadJSON(backJsonData);
           await store.waitLoading();

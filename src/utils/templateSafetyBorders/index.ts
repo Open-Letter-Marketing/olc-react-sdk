@@ -10,6 +10,7 @@ import { addSafetyBordersToSnapPackMailer } from './snapPack'
 
 
 export const addSafetyBordersForTemplates = (productId: string, store: StoreType) => {
+    if (+productId === 18) return;
     if (!productId) return;
     if (+productId === 13) {
         addSafetyBordersTo4x6PostCard(store);
