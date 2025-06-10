@@ -55,6 +55,13 @@
       }
     }
 
+    .polotno-font-item{
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+    }
+
     .go4160152499,
     .polotno-workspace-inner,
     .polotno-panel-container,
