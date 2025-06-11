@@ -75,6 +75,23 @@ const downloadProof = async (data: object): Promise<unknown> => {
 
 
 /**
+ * Downloads the envelope for the provided data.
+ *
+ * @param {object} data - The data for which the proof is requested.
+ * @returns {Promise<any>} - The response object from the POST request.
+ * @throws {object} - The error response if there is an error.
+ */
+const envelopeProof = async (data: object): Promise<unknown> => {
+  try {
+    const response = await post('/download-envelope-proof', data);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+
+/**
  * Uploads a file.
  *
  * @param {File} file - The file to upload.
@@ -175,6 +192,7 @@ export {
   loadFormDataToStore,
   uploadFile,
   downloadProof,
+  envelopeProof,
   getAllTemplateCategories
 };
 
