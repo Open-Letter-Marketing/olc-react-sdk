@@ -268,6 +268,7 @@ const CustomFieldSection: SideSection = {
                   <GeneralTootip
                     anchorSelect=".infoIcon"
                     place="bottom"
+                    className='contact-info-tooltip'
                     title="Merge fields allow you to personalize your mailer with contact information."
                   />
                 </div>
