@@ -8,6 +8,7 @@ interface Product {
     title: string;
     productType: string;
     size: Size[];
+    hasEnvelope?: boolean;
     windowed?: boolean; // optional property
 }
 
@@ -17,6 +18,7 @@ export const Products: Product[] = [
         id: "9",
         title: "Bi-Fold Self-Mailers",
         productType: "Bi-Fold Self-Mailers",
+        hasEnvelope: false,
         size: [
             {
                 id: "9",
@@ -28,6 +30,7 @@ export const Products: Product[] = [
         id: "5",
         title: "Personal Letters",
         productType: "Personal Letters",
+        hasEnvelope: true,
         size: [
             {
                 id: "5",
@@ -39,6 +42,7 @@ export const Products: Product[] = [
         id: "13",
         title: "Postcards",
         productType: "Postcards",
+        hasEnvelope: false,
         size: [
             {
                 id: "13",
@@ -58,6 +62,7 @@ export const Products: Product[] = [
         id: "16",
         title: "Real Penned Letter",
         productType: "Real Penned Letter",
+        hasEnvelope: true,
         size: [
             {
                 id: "16",
@@ -69,6 +74,7 @@ export const Products: Product[] = [
         id: "11",
         title: "Tri-Fold Self-Mailers",
         productType: "Tri-Fold Self-Mailers",
+        hasEnvelope: false,
         size: [
             {
                 id: "11",
@@ -80,6 +86,7 @@ export const Products: Product[] = [
         id: "2",
         title: "Professional Letters - Windowed Envelope",
         productType: "Professional Letters",
+        hasEnvelope: true,
         size: [
             {
                 id: "2",
@@ -92,6 +99,7 @@ export const Products: Product[] = [
         id: "4",
         title: "Professional Letters - Non-windowed Envelope",
         productType: "Professional Letters",
+        hasEnvelope: true,
         size: [
             {
                 id: "4",
@@ -104,6 +112,7 @@ export const Products: Product[] = [
         id: "18",
         title: "Snap Pack Mailers",
         productType: "Snap Pack Mailers",
+        hasEnvelope: false,
         size: [
             {
                 id: "18",
