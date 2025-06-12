@@ -41,7 +41,7 @@ const DuplicateTemplateModal: React.FC<DuplicateTemplateModalProps> = ({
 
   const saveDialogStyles = {
     maxWidth: '480px',
-    minHeight: error ? '380px' : '360px',
+    minHeight: error ? '350px' : '330px',
   };
 
   const noteStyle = {
@@ -84,7 +84,6 @@ const DuplicateTemplateModal: React.FC<DuplicateTemplateModalProps> = ({
       onSubmit={duplicateTemplate}
       onCancel={onCancel}
       subHeading={MESSAGES.TEMPLATE.DUPLICATE_MODAL.SUB_HEADING}
-      description={MESSAGES.TEMPLATE.DUPLICATE_MODAL.DESCRIPTION}
       children={
         <div style={{width: '100%'}}>
           <Input
