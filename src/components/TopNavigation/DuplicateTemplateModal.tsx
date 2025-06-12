@@ -41,14 +41,14 @@ const DuplicateTemplateModal: React.FC<DuplicateTemplateModalProps> = ({
 
   const saveDialogStyles = {
     maxWidth: '480px',
-    minHeight: error ? '350px' : '330px',
+    minHeight: error ? '350px' : '329px',
   };
 
   const noteStyle = {
     fontSize: '12px',
     color: "#000",
     fontWeight: '400',
-    marginTop: '5px',
+    marginTop: '7px',
   }
 
   const [loader, setLoader] = useState(false);
