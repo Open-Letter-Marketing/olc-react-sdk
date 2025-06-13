@@ -27,6 +27,7 @@ import Typography from '../GenericUIBlocks/Typography';
 import Button from '../GenericUIBlocks/Button';
 import GeneralSelect from '../GenericUIBlocks/GeneralSelect';
 import GenericSnackbar from '../GenericUIBlocks/GenericSnackbar/Toast';
+import GeneralTooltip from '../GenericUIBlocks/GeneralTooltip';
 
 // Images
 //@ts-ignore
@@ -43,6 +44,8 @@ import TriFoldSelfMailers from '../../assets/images/templates/tri-fold-self-mail
 import BiFoldSelfMailers from '../../assets/images/templates/bi-fold-self-mailers.tsx';
 //@ts-ignore
 import SnapPackMailers from '../../assets/images/templates/snap-pack.tsx';
+//@ts-ignore
+import InfoIcon from '../../assets/images/templates/info-icon';
 
 
 import SizeImage from '../../assets/images/templates/size-image';
@@ -174,6 +177,22 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({
     }
   };
 
+  const ProductTooltipContent = ({ product }: { product: any }) => (
+    <div className="productTooltipContent">
+      <Typography className='heading'>{product?.productType}</Typography>
+      <div className='contentWrapper'>
+        {product?.size && product?.size.map((size: any, idx: any) => (
+          <Typography key={idx}><span>Size:</span> {size.size}</Typography>
+        ))}
+          {product?.paper && <Typography><span>Paper: </span> {product?.paper} </Typography>}
+          {+product?.id !== 2 && product?.envelope && <Typography><span>Envelope: </span> {product?.envelope} </Typography>}
+          {+product?.id === 2 && product?.envelope && <Typography><span>Windowed Envelope: </span> {product?.envelope} </Typography>}
+          {+product?.id === 2 && product?.nonEnvelope && <Typography><span>Non-Windowed Envelope: </span> {product?.nonEnvelope} </Typography>}
+          {product?.ink && <Typography><span>Ink: </span> {product?.ink} </Typography>}
+        </div>
+    </div>
+  );
+
     useEffect(() => {
       dispatch(clearTemplateFields());
       dispatch(clearQrFields());
@@ -291,6 +310,15 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({
                           >
                             {Images[prod.productType]}
                             <Typography>{prod.productType}</Typography>
+                            <div className={`productTooltip productTooltip-${index}`}>  
+                              <InfoIcon fill="var(--primary-color)" className={`productTooltipIcon-${index}`}/>
+                              <GeneralTooltip
+                                anchorSelect={`.productTooltipIcon-${index}`}
+                                place="right"
+                                className='customTooltipClass'
+                                title={<ProductTooltipContent product={prod}/>}
+                              />
+                            </div>
                           </div>
                         );
                       })}

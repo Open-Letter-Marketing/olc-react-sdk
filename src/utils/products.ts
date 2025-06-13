@@ -8,6 +8,11 @@ interface Product {
     title: string;
     productType: string;
     size: Size[];
+    hasEnvelope?: boolean;
+    paper?: string;
+    envelope?: any;
+    nonEnvelope?: any;
+    ink?: string;
     windowed?: boolean; // optional property
 }
 
@@ -17,6 +22,8 @@ export const Products: Product[] = [
         id: "9",
         title: "Bi-Fold Self-Mailers",
         productType: "Bi-Fold Self-Mailers",
+        hasEnvelope: false,
+        paper: '80# Glossy Coverstock',
         size: [
             {
                 id: "9",
@@ -28,6 +35,10 @@ export const Products: Product[] = [
         id: "5",
         title: "Personal Letters",
         productType: "Personal Letters",
+        hasEnvelope: true,
+        paper: '60# Statement',
+        envelope: 'A6 White / A6 Grey Herringbone',
+        ink: 'Full color or black & white',
         size: [
             {
                 id: "5",
@@ -39,6 +50,8 @@ export const Products: Product[] = [
         id: "13",
         title: "Postcards",
         productType: "Postcards",
+        hasEnvelope: false,
+        paper: '100# - 120# Glossy Coverstock',
         size: [
             {
                 id: "13",
@@ -58,6 +71,10 @@ export const Products: Product[] = [
         id: "16",
         title: "Real Penned Letter",
         productType: "Real Penned Letter",
+        hasEnvelope: true,
+        paper: '60# Statement',
+        envelope: 'A6 Lavender / A6 Navy Blue',
+        ink: 'Blue or black ink options',
         size: [
             {
                 id: "16",
@@ -69,6 +86,8 @@ export const Products: Product[] = [
         id: "11",
         title: "Tri-Fold Self-Mailers",
         productType: "Tri-Fold Self-Mailers",
+        hasEnvelope: false,
+        paper: '80# Glossy Coverstock',
         size: [
             {
                 id: "11",
@@ -80,6 +99,11 @@ export const Products: Product[] = [
         id: "2",
         title: "Professional Letters - Windowed Envelope",
         productType: "Professional Letters",
+        hasEnvelope: true,
+        paper: '60# Statement',
+        envelope: '#10 Double-Window',
+        nonEnvelope: '#10 Grey',
+        ink: 'Full color or black & white',
         size: [
             {
                 id: "2",
@@ -92,6 +116,10 @@ export const Products: Product[] = [
         id: "4",
         title: "Professional Letters - Non-windowed Envelope",
         productType: "Professional Letters",
+        hasEnvelope: true,
+        paper: '60# Statement',
+        envelope: '#10 Grey',
+        ink: '',
         size: [
             {
                 id: "4",
@@ -104,6 +132,8 @@ export const Products: Product[] = [
         id: "18",
         title: "Snap Pack Mailers",
         productType: "Snap Pack Mailers",
+        hasEnvelope: false,
+        paper: 'No Paper Type',
         size: [
             {
                 id: "18",

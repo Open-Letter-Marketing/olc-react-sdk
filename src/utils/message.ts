@@ -133,7 +133,8 @@ export const MESSAGES = {
         }
       }
     },
-    DOWNLOAD_PROOF_BUTTON: "Download Proof",
+    DOWNLOAD_PROOF_BUTTON: "Download View Proof",
+    DOWNLOAD_ENVELOPE_BUTTON: "Download Envelope Proof",
     CANCEL_BUTTON: "Cancel",
     SUBMIT_BUTTON: "Save"
   },
