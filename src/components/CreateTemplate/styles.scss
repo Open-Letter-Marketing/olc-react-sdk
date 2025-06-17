@@ -170,6 +170,7 @@
         cursor: pointer;
         transition: 0.1s ease-in all;
         gap: 17px;
+        position: relative;
 
         &.active,
         &:hover {
@@ -194,6 +195,64 @@
 
         &.error {
           border: 0.45px solid var(--error-color);
+        }
+
+        .productTooltip {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+          z-index: 1 !important;
+
+          svg{
+            &:focus{
+              outline: none !important;
+            }
+          }
+
+          .customTooltipClass{
+            padding: 8px !important;
+            .react-tooltip-arrow{
+              border-color: var(--border-color) !important;
+            }
+          }
+
+          
+          .productTooltipContent {
+            display: flex;
+            flex-direction: column;
+            width: 170px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: normal;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            .heading{
+              font-weight: 500 !important;
+              font-size: 16px;
+              line-height: normal;
+              color: var(--text-color);
+              margin-bottom: 10px;
+            }
+
+            .contentWrapper{
+              display: flex;
+              justify-content: flex-start;
+              align-items: flex-start;
+              flex-direction: column;
+              gap: 5px;
+              p {
+                color: var(--text-color) !important;
+                font-weight: 400;
+                font-size: 14px;
+                text-align: left;
+                span{
+                  font-weight: 600;
+                }
+              }
+            }
+          }
         }
       }
     }

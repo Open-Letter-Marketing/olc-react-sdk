@@ -202,6 +202,7 @@ const CustomAddOns: SideSection = {
             <GeneralTootip
               anchorSelect=".infoIcon"
               place="bottom"
+              className='custom-add-on-tooltip'
               title={MESSAGES.TEMPLATE.CUSTOM_ADD_ONS.DESCRIPTION}
             />
           </div>

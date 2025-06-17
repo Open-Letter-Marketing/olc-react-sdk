@@ -10,6 +10,7 @@ import {
   clearTemplateFields,
   loadFormDataToStore,
   downloadProof,
+  envelopeProof,
 } from '../../redux/actions/templateActions';
 import { failure, success } from '../../redux/actions/snackbarActions';
 
@@ -38,6 +39,8 @@ import GeneralTooltip from '../GenericUIBlocks/GeneralTooltip';
 import EditIcon from '../../assets/images/templates/edit-pencil-icon.tsx';
 // @ts-ignore
 import DownloadIcon from '../../assets/images/modal-icons/order-download.tsx';
+// @ts-ignore
+import EnvelopeIcon from '../../assets/images/modal-icons/envelope-icon.tsx';
 // @ts-ignore
 import CloneIcon from '../../assets/images/modal-icons/template-copy.tsx';
 // Styles
@@ -108,6 +111,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
     inputValue: '',
   });
   const [downloadingProof, setDownloaingProof] = useState<boolean>(false);
+  const [downloadingEnvelope, setDownloaingEnvelope] = useState<boolean>(false);
 
   const { id } = useParams<{ id: string }>();
 
@@ -261,6 +265,43 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
       );
     } finally {
       setDownloaingProof(false);
+    }
+  };
+
+  const handleEnvelopeProof = async () => {
+    try {
+      setDownloaingEnvelope(true);
+      const response: any = await envelopeProof({
+        productId: product.id,
+      });
+      if (response.status === 200) {
+        const binaryData = atob(response.data.data.base64);
+        // Create a Uint8Array from the binary data
+        const uint8Array = new Uint8Array(binaryData.length);
+        for (let i = 0; i < binaryData.length; i++) {
+          uint8Array[i] = binaryData.charCodeAt(i);
+        }
+
+        // Create a Blob from the Uint8Array
+        const blob = new Blob([uint8Array], { type: 'application/pdf' });
+
+        // Create an Object URL for the Blob
+        const url = URL.createObjectURL(blob);
+        downloadPDF(title.substring(0, 20), url);
+        dispatch(success('Download Envelope Proof generated successfully'));
+      } else {
+        dispatch(failure(response?.data?.message || response?.message || MESSAGES.DOWNLOAD_ERROR));
+      }
+    } catch (error: any) {
+      dispatch(
+        failure(
+          error?.response?.data?.message ||
+          error?.message ||
+          'Error while downloading envelope proof'
+        )
+      );
+    } finally {
+      setDownloaingEnvelope(false);
     }
   };
 
@@ -435,23 +476,45 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         </GridItem>
         <GridItem lg={5} md={6} sm={9} xs={12}>
           <div className="actionsBtnWrapper right">
-            {olcTemplate && !designerTemplateQuery && 
-            <div className="clone" onClick={() =>
-                setIsShowModel(prev => ({
-                  ...prev,
-                  open: true,
-                  model: 'duplicate',
-                  inputValue: '',
-                }))
-              }
-            >
-              <CloneIcon fill="#545454" />
-            </div>}
+            {olcTemplate && !designerTemplateQuery && (
+              <div
+                className="clone"
+                onClick={() =>
+                  setIsShowModel((prev) => ({
+                    ...prev,
+                    open: true,
+                    model: 'duplicate',
+                    inputValue: '',
+                  }))
+                }
+              >
+                <CloneIcon fill="#545454" />
+              </div>
+            )}
             <GeneralTooltip
               title={MESSAGES.TEMPLATE.DUPLICATE_MODAL.TITLE}
               place="bottom"
               anchorSelect=".clone"
             />
+            {product?.hasEnvelope && (
+              <>
+                <div
+                  className="download-envelope"
+                  onClick={handleEnvelopeProof}
+                >
+                  {downloadingEnvelope ? (
+                    <CircularProgress style={progressStyles} />
+                  ) : (
+                    <EnvelopeIcon />
+                  )}
+                </div>
+                <GeneralTooltip
+                  title={MESSAGES.TEMPLATE.DOWNLOAD_ENVELOPE_BUTTON}
+                  place="bottom"
+                  anchorSelect=".download-envelope"
+                />
+              </>
+            )}
             <div className="download" onClick={handleViewProofWithLamda}>
               {downloadingProof ? (
                 <CircularProgress style={progressStyles} />

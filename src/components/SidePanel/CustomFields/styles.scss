@@ -17,6 +17,19 @@
       height: 12px;
       cursor: pointer;
     }
+    & .contact-info-tooltip {
+      width: 90% !important;
+      max-width: fit-content !important;
+    }
+    & .custom-add-on-tooltip {
+      width: 90% !important;
+      max-width: fit-content !important;
+    }
+    svg{
+      &:focus{
+        outline: none !important;
+      }
+    }
   }
 
   & .divider {

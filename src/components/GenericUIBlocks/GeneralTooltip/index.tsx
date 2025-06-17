@@ -10,12 +10,13 @@ import './styles.scss';
 interface GeneralTooltipProps {
   anchorSelect: string;
   place: 'top' | 'right' | 'bottom' | 'left';
-  title: string;
+  title: string | React.ReactNode;
+  className?: string;
 }
 
-const GeneralTooltip: React.FC<GeneralTooltipProps> = ({ anchorSelect, place, title }) => {
+const GeneralTooltip: React.FC<GeneralTooltipProps> = ({ anchorSelect, place, title, className }) => {
   return (
-    <Tooltip className="basic-tooltip" anchorSelect={anchorSelect} place={place}>
+    <Tooltip className={`basic-tooltip ${className}`} anchorSelect={anchorSelect} place={place}>
       {title}
     </Tooltip>
   );
