@@ -180,7 +180,6 @@ const CustomAddOns: SideSection = {
 
     const copyPropertyOfferField = (e: React.MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
-      if (!validCustomRosRange()) return false;
       copyToClipboard(PropertyOfferfieldValue);
       dispatch({ type: SET_ROS_OFFER_PERCENTAGE, payload: customRosValue });
       dispatch(success(`ROS Property Offer Copied`));
