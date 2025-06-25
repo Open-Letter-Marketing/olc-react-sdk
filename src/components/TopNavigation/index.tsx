@@ -476,7 +476,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
         </GridItem>
         <GridItem lg={5} md={6} sm={9} xs={12}>
           <div className="actionsBtnWrapper right">
-            {olcTemplate && !designerTemplateQuery && (
+            {olcTemplate && !designerTemplateQuery && onDuplicateTemplate && (
               <div
                 className="clone"
                 onClick={() =>

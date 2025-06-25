@@ -188,7 +188,7 @@ const CreateTemplate: React.FC<CreateTemplateProps> = ({
           {+product?.id !== 2 && product?.envelope && <Typography><span>Envelope: </span> {product?.envelope} </Typography>}
           {+product?.id === 2 && product?.envelope && <Typography><span>Windowed Envelope: </span> {product?.envelope} </Typography>}
           {+product?.id === 2 && product?.nonEnvelope && <Typography><span>Non-Windowed Envelope: </span> {product?.nonEnvelope} </Typography>}
-          {product?.ink && <Typography><span>Ink: </span> {product?.ink} </Typography>}
+          {/* {product?.ink && <Typography><span>Ink: </span> {product?.ink} </Typography>} */}
         </div>
     </div>
   );
