@@ -265,7 +265,7 @@ const initialState: TemplateState = {
     {
       value: "Property Written Offer",
       key: "{{ROS.WRITTEN_OFFER}}",
-      defaultValue: "One hundred twenty three thousand four hundred and fifty-six and 00/100",
+      defaultValue: "One hundred twenty-three thousand four hundred fifty-six and 00/100",
     },
   ],
   defaultMiscFields: [
